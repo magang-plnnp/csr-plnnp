@@ -5,7 +5,7 @@
             <span class="hide-menu">Beranda</span>
         </li>
         <li class="sidebar-item">
-            <a class="sidebar-link" href="./index.html" aria-expanded="false">
+            <a class="sidebar-link" href="/" aria-expanded="false">
                 <span>
                     <i class="ti ti-layout-dashboard"></i>
                 </span>
@@ -37,7 +37,7 @@
             <span class="hide-menu">Manajemen Data</span>
         </li>
         <li class="sidebar-item">
-            <a class="sidebar-link" href="./authentication-login.html" aria-expanded="false">
+            <a class="sidebar-link" href="/pengguna" aria-expanded="false">
                 <span>
                     <i class="ti ti-user"></i>
                 </span>
@@ -45,7 +45,7 @@
             </a>
         </li>
         <li class="sidebar-item">
-            <a class="sidebar-link" href="./authentication-register.html" aria-expanded="false">
+            <a class="sidebar-link" href="/tipologi" aria-expanded="false">
                 <span>
                     <i class="ti ti-clipboard"></i>
                 </span>

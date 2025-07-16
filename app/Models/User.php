@@ -18,10 +18,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'nama', 'username', 'password', 'role', 'created_at', 'updated_at',
     ];
+
+    // protected $hidden = ['password'];
+
+    public function proposals()
+    {
+        return $this->hasMany(Proposal::class, 'nama_pic_id');
+    }
 
     /**
      * The attributes that should be hidden for serialization.

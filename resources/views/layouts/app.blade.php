@@ -7,6 +7,8 @@
     <title>@yield('title', 'My App')</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('images/logos/logo-pln1.png') }}" />
     <link rel="stylesheet" href="{{ asset('css/styles.min.css') }}" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    @stack('styles')
 </head>
 
 <body>
@@ -52,6 +54,7 @@
     <script src="{{ asset('libs/apexcharts/dist/apexcharts.min.js') }}"></script>
     <script src="{{ asset('libs/simplebar/dist/simplebar.js') }}"></script>
     <script src="{{ asset('js/dashboard.js') }}"></script>
+    @stack('scripts')
 </body>
 
 </html>
