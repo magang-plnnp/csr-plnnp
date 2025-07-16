@@ -8,18 +8,17 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('sub_proses', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->enum('role', ['user', 'admin'])->default('user');
+            $table->foreignId('tipe_proses_id')->constrained('tipe_proses')->onDelete('cascade');
+            $table->string('nama_sub');
+            $table->integer('order_index');
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('sub_proses');
     }
 };
