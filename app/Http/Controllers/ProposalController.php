@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Proposal;
 use Illuminate\Http\Request;
 
 class ProposalController extends Controller
@@ -11,7 +12,7 @@ class ProposalController extends Controller
      */
     public function index()
     {
-        //
+        return view('proposal.pengajuan.index', ['proposal' => Proposal::all()]);
     }
 
     /**

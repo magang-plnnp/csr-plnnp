@@ -28,8 +28,19 @@ class TipologiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'kode' => 'required|string|max:255|unique:tipologi,kode',
+            'deskripsi' => 'required|string',
+        ]);
+
+        Tipologi::create([
+            'kode' => $request->kode,
+            'deskripsi' => $request->deskripsi,
+        ]);
+
+        return redirect()->back()->with('success', 'Tipologi berhasil ditambahkan.');
     }
+
 
     /**
      * Display the specified resource.
@@ -50,16 +61,31 @@ class TipologiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'kode' => 'required|string|max:255',
+            'deskripsi' => 'required|string|max:1000',
+        ]);
+
+        $tipologi = Tipologi::findOrFail($id);
+        $tipologi->update([
+            'kode' => $request->kode,
+            'deskripsi' => $request->deskripsi,
+        ]);
+
+        return redirect()->route('tipologi.index')->with('success', 'Data tipologi berhasil diperbarui.');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $tipologi = Tipologi::findOrFail($id);
+        $tipologi->delete();
+
+        return redirect()->route('tipologi.index')->with('success', 'Data tipologi berhasil dihapus.');
     }
 }

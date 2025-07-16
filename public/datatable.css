@@ -1,0 +1,114 @@
+  div.dataTables_filter {
+            margin-bottom: 20px;
+        }
+
+        /* Margin atas bawah pada pagination */
+        div.dataTables_paginate {
+            margin-top: 20px;
+        }
+
+        /* Zebra striping: putih dan abu muda */
+        #usersTable tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        #usersTable tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Jika ingin warna tetap saat hover hilang */
+        #usersTable tbody tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Custom Pagination Styling */
+        .dataTables_paginate {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .dataTables_paginate .pagination {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .dataTables_paginate .pagination li {
+            display: inline-block;
+        }
+
+        .dataTables_paginate .pagination li a,
+        .dataTables_paginate .pagination li span {
+            display: inline-block;
+            padding: 6px 10px;
+            margin: 0 1px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            color: #666;
+            font-weight: 500;
+            font-size: 13px;
+            min-width: 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        /* Active page styling */
+        .dataTables_paginate .pagination li.active a,
+        .dataTables_paginate .pagination li.active span {
+            background-color: #5d87ff;
+            color: white;
+            border-color: #5d87ff;
+        }
+
+        /* Hover effect */
+        .dataTables_paginate .pagination li a:hover {
+            background-color: #f8f9fa;
+            border-color: #5d87ff;
+            color: #5d87ff;
+        }
+
+        /* Previous/Next button styling */
+        .dataTables_paginate .pagination li.previous a,
+        .dataTables_paginate .pagination li.next a {
+            padding: 6px 12px;
+            font-weight: 500;
+        }
+
+        /* Disabled state */
+        .dataTables_paginate .pagination li.disabled a,
+        .dataTables_paginate .pagination li.disabled span {
+            color: #ccc;
+            cursor: not-allowed;
+            background-color: #f8f9fa;
+            border-color: #e9ecef;
+        }
+
+        .dataTables_paginate .pagination li.disabled a:hover {
+            background-color: #f8f9fa;
+            border-color: #e9ecef;
+            color: #ccc;
+        }
+
+            .btn-action {
+                background-color: transparent !important;
+                border: none !important;
+                color: #6c757d !important;
+                transition: all 0.3s ease;
+            }
+            
+            .btn-action:hover {
+                background-color: #f8f9fa !important;
+                color: #495057 !important;
+                transform: scale(1.1);
+            }
+            
+            .btn-action:focus {
+                box-shadow: none !important;
+                outline: none !important;
+            }
