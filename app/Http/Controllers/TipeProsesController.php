@@ -59,16 +59,26 @@ class TipeProsesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama' => 'required|string|max:255',
+        ]);
+
+        $tipeProses = TipeProses::findOrFail($id);
+        $tipeProses->update([
+            'nama' => $request->nama,
+        ]);
+
+        return redirect()->back()->with('success', 'Tipe proses berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    // Hapus tipe proses
+    public function destroy($id)
     {
-        //
+        $tipeProses = TipeProses::findOrFail($id);
+        $tipeProses->delete();
+
+        return redirect()->back()->with('success', 'Tipe proses berhasil dihapus.');
     }
 }

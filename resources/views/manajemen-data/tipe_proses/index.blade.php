@@ -23,22 +23,22 @@
                 </div>
 
 
-                @foreach ($tipeProses as $proses)
+                 @foreach ($tipeProses as $proses)
                     <div class="mb-4">
                         <h6 class="fw-bold">{{ $proses->nama }}</h6>
                         <div class="table-responsive">
                             <table class="table table-bordered align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th style="width: 5%">#</th>
+                                        {{-- <th style="width: 5%">#</th> --}}
                                         <th>Nama Sub Proses</th>
                                         <th style="width: 20%">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="sortable" data-tipe-id="{{ $proses->id }}">
                                     @foreach ($proses->subProses->sortBy('order_index') as $sub)
-                                        <tr>
-                                            <td>{{ $sub->order_index }}</td>
+                                        <tr data-id="{{ $sub->id }}">
+                                            {{-- <td>{{ $sub->order_index }}</td> --}}
                                             <td>{{ $sub->nama_sub }}</td>
                                             <td>
                                                 <div class="dropdown">
@@ -77,12 +77,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        {{-- <div class="text-end mt-2">
-                            <a href="{{ route('sub-proses.create', ['tipe_proses_id' => $proses->id]) }}"
-                               class="btn btn-sm btn-success">
-                                <i class="fas fa-plus"></i> Tambah Sub Proses
-                            </a>
-                        </div> --}}
+
                         <div class="text-end mt-2">
                             <button type="button" class="btn btn-sm btn-success btn-add-sub"
                                 data-tipe="{{ $proses->id }}" data-bs-toggle="modal" data-bs-target="#createSubModal">
@@ -96,7 +91,57 @@
     </div>
 </div>
 
-{{-- Modal Tambah Sub Proses --}}
+<!-- Modal Edit Tipe Proses -->
+<div class="modal fade" id="editTipeModal" tabindex="-1" aria-labelledby="editTipeLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" id="editTipeForm">
+            @csrf
+            @method('PUT')
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Tipe Proses</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="edit-tipe-nama" class="form-label">Nama Tipe Proses</label>
+                        <input type="text" class="form-control" id="edit-tipe-nama" name="nama" required autofocus>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn bg-secondary-subtle text-dark" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Delete Tipe Proses -->
+<div class="modal fade" id="deleteTipeModal" tabindex="-1" aria-labelledby="deleteTipeLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" id="deleteTipeForm">
+            @csrf
+            @method('DELETE')
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Yakin ingin menghapus tipe proses berikut?</p>
+                    <div class="alert alert-danger mb-0" id="deleteTipeText"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn bg-secondary-subtle text-dark" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 <!-- Modal Tambah Sub Proses -->
 <div class="modal fade" id="createSubModal" tabindex="-1" aria-labelledby="createSubLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -113,10 +158,10 @@
                         <label for="create-sub-nama" class="form-label">Nama Sub Proses</label>
                         <input type="text" class="form-control" id="create-sub-nama" name="nama_sub" required>
                     </div>
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label for="create-sub-order" class="form-label">Urutan</label>
                         <input type="number" class="form-control" id="create-sub-order" name="order_index" required>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button class="btn bg-secondary-subtle text-dark" data-bs-dismiss="modal">Batal</button>
@@ -223,12 +268,88 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<script>
+    // Drag & Drop
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".sortable").forEach(function (el) {
+            new Sortable(el, {
+                animation: 150,
+                onEnd: function () {
+                    const tipeId = el.getAttribute('data-tipe-id');
+                    const ids = Array.from(el.querySelectorAll('tr')).map(tr => tr.getAttribute('data-id'));
+
+                    fetch('/sub-proses/reorder', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        },
+                        body: JSON.stringify({
+                            tipe_proses_id: tipeId,
+                            urutan: ids
+                        })
+                    }).then(res => {
+                        if (!res.ok) alert("Gagal menyimpan urutan");
+                    });
+                }
+            });
+        });
+    });
+
+    // Modal Actions
+    $(document).on('click', '.btn-add-sub', function () {
+        const tipeId = $(this).data('tipe');
+        $('#create-tipe-id').val(tipeId);
+        $('#createSubForm').attr('action', '/sub-proses');
+    });
+
+    $(document).on('click', '.btn-edit-sub', function () {
+        const id = $(this).data('id');
+        const nama = $(this).data('nama');
+        const order = $(this).data('order');
+
+        $('#edit-sub-nama').val(nama);
+        $('#edit-sub-order').val(order);
+        $('#editSubForm').attr('action', '/sub-proses/' + id);
+    });
+
+    $(document).on('click', '.btn-delete-sub', function () {
+        const id = $(this).data('id');
+        const nama = $(this).data('nama');
+
+        $('#deleteSubText').text("Sub Proses: " + nama);
+        $('#deleteSubForm').attr('action', '/sub-proses/' + id);
+    });
+</script>
 <script>
     $(document).on('click', '.btn-add-sub', function () {
         const tipeId = $(this).data('tipe');
         $('#create-tipe-id').val(tipeId);
         $('#createSubForm').attr('action', '/sub-proses');
     });
+</script>
+
+<script>
+    // Edit Tipe
+$(document).on('click', '.btn-edit-tipe', function () {
+    const id = $(this).data('id');
+    const nama = $(this).data('nama');
+
+    $('#edit-tipe-nama').val(nama);
+    $('#editTipeForm').attr('action', '/tipe-proses/' + id);
+});
+
+// Hapus Tipe
+$(document).on('click', '.btn-delete-tipe', function () {
+    const id = $(this).data('id');
+    const nama = $(this).data('nama');
+
+    $('#deleteTipeText').text("Tipe Proses: " + nama);
+    $('#deleteTipeForm').attr('action', '/tipe-proses/' + id);
+});
+
 </script>
 
 <script>

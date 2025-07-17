@@ -31,17 +31,36 @@ class SubProsesController extends Controller
         $request->validate([
             'tipe_proses_id' => 'required|exists:tipe_proses,id',
             'nama_sub' => 'required|string|max:255',
-            'order_index' => 'required|integer',
         ]);
+
+        $maxOrder = SubProses::where('tipe_proses_id', $request->tipe_proses_id)->max('order_index') ?? 0;
 
         SubProses::create([
             'tipe_proses_id' => $request->tipe_proses_id,
             'nama_sub' => $request->nama_sub,
-            'order_index' => $request->order_index,
+            'order_index' => $maxOrder + 1,
         ]);
 
-        return redirect()->back()->with('success', 'Sub Proses berhasil ditambahkan.');
+        return redirect()->back()->with('success', 'Sub proses berhasil ditambahkan.');
     }
+
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'tipe_proses_id' => 'required|exists:tipe_proses,id',
+            'urutan' => 'required|array',
+        ]);
+
+        foreach ($request->urutan as $index => $id) {
+            SubProses::where('id', $id)
+                ->where('tipe_proses_id', $request->tipe_proses_id)
+                ->update(['order_index' => $index + 1]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+
 
     /**
      * Display the specified resource.

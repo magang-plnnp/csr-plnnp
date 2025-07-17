@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('tipe-proses', TipeProsesController::class);
     Route::resource('sub-proses', SubProsesController::class);
     Route::resource('proposal-proses-checklist', ProposalProsesChecklistController::class);
+    Route::post('/sub-proses/reorder', [SubProsesController::class, 'reorder']);
 });
 
 // Route::get('/tipologi', function () {
