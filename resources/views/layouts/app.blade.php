@@ -7,6 +7,7 @@
     <title>@yield('title', 'My App')</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('images/logos/logo-pln1.png') }}" />
     <link rel="stylesheet" href="{{ asset('css/styles.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('datatable.css') }}" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     @stack('styles')
 </head>
@@ -47,6 +48,7 @@
             </div>
         </div>
     </div>
+    
     <script src="{{ asset('libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/sidebarmenu.js') }}"></script>
