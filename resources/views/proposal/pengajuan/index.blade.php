@@ -9,11 +9,36 @@
              <div class="card w-100">
                  <div class="card-body p-4">
                      <h5 class="card-title fw-semibold mb-4">Data Proposal</h5>
-                     <div class="mb-3 text-end">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
-                        <i class="fas fa-plus me-1"></i> Tambah Proposal
-                    </button>
-                </div>
+                     <div class="mb-4 d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <div class="d-flex align-items-center gap-2">
+    <select id="filter-pic" class="form-select" style="min-width: 200px;">
+        <option value="">-- Semua PIC --</option>
+        @foreach ($proposal->pluck('namaPic.nama')->unique() as $namaPic)
+            <option value="{{ $namaPic }}">{{ $namaPic }}</option>
+        @endforeach
+    </select>
+
+    <select id="filter-tipologi" class="form-select" style="min-width: 200px;">
+        <option value="">-- Semua Tipologi --</option>
+        @foreach ($proposal->pluck('tipologi.kode')->unique() as $tipologi)
+            <option value="{{ $tipologi }}">{{ $tipologi }}</option>
+        @endforeach
+    </select>
+
+    <select id="filter-status" class="form-select" style="min-width: 200px;">
+        <option value="">-- Semua Status --</option>
+        @foreach ($proposal->pluck('status')->unique() as $status)
+            <option value="{{ $status }}">{{ $status }}</option>
+        @endforeach
+    </select>
+</div>
+
+
+    <a href="/proposal/create" class="btn btn-primary">
+        <i class="fas fa-plus me-1"></i> Tambah Proposal
+    </a>
+</div>
+
 
                      <div class="table-responsive">
                         <table id="proposalTable" class="table table-bordered text-nowrap mb-0 align-middle">
@@ -39,6 +64,33 @@
                                      </th>
                                      <th>
                                          <h6 class="fw-semibold mb-0">Barang Pengajuan</h6>
+                                     </th>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">Tipologi</h6>
+                                     </th>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">Status</h6>
+                                     </th>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">Nominal Disetujui</h6>
+                                     </th>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">Barang Disetujui</h6>
+                                     </th>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">PIC</h6>
+                                     </th>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">Proses</h6>
+                                     </th>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">Keterangan</h6>
+                                     </th>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">Overdue</h6>
+                                     </th>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">Progress</h6>
                                      </th>
                                      <th>
                                          <h6 class="fw-semibold mb-0">Aksi</h6>
@@ -71,6 +123,37 @@
                                              <p class="mb-0 fw-normal">{{ $data->barang_pengajuan }}</p>
                                          </td>
                                          <td>
+                                             <p class="mb-0 fw-normal">{{ $data->tipologi->kode }}</p>
+                                         </td>
+                                         <td>
+                                             <p class="mb-0 fw-normal">{{ $data->status }}</p>
+                                         </td>
+                                         <td>
+                                             <p class="mb-0 fw-normal">{{ $data->nominal_disetujui }}</p>
+                                         </td>
+                                         <td>
+                                             <p class="mb-0 fw-normal">{{ $data->barang_disetujui }}</p>
+                                         </td>
+                                         {{-- <td data-pic="{{ $data->namaPic->nama }}">
+                                            <p class="mb-0 fw-normal">{{ $data->namaPic->nama }}</p>
+                                        </td> --}}
+
+                                         <td>
+                                             <p class="mb-0 fw-normal">{{ $data->namaPic->nama ?? '-'}}</p>
+                                         </td>
+                                         <td>
+                                             <p class="mb-0 fw-normal">{{ $data->tipeProses->nama ?? '-' }}</p>
+                                         </td>
+                                         <td>
+                                             <p class="mb-0 fw-normal">{{ $data->keterangan }}</p>
+                                         </td>
+                                         <td>
+                                             <p class="mb-0 fw-normal">{{ $data->overdue }}</p>
+                                         </td>
+                                         <td>
+                                             <p class="mb-0 fw-normal">{{ $data->progress }}</p>
+                                         </td>
+                                         <td>
                                              <div class="dropdown">
                                                  <button class="btn btn-sm btn-light border-0" type="button"
                                                      id="dropdownMenuButton{{ $data->id }}" data-bs-toggle="dropdown"
@@ -79,23 +162,20 @@
                                                  </button>
                                                  <ul class="dropdown-menu"
                                                      aria-labelledby="dropdownMenuButton{{ $data->id }}">
-                                                      <button type="button"
-                                                            class="dropdown-item text-primary btn-edit"
+                                                       <li>
+                                                            <a href="{{ route('proposal.edit', $data->id) }}"
+                                                            class="dropdown-item text-primary">
+                                                                Edit
+                                                            </a>
+                                                        </li>
+                                                        <button type="button"
+                                                            class="dropdown-item text-danger btn-delete"
                                                             data-bs-toggle="modal"
-                                                            data-bs-target="#editModal"
+                                                            data-bs-target="#deleteModal"
                                                             data-id="{{ $data->id }}"
-                                                            data-kode="{{ $data->kode }}"
-                                                            data-deskripsi="{{ $data->deskripsi }}">
-                                                            Edit
+                                                            data-nama="{{ $data->judul }}">
+                                                            Hapus
                                                         </button>
-                                                           <button type="button"
-        class="dropdown-item text-danger btn-delete"
-        data-bs-toggle="modal"
-        data-bs-target="#deleteModal"
-        data-id="{{ $data->id }}"
-        data-nama="{{ $data->kode }}">
-        Hapus
-    </button>
                                                      </li>
                                                  </ul>
                                              </div>
@@ -109,65 +189,6 @@
              </div>
          </div>
      </div>
-
-     <!-- Modal Edit -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form method="POST" id="editForm">
-            @csrf
-            @method('PUT')
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Tipologi</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="edit-kode" class="form-label">Kode</label>
-                        <input type="text" class="form-control" id="edit-kode" name="kode" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit-deskripsi" class="form-label">Deskripsi</label>
-                        <textarea class="form-control" id="edit-deskripsi" name="deskripsi" required></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn bg-secondary-subtle text-dark" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Modal Create -->
-<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form method="POST" action="{{ route('tipologi.store') }}">
-            @csrf
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createModalLabel">Tambah Tipologi</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="create-kode" class="form-label">Kode</label>
-                        <input type="text" class="form-control" id="create-kode" name="kode" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="create-deskripsi" class="form-label">Deskripsi</label>
-                        <textarea class="form-control" id="create-deskripsi" name="deskripsi" required></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn bg-secondary-subtle text-dark" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Tambah</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 
 
 <!-- Modal Delete -->
@@ -202,7 +223,27 @@
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
         <script>
+           function applyFilters() {
+    const pic = $('#filter-pic').val().toLowerCase();
+    const tipologi = $('#filter-tipologi').val().toLowerCase();
+    const status = $('#filter-status').val().toLowerCase();
+
+    const table = $('#proposalTable').DataTable();
+
+    table.columns(11).search(pic);       // PIC
+    table.columns(7).search(tipologi);   // Tipologi
+    table.columns(8).search(status);     // Status
+
+    table.draw();
+}
+
+$('#filter-pic, #filter-tipologi, #filter-status').on('change', applyFilters);
+
+
+        </script>
+        <script>
                 $('#proposalTable').DataTable({
+                    scrollX: true,
             language: {
                 search: "Cari",
                 lengthMenu: "Tampil _MENU_",
@@ -227,20 +268,7 @@
         });
         </script>
 
-{{-- EDIT MODAL --}}
-        <script>
-    $(document).on('click', '.btn-edit', function () {
-        const id = $(this).data('id');
-        const kode = $(this).data('kode');
-        const deskripsi = $(this).data('deskripsi');
 
-        $('#edit-kode').val(kode);
-        $('#edit-deskripsi').val(deskripsi);
-
-        // Update action form dengan ID yang dipilih
-        $('#editForm').attr('action', '/tipologi/' + id);
-    });
-</script>
 
 {{-- DELETE MODAL --}}
 <script>
@@ -248,8 +276,8 @@
         const id = $(this).data('id');
         const nama = $(this).data('nama');
 
-        $('#deleteDataName').text("Kode: " + nama);
-        $('#deleteForm').attr('action', '/tipologi/' + id);
+        $('#deleteDataName').text("Judul: " + nama);
+        $('#deleteForm').attr('action', '/proposal/' + id);
     });
 </script>
 

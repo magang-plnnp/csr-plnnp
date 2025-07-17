@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TipeProses;
 use Illuminate\Http\Request;
 
 class TipeProsesController extends Controller
@@ -11,7 +12,8 @@ class TipeProsesController extends Controller
      */
     public function index()
     {
-        //
+        $tipeProses = TipeProses::with('subProses')->get();
+        return view('manajemen-data.tipe_proses.index', compact('tipeProses'));
     }
 
     /**
@@ -27,7 +29,15 @@ class TipeProsesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama' => 'required|string|max:255',
+        ]);
+
+        TipeProses::create([
+            'nama' => $request->nama,
+        ]);
+
+        return redirect()->back()->with('success', 'Tipe Proses berhasil ditambahkan.');
     }
 
     /**

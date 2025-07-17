@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubProses extends Model
 {
+    protected $table = 'sub_proses';
     protected $fillable = ['tipe_proses_id', 'nama_sub', 'order_index', 'created_at', 'updated_at'];
 
     public function tipeProses()

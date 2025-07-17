@@ -14,6 +14,7 @@
                 </div>
             </div>
 
+
             <!-- Total Pengajuan dengan Progress Bar -->
             <div class="card flex-grow-1">
                 <div class="card-body">
@@ -26,6 +27,7 @@
                             <div class="progress-bar bg-success fw-semibold"
                                 style="width: {{ $jumlahPengajuan > 0 ? ($jumlahSetuju / $jumlahPengajuan) * 100 : 0 }}%">
                                 {{ $jumlahSetuju }}
+
                             </div>
                         </div>
                     </div>
@@ -53,6 +55,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Kolom 2: Nominal Disetujui dan Pie Chart -->
         <div class="col-lg-4 col-md-6 mb-4 d-flex flex-column gap-2">
@@ -152,6 +155,7 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 @push('scripts')
