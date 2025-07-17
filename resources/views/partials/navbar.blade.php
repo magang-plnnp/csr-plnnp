@@ -32,6 +32,7 @@
                 <span class="hide-menu">Monitoring</span>
             </a>
         </li>
+        @if(Auth::user()->role === 'admin')
         <li class="nav-small-cap">
             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
             <span class="hide-menu">Manajemen Data</span>
@@ -52,5 +53,23 @@
                 <span class="hide-menu">Tipologi</span>
             </a>
         </li>
+        @endif
+        <li class="nav-small-cap">
+    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+    <span class="hide-menu">Akun</span>
+</li>
+<li class="sidebar-item">
+    <a class="sidebar-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" aria-expanded="false">
+        <span>
+            <i class="ti ti-logout"></i>
+        </span>
+        <span class="hide-menu">Logout</span>
+    </a>
+
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
+</li>
+
     </ul>
 </nav>

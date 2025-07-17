@@ -23,19 +23,57 @@
                                 <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
                                     <img src="{{ asset('images/logos/logo-pln2.png') }}" width="180" alt="">
                                 </a>
-                                <form>
-                                    <div class="mb-3">
-                                        <label for="exampleInputEmail1" class="form-label">Username</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1"
-                                            aria-describedby="emailHelp">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="exampleInputPassword1" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword1">
-                                    </div>
-                                    <a href="./index.html" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign
-                                        In</a>
-                                </form>
+                               @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
+<form method="POST" action="{{ route('login') }}">
+    @csrf
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+            placeholder="Masukkan Username"
+            type="text"
+            name="username"
+            class="form-control @error('username') is-invalid @enderror"
+            id="username"
+            value="{{ old('username') }}"
+            required autofocus
+        >
+        @error('username')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="mb-4">
+        <label for="password" class="form-label">Password</label>
+        <input
+            placeholder="Masukkan password"
+            type="password"
+            name="password"
+            class="form-control @error('password') is-invalid @enderror"
+            id="password"
+            required
+        >
+        @error('password')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+    <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="form-check">
+                      <input class="form-check-input primary" type="checkbox" name="remember"  value="" id="remember" {{ old('remember') ? 'checked' : '' }}  checked>
+                      <label class="form-check-label text-dark" for="remember"> 
+                        Simpan Login
+                      </label>
+                    </div>
+                    
+                  </div>
+
+    <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign In</button>
+</form>
+
                             </div>
                         </div>
                     </div>

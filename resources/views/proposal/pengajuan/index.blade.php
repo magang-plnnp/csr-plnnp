@@ -9,12 +9,36 @@
              <div class="card w-100">
                  <div class="card-body p-4">
                      <h5 class="card-title fw-semibold mb-4">Data Proposal</h5>
-                     <div class="mb-3 text-end">
-                    <a href="/proposal/create" class="btn btn-primary" >
-                        <i class="fas fa-plus me-1"></i> Tambah Proposal
-                    </a>
+                     <div class="mb-4 d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <div class="d-flex align-items-center gap-2">
+    <select id="filter-pic" class="form-select" style="min-width: 200px;">
+        <option value="">-- Semua PIC --</option>
+        @foreach ($proposal->pluck('namaPic.nama')->unique() as $namaPic)
+            <option value="{{ $namaPic }}">{{ $namaPic }}</option>
+        @endforeach
+    </select>
 
-                </div>
+    <select id="filter-tipologi" class="form-select" style="min-width: 200px;">
+        <option value="">-- Semua Tipologi --</option>
+        @foreach ($proposal->pluck('tipologi.kode')->unique() as $tipologi)
+            <option value="{{ $tipologi }}">{{ $tipologi }}</option>
+        @endforeach
+    </select>
+
+    <select id="filter-status" class="form-select" style="min-width: 200px;">
+        <option value="">-- Semua Status --</option>
+        @foreach ($proposal->pluck('status')->unique() as $status)
+            <option value="{{ $status }}">{{ $status }}</option>
+        @endforeach
+    </select>
+</div>
+
+
+    <a href="/proposal/create" class="btn btn-primary">
+        <i class="fas fa-plus me-1"></i> Tambah Proposal
+    </a>
+</div>
+
 
                      <div class="table-responsive">
                         <table id="proposalTable" class="table table-bordered text-nowrap mb-0 align-middle">
@@ -110,6 +134,10 @@
                                          <td>
                                              <p class="mb-0 fw-normal">{{ $data->barang_disetujui }}</p>
                                          </td>
+                                         {{-- <td data-pic="{{ $data->namaPic->nama }}">
+                                            <p class="mb-0 fw-normal">{{ $data->namaPic->nama }}</p>
+                                        </td> --}}
+
                                          <td>
                                              <p class="mb-0 fw-normal">{{ $data->namaPic->nama }}</p>
                                          </td>
@@ -194,6 +222,25 @@
         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+        <script>
+           function applyFilters() {
+    const pic = $('#filter-pic').val().toLowerCase();
+    const tipologi = $('#filter-tipologi').val().toLowerCase();
+    const status = $('#filter-status').val().toLowerCase();
+
+    const table = $('#proposalTable').DataTable();
+
+    table.columns(11).search(pic);       // PIC
+    table.columns(7).search(tipologi);   // Tipologi
+    table.columns(8).search(status);     // Status
+
+    table.draw();
+}
+
+$('#filter-pic, #filter-tipologi, #filter-status').on('change', applyFilters);
+
+
+        </script>
         <script>
                 $('#proposalTable').DataTable({
                     scrollX: true,
