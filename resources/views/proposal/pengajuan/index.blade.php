@@ -139,10 +139,10 @@
                                         </td> --}}
 
                                          <td>
-                                             <p class="mb-0 fw-normal">{{ $data->namaPic->nama }}</p>
+                                             <p class="mb-0 fw-normal">{{ $data->namaPic->nama ?? '-'}}</p>
                                          </td>
                                          <td>
-                                             <p class="mb-0 fw-normal">{{ $data->tipeProses->nama }}</p>
+                                             <p class="mb-0 fw-normal">{{ $data->tipeProses->nama ?? '-' }}</p>
                                          </td>
                                          <td>
                                              <p class="mb-0 fw-normal">{{ $data->keterangan }}</p>

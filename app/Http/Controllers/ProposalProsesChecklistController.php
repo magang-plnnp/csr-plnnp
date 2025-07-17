@@ -3,62 +3,45 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ProposalProsesChecklist;
+use App\Models\Proposal;
 
 class ProposalProsesChecklistController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function update(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'proposal_id' => 'required|integer',
+            'sub_proses_id' => 'required|integer',
+            'is_checked' => 'required|boolean',
+        ]);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        // Simpan checklist (buat baru jika belum ada)
+        $checklist = ProposalProsesChecklist::firstOrNew([
+            'proposal_id' => $request->proposal_id,
+            'sub_proses_id' => $request->sub_proses_id,
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $checklist->is_checked = $request->is_checked;
+        $checklist->checked_at = now();
+        $checklist->save();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        // === Tambahkan bagian ini untuk menghitung progress ===
+        $proposal = Proposal::with('tipeProses.subProses')->find($request->proposal_id);
+        $total = $proposal->tipeProses->subProses->count();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        $checked = ProposalProsesChecklist::where('proposal_id', $request->proposal_id)
+            ->where('is_checked', 1)
+            ->count();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        $progress = $total ? round(($checked / $total) * 100) : 0;
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $proposal->update(['progress' => $progress]);
+        // ======================================================
+
+        return response()->json([
+            'message' => 'Checklist berhasil diperbarui.',
+            'data' => $checklist
+        ]);
     }
 }
