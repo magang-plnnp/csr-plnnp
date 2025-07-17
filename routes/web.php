@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\SubProsesController;
 use App\Http\Controllers\TipeProsesController;
 use App\Http\Controllers\ProposalProsesChecklistController;
 use App\Http\Controllers\MonitoringController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +26,7 @@ use App\Http\Controllers\MonitoringController;
 
 
 
+
 // Route::get('/login', function () {
 //     return view('auth.login');
 // });
@@ -34,9 +37,8 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return view('dashboard.index');
-    });
+    Route::get('/', [DashboardController::class, 'index']);
+
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
