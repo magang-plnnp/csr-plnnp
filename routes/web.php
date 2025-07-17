@@ -1,12 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\TipologiController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProposalController;
-use App\Http\Controllers\TipeProsesController;
-use App\Http\Controllers\SubProsesController;
 use App\Http\Controllers\ProposalProsesChecklistController;
+use App\Http\Controllers\SubProsesController;
+use App\Http\Controllers\TipeProsesController;
+use App\Http\Controllers\TipologiController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,10 +20,7 @@ use App\Http\Controllers\ProposalProsesChecklistController;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard.index');
-});
-
+Route::get('/', [DashboardController::class, 'index']);
 
 Route::get('/login', function () {
     return view('auth.login');
