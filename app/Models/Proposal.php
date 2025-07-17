@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Proposal extends Model
 {
+    protected $table = 'proposal';
+
     protected $fillable = [
         'judul', 'instansi_pengajuan', 'lokasi', 'tanggal_disposisi', 'nominal_pengajuan',
         'barang_pengajuan', 'tipologi_id', 'status', 'nominal_disetujui', 'barang_disetujui',

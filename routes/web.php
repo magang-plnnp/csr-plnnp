@@ -7,6 +7,7 @@ use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\TipeProsesController;
 use App\Http\Controllers\SubProsesController;
 use App\Http\Controllers\ProposalProsesChecklistController;
+use App\Http\Controllers\MonitoringController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,9 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('auth.login');
 });
+
+Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');
+Route::post('/checklist/update', [ProposalProsesChecklistController::class, 'update'])->name('checklist.update');
 
 // Route::get('/tipologi', function () {
 //     return view('manajemen-data.tipologi.index');
