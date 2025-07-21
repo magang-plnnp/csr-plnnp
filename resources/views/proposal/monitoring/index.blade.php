@@ -1,10 +1,23 @@
 @extends('layouts.app')
 @section('title', 'CSR PLN Nusantara Power UP Paiton')
-@section('content')
-    @push('styles')
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-    @endpush
+@push('styles')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <style>
+        /* Warna tombol pagination aktif dari DataTables (Bootstrap 5) */
+        .dataTables_wrapper .dataTables_paginate .pagination .page-item.active .page-link {
+            background-color: #78C841 !important;
+            border-color: #78C841 !important;
+            color: white !important;
+        }
 
+        /* Opsional: hover untuk tombol aktif */
+        .dataTables_wrapper .dataTables_paginate .pagination .page-item.active .page-link:hover {
+            background-color: #66b638 !important;
+            color: white !important;
+        }
+    </style>
+@endpush
+@section('content')
     <style>
         div.dataTables_filter {
             float: left !important;
@@ -106,14 +119,30 @@
         <script>
             $(document).ready(function() {
                 $('#usersTable').DataTable({
+                    scrollX: true,
                     language: {
-                        search: "Cari:",
-                        lengthMenu: "Tampilkan _MENU_ data",
+                        search: "Cari",
+                        lengthMenu: "Tampil _MENU_",
                         zeroRecords: "Data tidak ditemukan",
+                        info: "Menampilkan _START_–_END_ dari _TOTAL_ data",
+                        infoEmpty: "Menampilkan 0–0 dari 0 data",
+                        infoFiltered: "(difilter dari _MAX_ total data)",
                         paginate: {
-                            previous: "Sebelumnya",
-                            next: "Berikutnya"
+                            first: "«",
+                            last: "»",
+                            previous: "‹",
+                            next: "›"
                         }
+                    },
+                    pageLength: 10,
+                    lengthChange: true,
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        [10, 25, 50, "Semua"]
+                    ],
+                    pagingType: "full_numbers",
+                    drawCallback: function(settings) {
+                        $('.dataTables_paginate > .pagination').addClass('pagination-sm');
                     }
                 });
 

@@ -10,7 +10,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title mb-3 fw-semibold">Total Pengajuan</h5>
-                    <h4 class="fw-bold text-success">Rp{{ number_format($totalPengajuan, 0, ',', '.') }}</h4>
+                    <h4 style="color: #78C841;" class="fw-bold">Rp{{ number_format($totalPengajuan, 0, ',', '.') }}</h4>
                 </div>
             </div>
 
@@ -63,7 +63,8 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title mb-3 fw-semibold">Nominal Disetujui</h5>
-                    <h4 class="fw-bold text-success">Rp{{ number_format($totalDisetujui ?? 0, 0, ',', '.') }}</h4>
+                    <h4 style="color: #78C841;" class="fw-bold">Rp{{ number_format($totalDisetujui ?? 0, 0, ',', '.') }}
+                    </h4>
                 </div>
             </div>
 
@@ -114,7 +115,7 @@
         <div class="card-body p-4">
             <div class="table-responsive">
                 <table class="table table-bordered text-center align-middle mb-0">
-                    <thead class="bg-primary text-white">
+                    <thead style="background-color: #78C841" class=" text-white">
                         <tr>
                             <th colspan="{{ 2 + count($tipologiList) * 2 }}">PIC</th>
                         </tr>

@@ -5,7 +5,6 @@
                 <li class="nav-item">
                     <a class="nav-link nav-icon-hover" href="javascript:void(0)">
                         <i class="ti ti-bell-ringing"></i>
-                        <div class="notification bg-primary rounded-circle"></div>
                     </a>
                 </li>
                 <li class="nav-item dropdown">
@@ -20,14 +19,15 @@
                                 <i class="ti ti-user fs-6"></i>
                                 <p class="mb-0 fs-3">{{ Auth::user()->nama }}</p>
                             </a>
-                          <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-   class="btn btn-outline-primary mx-3 mt-2 d-block">
-    Logout
-</a>
+                            <a href="#"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                class="btn btn-outline-primary mx-3 mt-2 d-block">
+                                Logout
+                            </a>
 
-<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-    @csrf
-</form>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
 
                         </div>
                     </div>
