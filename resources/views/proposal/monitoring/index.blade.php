@@ -132,9 +132,11 @@
                                         <td>
                                             <p class="mb-0 fw-normal">{{ $data->tanggal_disposisi }}</p>
                                         </td>
-                                        <td>
-                                            <p class="mb-0 fw-normal">{{ $data->nominal_pengajuan }}</p>
-                                        </td>
+                                       <td>
+    <p class="mb-0 fw-normal">
+        {{ $data->nominal_pengajuan ? 'Rp' . number_format($data->nominal_pengajuan, 0, ',', '.') : '-' }}
+    </p>
+</td>
                                         <td>
                                             <p class="mb-0 fw-normal">{{ $data->barang_pengajuan }}</p>
                                         </td>
@@ -144,9 +146,11 @@
                                         <td>
                                             <p class="mb-0 fw-normal">{{ $data->status }}</p>
                                         </td>
-                                        <td>
-                                            <p class="mb-0 fw-normal">{{ $data->nominal_disetujui ?? '-' }}</p>
-                                        </td>
+                                      <td>
+    <p class="mb-0 fw-normal">
+        {{ $data->nominal_disetujui ? 'Rp' . number_format($data->nominal_disetujui, 0, ',', '.') : '-' }}
+    </p>
+</td>
                                         <td>
                                             <p class="mb-0 fw-normal">{{ $data->barang_disetujui ?? '-' }}</p>
                                         </td>
@@ -177,9 +181,12 @@
                                                 </button>
                                             </p>
                                         </td>
-                                        <td>
-                                            <p class="mb-0 fw-normal">{{ $data->overdue ?? '-' }}</p>
-                                        </td>
+                                       <td>
+                                            <p class="mb-0 fw-normal">
+    {{ \Carbon\Carbon::parse($data->overdue)->translatedFormat('d F Y') }}
+</p>
+
+                                         </td>
                                         <td class="progress-col">{{ $percent }}%</td>
                                     </tr>
                                 @endforeach

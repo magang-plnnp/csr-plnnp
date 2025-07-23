@@ -34,6 +34,7 @@ class ProposalController extends Controller
     public function store(Request $request)
     {
         // Validasi data input
+        $angka = preg_replace('/[^0-9]/', '', $request->nominal_pengajuan);
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'instansi_pengajuan' => 'required|string|max:255',
@@ -43,7 +44,7 @@ class ProposalController extends Controller
             'kelurahan_id' => 'required',
             'kelurahan_nama' => 'required|string',
             'tanggal_disposisi' => 'required|date',
-            'nominal_pengajuan' => 'nullable|numeric',
+            'nominal_pengajuan' => 'nullable|string',
             'barang_pengajuan' => 'nullable|string|max:255',
             'tipologi_id' => 'required|exists:tipologi,id',
             'status' => 'required',
@@ -56,7 +57,15 @@ class ProposalController extends Controller
 
         ]);
 
-        // Simpan data ke dalam tabel proposal
+        $validated['nominal_pengajuan'] = $request->nominal_pengajuan
+            ? preg_replace('/[^0-9]/', '', $request->nominal_pengajuan)
+            : null;
+
+        $validated['nominal_disetujui'] = $request->nominal_disetujui
+            ? preg_replace('/[^0-9]/', '', $request->nominal_disetujui)
+            : null;
+
+        // Simpan ke database
         Proposal::create($validated);
 
         // Redirect dengan pesan sukses
@@ -102,17 +111,25 @@ class ProposalController extends Controller
             'kelurahan_id' => 'required',
             'kelurahan_nama' => 'required|string',
             'tanggal_disposisi' => 'required|date',
-            'nominal_pengajuan' => 'nullable|numeric',
+            'nominal_pengajuan' => 'nullable',
             'barang_pengajuan' => 'nullable|string|max:255',
             'tipologi_id' => 'required|exists:tipologi,id',
             'status' => 'required',
-            'nominal_disetujui' => 'nullable|numeric',
+            'nominal_disetujui' => 'nullable',
             'barang_disetujui' => 'nullable|string|max:255',
             // 'nama_pic_id' => 'required|string|max:255',
             'tipe_proses_id' => 'required|exists:tipe_proses,id',
             'keterangan' => 'nullable|string|max:1000',
             'overdue' => 'nullable|date',
         ]);
+
+        $validated['nominal_pengajuan'] = $request->nominal_pengajuan
+            ? preg_replace('/[^0-9]/', '', $request->nominal_pengajuan)
+            : null;
+
+        $validated['nominal_disetujui'] = $request->nominal_disetujui
+            ? preg_replace('/[^0-9]/', '', $request->nominal_disetujui)
+            : null;
 
         $proposal = Proposal::findOrFail($id);
         $proposal->update($validated);
