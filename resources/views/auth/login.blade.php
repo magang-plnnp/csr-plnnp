@@ -63,7 +63,7 @@
     </div>
     <div class="d-flex align-items-center justify-content-between mb-4">
                     <div class="form-check">
-                      <input class="form-check-input primary" type="checkbox" name="remember"  value="" id="remember" {{ old('remember') ? 'checked' : '' }}  checked>
+                      <input  style="background-color: #78C841; color: white;" class="form-check-input" type="checkbox" name="remember"  value="" id="remember" {{ old('remember') ? 'checked' : '' }}  checked>
                       <label class="form-check-label text-dark" for="remember"> 
                         Simpan Login
                       </label>
@@ -71,7 +71,7 @@
                     
                   </div>
 
-    <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign In</button>
+    <button type="submit"  style="background-color: #78C841; color: white;" class="btn w-100 py-8 fs-4 mb-4 rounded-2">Sign In</button>
 </form>
 
                             </div>

@@ -3,6 +3,45 @@
 @stack('scripts')
 
 @section('content')
+
+@php
+    // Ambil semua PIC dari proposal (unik + urut abjad)
+    $allPics = $proposal->pluck('namaPic.nama')->unique()->sort()->values();
+
+    // Nama user yang login
+    $loggedInNama = auth()->user()->nama;
+
+    // Nama PIC yang sedang difilter (dari query string)
+    $selectedNamaPic = request('nama_pic') ?? $loggedInNama;
+@endphp
+
+   <form method="GET" action="{{ route('dashboard.index') }}" class="mb-4">
+    <div class="row g-2 align-items-center">
+        <div class="col-auto">
+            <label for="nama_pic" class="form-label mb-0">Tampilkan data milik:</label>
+        </div>
+        <div class="col-auto">
+            <select name="nama_pic" id="filter-pic" class="form-select" style="min-width: 200px;" onchange="this.form.submit()">
+                <option value="">-- Semua PIC --</option>
+
+                {{-- Opsi: nama user login --}}
+                <option value="{{ auth()->user()->nama }}" {{ request('nama_pic') == auth()->user()->nama ? 'selected' : '' }}>
+                    {{ auth()->user()->nama }} (Saya)
+                </option>
+
+                {{-- Opsi: semua user lain --}}
+                @foreach ($allNamaPics as $namaPic)
+                    @if ($namaPic !== auth()->user()->nama)
+                        <option value="{{ $namaPic }}" {{ request('nama_pic') == $namaPic ? 'selected' : '' }}>
+                            {{ $namaPic }}
+                        </option>
+                    @endif
+                @endforeach
+            </select>
+        </div>
+    </div>
+</form>
+
     <div class="row">
         <!-- Kolom 1: Total Pengajuan dan Progress -->
         <div class="col-lg-4 col-md-6 mb-4 d-flex flex-column gap-2">

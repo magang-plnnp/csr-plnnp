@@ -145,7 +145,7 @@
         @enderror
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" style="background-color: #78C841; color: white;" class="btn">Submit</button>
 </form>
 
                         </div>
