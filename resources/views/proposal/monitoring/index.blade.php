@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table id="proposalTable" class="table table-bordered text-nowrap mb-0 align-middle">
+                        <table id="proposalTable" class="table table-bordered mb-0 align-middle fixed-table">
                             <thead class="text-dark fs-4">
                                 <tr>
                                     <th>
