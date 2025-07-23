@@ -17,7 +17,7 @@
             <span class="hide-menu">PROPOSAL</span>
         </li>
         <li class="sidebar-item">
-            <a class="sidebar-link" href="/proposal" aria-expanded="false">
+            <a class="sidebar-link  {{ Request::is('proposal*') ? 'active' : '' }}" href="/proposal" aria-expanded="false">
                 <span>
                     <i class="ti ti-article"></i>
                 </span>

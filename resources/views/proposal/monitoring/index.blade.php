@@ -129,9 +129,11 @@
                                         <td>
                                             <p class="mb-0 fw-normal">{{ $data->lokasi }}</p>
                                         </td>
-                                        <td>
-                                            <p class="mb-0 fw-normal">{{ $data->tanggal_disposisi }}</p>
-                                        </td>
+                                         <td>
+                                              <p class="mb-0 fw-normal">
+    {{ \Carbon\Carbon::parse($data->tanggal_disposisi)->translatedFormat('d F Y') }}
+</p>
+                                         </td>
                                        <td>
     <p class="mb-0 fw-normal">
         {{ $data->nominal_pengajuan ? 'Rp' . number_format($data->nominal_pengajuan, 0, ',', '.') : '-' }}

@@ -128,7 +128,9 @@
                                              <p class="mb-0 fw-normal">{{ $data->kecamatan_nama }} - {{ $data->kelurahan_nama }}</p>
                                          </td>
                                          <td>
-                                             <p class="mb-0 fw-normal">{{ $data->tanggal_disposisi }}</p>
+                                            <p class="mb-0 fw-normal">
+    {{ \Carbon\Carbon::parse($data->tanggal_disposisi)->translatedFormat('d F Y') }}
+</p>
                                          </td>
                                          <td>
     <p class="mb-0 fw-normal">
@@ -152,8 +154,9 @@
 </td>
 
                                          <td>
-                                             <p class="mb-0 fw-normal">{{ $data->barang_disetujui }}</p>
-                                         </td>
+    <p class="mb-0 fw-normal">{{ $data->barang_disetujui ?? '-' }}</p>
+</td>
+
                                          {{-- <td data-pic="{{ $data->namaPic->nama }}">
                                             <p class="mb-0 fw-normal">{{ $data->namaPic->nama }}</p>
                                         </td> --}}

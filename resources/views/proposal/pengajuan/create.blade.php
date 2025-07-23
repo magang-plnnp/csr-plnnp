@@ -74,26 +74,30 @@
         @enderror
     </div>
 
-    <div class="mb-3">
-    <label class="form-label">Nominal Pengajuan</label>
-    <input type="text" id="nominal_pengajuan" class="form-control @error('nominal_pengajuan') is-invalid @enderror"
-           name="nominal_pengajuan" value="{{ old('nominal_pengajuan') }}"
-           placeholder="Contoh: Rp500.000">
-    <div class="form-text">Bisa dikosongi jika tidak ada nominal uang</div>
-    @error('nominal_pengajuan')
-        <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
+    <div class="row">
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Nominal Pengajuan</label>
+        <input type="text" id="nominal_pengajuan" class="form-control @error('nominal_pengajuan') is-invalid @enderror"
+               name="nominal_pengajuan" value="{{ old('nominal_pengajuan') }}"
+               placeholder="Contoh: Rp500.000">
+        <div class="form-text">Bisa dikosongi jika tidak ada nominal uang</div>
+        @error('nominal_pengajuan')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
 
-
-    <div class="mb-3">
+    <div class="col-md-6 mb-3">
         <label class="form-label">Barang Pengajuan</label>
-        <input type="text" class="form-control @error('barang_pengajuan') is-invalid @enderror" name="barang_pengajuan" value="{{ old('barang_pengajuan') }}" placeholder="Contoh: 26 Papan Peringatan">
+        <input type="text" class="form-control @error('barang_pengajuan') is-invalid @enderror"
+               name="barang_pengajuan" value="{{ old('barang_pengajuan') }}"
+               placeholder="Contoh: 26 Papan Peringatan">
         <div class="form-text">Bisa dikosongi jika tidak ada barang pengajuan</div>
         @error('barang_pengajuan')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
+</div>
+
 
     <div class="row">
     <div class="col-md-6 mb-3">
@@ -115,7 +119,7 @@
         <label class="form-label">Setuju / Tidak setuju</label>
         <select class="form-control @error('status') is-invalid @enderror" name="status" required>
             <option value="">-- Pilih Status Persetujuan --</option>
-            <option value="disetuju" {{ old('status') == 'disetuju' ? 'selected' : '' }}>Setuju</option>
+            <option value="disetujui" {{ old('status') == 'disetuju' ? 'selected' : '' }}>Setuju</option>
             <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Pending</option>
             <option value="ditolak" {{ old('status') == 'ditolak' ? 'selected' : '' }}>Tolak</option>
         </select>
@@ -172,20 +176,26 @@
     </div>
 
 
-    <div class="mb-3">
-        <label class="form-label">Proses</label>
-        <select name="tipe_proses_id" class="form-control @error('tipe_proses_id') is-invalid @enderror" required>
-            <option value="">-- Pilih Proses --</option>
-            @foreach ($proses as $item)
-                <option value="{{ $item->id }}" {{ old('tipe_proses_id') == $item->id ? 'selected' : '' }}>
-                    {{ $item->nama ?? $item->name }}
-                </option>
-            @endforeach
-        </select>
-        @error('tipe_proses_id')
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div>
+ <div class="mb-3">
+    <label class="form-label">Proses</label>
+    <select name="tipe_proses_id" class="form-control @error('tipe_proses_id') is-invalid @enderror" required>
+        <option value="">-- Pilih Proses --</option>
+        @foreach ($proses as $item)
+            @php
+                $subList = $item->subProses->pluck('nama_sub')->implode(' - ');
+                $label = $item->nama . ($subList ? " ($subList)" : '');
+            @endphp
+            <option value="{{ $item->id }}" {{ old('tipe_proses_id') == $item->id ? 'selected' : '' }}>
+                {{ $label }}
+            </option>
+        @endforeach
+    </select>
+    @error('tipe_proses_id')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+
+
 
     <div class="mb-3">
         <label class="form-label">Keterangan</label>
