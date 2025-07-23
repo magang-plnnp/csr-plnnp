@@ -11,8 +11,7 @@ class DashboardController extends Controller
     public function index(Request $request)
 {
     $loggedInUser = Auth::user();
-    // $selectedNamaPic = $request->get('nama_pic');
-    $selectedNamaPic = $request->get('nama_pic', $loggedInUser->nama); 
+    $selectedNamaPic = $request->get('nama_pic'); 
 
     
     // Query Proposal dengan eager loading namaPic
@@ -34,9 +33,7 @@ class DashboardController extends Controller
     // Ambil data proposal yang difilter
     $proposal = $proposalQuery->get();
 
-    // $allNamaPics = DB::table('users')->pluck('nama')->toArray();
-    $allNamaPics = DB::table('users')
-    ->where('role', '!=', 'admin') // ⬅️ filter bukan admin
+$allNamaPics = DB::table('users')
     ->pluck('nama')
     ->toArray();
 
