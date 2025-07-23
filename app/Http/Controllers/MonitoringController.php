@@ -9,13 +9,17 @@ class MonitoringController extends Controller
 {
     public function index()
     {
-        // Ambil semua proposal beserta relasinya
+        // Ambil semua proposal dengan relasi yang dibutuhkan untuk ditampilkan di tabel monitoring
         $proposals = Proposal::with([
+            'tipologi:id,kode',
             'namaPic:id,nama',
+            'tipeProses:id,nama',
             'tipeProses.subProses:id,tipe_proses_id,nama_sub',
-            'checklist'  // nanti kita cek sub_proses_id–nya
+            'checklist' // untuk mengetahui progress berdasarkan checklist
         ])->get();
 
-        return view('proposal.monitoring.index', compact('proposals'));
+        return view('proposal.monitoring.index', [
+            'proposals' => $proposals
+        ]);
     }
 }
