@@ -11,13 +11,12 @@ class DashboardController extends Controller
     public function index(Request $request)
 {
     $loggedInUser = Auth::user();
-    // $selectedNamaPic = $request->get('nama_pic');
-    $selectedNamaPic = $request->get('nama_pic', $loggedInUser->nama); 
+    $selectedNamaPic = $request->get('nama_pic'); 
 
     
     // Query Proposal dengan eager loading namaPic
     $proposalQuery = Proposal::with('namaPic');
-    
+
     // Ambil ID dari nama (jika ada filter)
     $selectedUserId = null;
     if ($selectedNamaPic) {
@@ -34,9 +33,7 @@ class DashboardController extends Controller
     // Ambil data proposal yang difilter
     $proposal = $proposalQuery->get();
 
-    // $allNamaPics = DB::table('users')->pluck('nama')->toArray();
-    $allNamaPics = DB::table('users')
-    ->where('role', '!=', 'admin') // ⬅️ filter bukan admin
+$allNamaPics = DB::table('users')
     ->pluck('nama')
     ->toArray();
 
@@ -51,12 +48,19 @@ class DashboardController extends Controller
 
     // Rincian Disetujui per tipologi
     $rincianDisetujui = DB::table('tipologi')
-        ->leftJoin('proposal', function ($join) use ($selectedUserId) {
+        ->leftJoin('proposal', function ($join) use ($selectedNamaPic) {
             $join->on('proposal.tipologi_id', '=', 'tipologi.id')
                  ->where('proposal.status', '=', 'disetujui');
 
-            if ($selectedUserId) {
-                $join->where('proposal.nama_pic_id', '=', $selectedUserId);
+            // if ($selectedNamaPic) {
+            //     $join->where('proposal.nama_pic_id', '=', $selectedNamaPic);
+            // }
+            if ($selectedNamaPic) {
+                $join->whereIn('proposal.nama_pic_id', function ($subquery) use ($selectedNamaPic) {
+                    $subquery->select('id')
+                        ->from('users')
+                        ->where('nama', $selectedNamaPic);
+                });
             }
         })
         ->groupBy('tipologi.id', 'tipologi.kode')
@@ -68,21 +72,40 @@ class DashboardController extends Controller
     $picList = DB::table('users')->pluck('nama', 'id')->toArray();
 
     // Pie Chart: total proposal per tipologi
-    $totalPerTipologi = Proposal::when($selectedUserId, function ($query) use ($selectedUserId) {
-        $query->where('nama_pic_id', $selectedUserId);
+    // $totalPerTipologi = Proposal::when($selectedUserId, function ($query) use ($selectedUserId) {
+    //     $query->where('nama_pic_id', $selectedUserId);
+    // })
+    //     ->select('tipologi_id', DB::raw('COUNT(*) as total'))
+    //     ->groupBy('tipologi_id')
+    //     ->pluck('total', 'tipologi_id');
+    $totalPerTipologi = Proposal::when($selectedNamaPic, function ($query) use ($selectedNamaPic) {
+        $query->whereHas('namaPic', function ($q) use ($selectedNamaPic) {
+            $q->where('nama', $selectedNamaPic);
+        });
     })
         ->select('tipologi_id', DB::raw('COUNT(*) as total'))
         ->groupBy('tipologi_id')
         ->pluck('total', 'tipologi_id');
 
+
     // Tabel PIC vs Tipologi
-    $jumlahPerPicTipologi = Proposal::when($selectedUserId, function ($query) use ($selectedUserId) {
-        $query->where('nama_pic_id', $selectedUserId);
+    // $jumlahPerPicTipologi = Proposal::when($selectedUserId, function ($query) use ($selectedUserId) {
+    //     $query->where('nama_pic_id', $selectedUserId);
+    // })
+    //     ->select('nama_pic_id', 'tipologi_id', DB::raw('COUNT(*) as jumlah'))
+    //     ->groupBy('nama_pic_id', 'tipologi_id')
+    //     ->get()
+    //     ->groupBy('nama_pic_id');
+    $jumlahPerPicTipologi = Proposal::when($selectedNamaPic, function ($query) use ($selectedNamaPic) {
+        $query->whereHas('namaPic', function ($q) use ($selectedNamaPic) {
+            $q->where('nama', $selectedNamaPic);
+        });
     })
         ->select('nama_pic_id', 'tipologi_id', DB::raw('COUNT(*) as jumlah'))
         ->groupBy('nama_pic_id', 'tipologi_id')
         ->get()
         ->groupBy('nama_pic_id');
+
 
     $picTable = [];
     foreach ($picList as $picId => $picNama) {
