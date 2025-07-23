@@ -37,7 +37,11 @@ class ProposalController extends Controller
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'instansi_pengajuan' => 'required|string|max:255',
-            'lokasi' => 'required|string|max:255',
+            // 'lokasi' => 'required|string|max:255',
+            'kecamatan_id' => 'required',
+            'kecamatan_nama' => 'required|string',
+            'kelurahan_id' => 'required',
+            'kelurahan_nama' => 'required|string',
             'tanggal_disposisi' => 'required|date',
             'nominal_pengajuan' => 'nullable|numeric',
             'barang_pengajuan' => 'nullable|string|max:255',
@@ -49,6 +53,7 @@ class ProposalController extends Controller
             'tipe_proses_id' => 'required|exists:tipe_proses,id',
             'keterangan' => 'nullable|string|max:1000',
             'overdue' => 'nullable|date',
+
         ]);
 
         // Simpan data ke dalam tabel proposal
@@ -91,7 +96,11 @@ class ProposalController extends Controller
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'instansi_pengajuan' => 'required|string|max:255',
-            'lokasi' => 'required|string|max:255',
+            // 'lokasi' => 'required|string|max:255',
+            'kecamatan_id' => 'required',
+            'kecamatan_nama' => 'required|string',
+            'kelurahan_id' => 'required',
+            'kelurahan_nama' => 'required|string',
             'tanggal_disposisi' => 'required|date',
             'nominal_pengajuan' => 'nullable|numeric',
             'barang_pengajuan' => 'nullable|string|max:255',
@@ -99,7 +108,7 @@ class ProposalController extends Controller
             'status' => 'required',
             'nominal_disetujui' => 'nullable|numeric',
             'barang_disetujui' => 'nullable|string|max:255',
-            'nama_pic_id' => 'required|string|max:255',
+            // 'nama_pic_id' => 'required|string|max:255',
             'tipe_proses_id' => 'required|exists:tipe_proses,id',
             'keterangan' => 'nullable|string|max:1000',
             'overdue' => 'nullable|date',

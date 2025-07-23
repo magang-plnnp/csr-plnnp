@@ -29,12 +29,29 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">Lokasi</label>
-                                    <input type="text" class="form-control @error('lokasi') is-invalid @enderror" name="lokasi" value="{{ old('lokasi', $proposal->lokasi) }}" required>
-                                    @error('lokasi')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+    <label class="form-label">Kecamatan</label>
+    <select id="kecamatan" class="form-control @error('kecamatan_id') is-invalid @enderror">
+        <option value="">-- Pilih Kecamatan --</option>
+    </select>
+    <input type="hidden" name="kecamatan_id" id="kecamatan_id" value="{{ old('kecamatan_id', $proposal->kecamatan_id) }}">
+    <input type="hidden" name="kecamatan_nama" id="kecamatan_nama" value="{{ old('kecamatan_nama', $proposal->kecamatan_nama) }}">
+    @error('kecamatan_id')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Kelurahan / Desa</label>
+    <select id="kelurahan" class="form-control @error('kelurahan_id') is-invalid @enderror">
+        <option value="">-- Pilih Kelurahan / Desa --</option>
+    </select>
+    <input type="hidden" name="kelurahan_id" id="kelurahan_id" value="{{ old('kelurahan_id', $proposal->kelurahan_id) }}">
+    <input type="hidden" name="kelurahan_nama" id="kelurahan_nama" value="{{ old('kelurahan_nama', $proposal->kelurahan_nama) }}">
+    @error('kelurahan_id')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+
 
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal Disposisi</label>
@@ -106,7 +123,8 @@
 
                                 <div class="mb-3">
                                     <label class="form-label">PIC</label>
-                                    <input type="text" class="form-control @error('nama_pic_id') is-invalid @enderror" name="nama_pic_id" value="{{ old('nama_pic_id', $proposal->nama_pic_id) }}" required>
+                                    <input type="text" class="form-control @error('nama_pic_id') is-invalid @enderror" name="nama_pic_id" value="{{ old('nama_pic_id', $proposal->namapic->nama) }}" disabled>
+                                    <div class="form-text">Nama PIC diatur secara otomatis sesuai dengan pengguna yang membuat laporan proposal.</div>
                                     @error('nama_pic_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -151,4 +169,80 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const kecamatanIdValue = "{{ old('kecamatan_id', $proposal->kecamatan_id) }}";
+    const kecamatanNamaValue = "{{ old('kecamatan_nama', $proposal->kecamatan_nama) }}";
+    const kelurahanIdValue = "{{ old('kelurahan_id', $proposal->kelurahan_id) }}";
+    const kelurahanNamaValue = "{{ old('kelurahan_nama', $proposal->kelurahan_nama) }}";
+
+    // Muat semua kecamatan
+    fetch('/kecamatan')
+        .then(res => res.json())
+        .then(data => {
+            const kecamatanSelect = document.getElementById('kecamatan');
+            data.forEach(item => {
+                const valueObj = JSON.stringify({ id: item.id, name: item.name });
+                const opt = document.createElement('option');
+                opt.value = valueObj;
+                opt.textContent = item.name;
+
+                if (item.id == kecamatanIdValue) {
+                    opt.selected = true;
+                }
+
+                kecamatanSelect.appendChild(opt);
+            });
+
+            // Jika sudah ada kecamatan_id lama, trigger fetch kelurahan
+            if (kecamatanIdValue) {
+                fetchKelurahan(kecamatanIdValue, kelurahanIdValue);
+            }
+        });
+
+    document.getElementById('kecamatan').addEventListener('change', function () {
+        if (!this.value) return;
+        const selected = JSON.parse(this.value);
+        document.getElementById('kecamatan_id').value = selected.id;
+        document.getElementById('kecamatan_nama').value = selected.name;
+
+        // Kosongkan kelurahan saat kecamatan ganti
+        fetchKelurahan(selected.id);
+    });
+
+    document.getElementById('kelurahan').addEventListener('change', function () {
+        if (!this.value) return;
+        const selected = JSON.parse(this.value);
+        document.getElementById('kelurahan_id').value = selected.id;
+        document.getElementById('kelurahan_nama').value = selected.name;
+    });
+
+    function fetchKelurahan(kecamatanId, selectedKelurahanId = null) {
+        const kelurahanSelect = document.getElementById('kelurahan');
+        kelurahanSelect.innerHTML = '<option>Loading...</option>';
+
+        fetch(`/kelurahan/${kecamatanId}`)
+            .then(res => res.json())
+            .then(data => {
+                kelurahanSelect.innerHTML = '<option value="">-- Pilih Kelurahan / Desa --</option>';
+                data.forEach(item => {
+                    const valueObj = JSON.stringify({ id: item.id, name: item.name });
+                    const opt = document.createElement('option');
+                    opt.value = valueObj;
+                    opt.textContent = item.name;
+
+                    if (item.id == selectedKelurahanId) {
+                        opt.selected = true;
+                    }
+
+                    kelurahanSelect.appendChild(opt);
+                });
+            });
+    }
+});
+</script>
+@endpush
+
 @endsection

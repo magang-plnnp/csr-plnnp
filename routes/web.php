@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\TipologiController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SubProsesController;
+use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\TipeProsesController;
 use App\Http\Controllers\ProposalProsesChecklistController;
-use App\Http\Controllers\MonitoringController;
 
 
 /*
@@ -27,9 +28,9 @@ use App\Http\Controllers\MonitoringController;
 
 
 
-// Route::get('/login', function () {
-//     return view('auth.login');
-// });
+Route::get('/tes', function () {
+    return view('tes');
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -39,9 +40,11 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
-
+    Route::get('/kecamatan', [WilayahController::class, 'getKecamatan']);
+    Route::get('/kelurahan/{kecamatanId}', [WilayahController::class, 'getKelurahan']);
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+    Route::resource('pengguna', UserController::class);
     Route::resource('pengguna', UserController::class);
     Route::resource('tipologi', TipologiController::class);
     Route::resource('proposal', ProposalController::class);
