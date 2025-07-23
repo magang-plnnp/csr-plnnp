@@ -22,4 +22,17 @@ class MonitoringController extends Controller
             'proposals' => $proposals
         ]);
     }
+
+    public function updateKeterangan(Request $request)
+    {
+    $request->validate([
+        'proposal_id' => 'required|integer|exists:proposal,id',
+        'keterangan' => 'nullable|string|max:255',
+    ]);
+
+    Proposal::where('id', $request->proposal_id)
+        ->update(['keterangan' => $request->keterangan]);
+
+    return response()->json(['message' => 'Keterangan berhasil diperbarui']);
+}
 }

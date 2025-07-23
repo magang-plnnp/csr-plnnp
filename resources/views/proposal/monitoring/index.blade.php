@@ -90,11 +90,11 @@
                                     <th>
                                         <h6 class="fw-semibold mb-0">Proses</h6>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">Keterangan</h6>
-                                    </th>
                                     <th class="berkas-checklist">
                                         <h6 class="fw-semibold mb-0">Berkas</h6>
+                                    </th>
+                                    <th>
+                                        <h6 class="fw-semibold mb-0">Keterangan</h6>
                                     </th>
                                     <th>
                                         <h6 class="fw-semibold mb-0">Overdue</h6>
@@ -156,9 +156,6 @@
                                         <td>
                                             <p class="mb-0 fw-normal">{{ $data->tipeProses->nama ?? '-' }}</p>
                                         </td>
-                                        <td>
-                                            <p class="mb-0 fw-normal">{{ $data->keterangan }}</p>
-                                        </td>
                                         <td class="berkas-container">
                                             @foreach ($subs as $sub)
                                                 <div class="form-check">
@@ -169,6 +166,16 @@
                                                     <label class="form-check-label">{{ $sub->nama_sub }}</label>
                                                 </div>
                                             @endforeach
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 fw-normal d-flex justify-content-between align-items-center">
+                                                <span class="keterangan-text">{{ $data->keterangan ?: '-' }}</span>
+                                                <button class="btn btn-sm btn-link text-primary open-keterangan-modal"
+                                                    data-id="{{ $data->id }}"
+                                                    data-keterangan="{{ $data->keterangan }}">
+                                                    ✎
+                                                </button>
+                                            </p>
                                         </td>
                                         <td>
                                             <p class="mb-0 fw-normal">{{ $data->overdue ?? '-' }}</p>
@@ -184,6 +191,31 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="keteranganModal" tabindex="-1" aria-labelledby="keteranganModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="keteranganForm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="keteranganModalLabel">Edit Keterangan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="proposal_id" id="modalProposalId">
+                        <div class="mb-3">
+                            <label for="keteranganInput" class="form-label">Keterangan</label>
+                            <input type="text" class="form-control" name="keterangan" id="keteranganInput">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" style="background-color: #78C841; color: white;"class="btn">Simpan</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     @push('scripts')
         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -193,6 +225,7 @@
             let table;
 
             $(document).ready(function() {
+                // Inisialisasi DataTable
                 table = $('#proposalTable').DataTable({
                     scrollX: true,
                     language: {
@@ -216,17 +249,19 @@
                         [10, 25, 50, "Semua"]
                     ],
                     pagingType: "full_numbers",
-                    drawCallback: function(settings) {
+                    drawCallback: function() {
                         $('.dataTables_paginate > .pagination').addClass('pagination-sm');
                     }
                 });
 
+                // Filter dropdown
                 $('#filter-pic, #filter-tipologi, #filter-status').on('change', applyFilters);
 
+                // Toggle checklist
                 $('.checklist-toggle').on('change', function() {
-                    let isChecked = $(this).is(':checked') ? 1 : 0;
-                    let proposalId = $(this).data('proposal-id');
-                    let subProsesId = $(this).data('sub-proses-id');
+                    const isChecked = $(this).is(':checked') ? 1 : 0;
+                    const proposalId = $(this).data('proposal-id');
+                    const subProsesId = $(this).data('sub-proses-id');
 
                     $.ajax({
                         url: "{{ route('checklist.update') }}",
@@ -239,23 +274,81 @@
                         },
                         success: function(response) {
                             console.log(response.message);
-                            location.reload(); // optional: reload page to update progress
+                            location.reload(); // opsional
                         },
-                        error: function(xhr) {
+                        error: function() {
                             alert('Gagal memperbarui checklist!');
+                        }
+                    });
+                });
+
+                // Inline input keterangan
+                $('.keterangan-input').on('change', function() {
+                    const proposalId = $(this).data('id');
+                    const value = $(this).val();
+
+                    $.ajax({
+                        url: "{{ route('monitoring.keterangan') }}",
+                        method: "POST",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            proposal_id: proposalId,
+                            keterangan: value
+                        },
+                        success: function() {
+                            console.log('Keterangan berhasil diperbarui');
+                        },
+                        error: function() {
+                            alert('Gagal menyimpan keterangan');
+                        }
+                    });
+                });
+
+                // Buka modal titik tiga
+                $('.open-keterangan-modal').on('click', function() {
+                    const id = $(this).data('id');
+                    const keterangan = $(this).data('keterangan');
+
+                    $('#modalProposalId').val(id);
+                    $('#keteranganInput').val(keterangan);
+                    $('#keteranganModal').modal('show');
+                });
+
+                // Submit form keterangan (modal)
+                $('#keteranganForm').on('submit', function(e) {
+                    e.preventDefault();
+
+                    const id = $('#modalProposalId').val();
+                    const keterangan = $('#keteranganInput').val();
+
+                    $.ajax({
+                        url: "{{ route('monitoring.keterangan') }}",
+                        method: "POST",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            proposal_id: id,
+                            keterangan: keterangan
+                        },
+                        success: function() {
+                            $('#keteranganModal').modal('hide');
+                            location.reload(); // atau update DOM langsung
+                        },
+                        error: function() {
+                            alert('Gagal menyimpan keterangan');
                         }
                     });
                 });
             });
 
+            // Filter logic
             function applyFilters() {
                 const pic = $('#filter-pic').val().toLowerCase();
                 const tipologi = $('#filter-tipologi').val().toLowerCase();
                 const status = $('#filter-status').val().toLowerCase();
 
-                table.columns(11).search(pic); // PIC
-                table.columns(7).search(tipologi); // Tipologi
-                table.columns(8).search(status); // Status
+                table.columns(11).search(pic); // Kolom PIC
+                table.columns(7).search(tipologi); // Kolom Tipologi
+                table.columns(8).search(status); // Kolom Status
 
                 table.draw();
             }

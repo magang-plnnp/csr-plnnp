@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');
 Route::post('/checklist/update', [ProposalProsesChecklistController::class, 'update'])->name('checklist.update');
+Route::post('/monitoring/keterangan/update', [MonitoringController::class, 'updateKeterangan'])->name('monitoring.keterangan');
 
 // Route::get('/tipologi', function () {
 //     return view('manajemen-data.tipologi.index');
