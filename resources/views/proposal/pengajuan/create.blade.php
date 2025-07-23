@@ -40,27 +40,30 @@
         @enderror
     </div>
 
-<div class="mb-3">
-    <label class="form-label">Kecamatan</label>
-    <select id="kecamatan" class="form-select @error('kecamatan') is-invalid @enderror" name="kecamatan" required>
-        <option value="">-- Pilih Kecamatan --</option>
-    </select>
-     <div class="form-text">Pilih kecamatan sesuai dengan wilayah pengajuan yang berada di Kabupaten Probolinggo.</div>
-    @error('kecamatan')
-        <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Kecamatan</label>
+        <select id="kecamatan" class="form-select @error('kecamatan') is-invalid @enderror" name="kecamatan" required>
+            <option value="">-- Pilih Kecamatan --</option>
+        </select>
+        <div class="form-text">Pilih kecamatan sesuai dengan wilayah pengajuan yang berada di Kabupaten Probolinggo.</div>
+        @error('kecamatan')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Kelurahan / Desa</label>
+        <select id="kelurahan" class="form-select @error('kelurahan') is-invalid @enderror" name="kelurahan" required>
+            <option value="">-- Pilih Kelurahan / Desa --</option>
+        </select>
+        <div class="form-text">Pilih kelurahan atau desa yang berada di dalam kecamatan yang telah dipilih.</div>
+        @error('kelurahan')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
 </div>
 
-<div class="mb-3">
-    <label class="form-label">Kelurahan / Desa</label>
-    <select id="kelurahan" class="form-select @error('kelurahan') is-invalid @enderror" name="kelurahan" required>
-        <option value="">-- Pilih Kelurahan / Desa --</option>
-    </select>
-    <div class="form-text">Pilih kelurahan atau desa yang berada di dalam kecamatan yang telah dipilih.</div>
-    @error('kelurahan')
-        <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
 
 
     <div class="mb-3">
@@ -92,7 +95,8 @@
         @enderror
     </div>
 
-    <div class="mb-3">
+    <div class="row">
+    <div class="col-md-6 mb-3">
         <label class="form-label">Tipologi</label>
         <select name="tipologi_id" class="form-control @error('tipologi_id') is-invalid @enderror" required>
             <option value="">-- Pilih Tipologi --</option>
@@ -107,7 +111,7 @@
         @enderror
     </div>
 
-    <div class="mb-3">
+    <div class="col-md-6 mb-3">
         <label class="form-label">Setuju / Tidak setuju</label>
         <select class="form-control @error('status') is-invalid @enderror" name="status" required>
             <option value="">-- Pilih Status Persetujuan --</option>
@@ -119,28 +123,33 @@
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
-
-    <div class="mb-3">
-    <label class="form-label">Nominal Disetujui</label>
-    <input type="text" id="nominal_disetujui" class="form-control @error('nominal_disetujui') is-invalid @enderror"
-           name="nominal_disetujui" value="{{ old('nominal_disetujui') }}"
-           placeholder="Contoh: Rp500.000">
-    <div class="form-text">Isi hanya jika pengajuan disetujui atau masih dalam status pending. Kosongkan jika tidak ada nominal yang disetujui.</div>
-    @error('nominal_disetujui')
-        <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
 </div>
 
-<div class="mb-3">
-    <label class="form-label">Barang Disetujui</label>
-    <input type="text" class="form-control @error('barang_disetujui') is-invalid @enderror"
-           name="barang_disetujui" value="{{ old('barang_disetujui') }}"
-           placeholder="Contoh: 26 Papan Peringatan">
-    <div class="form-text">Isi hanya jika pengajuan disetujui atau masih dalam status pending. Kosongkan jika tidak ada barang yang disetujui.</div>
-    @error('barang_disetujui')
-        <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
+
+   <div class="row">
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Nominal Disetujui</label>
+        <input type="text" id="nominal_disetujui" class="form-control @error('nominal_disetujui') is-invalid @enderror"
+               name="nominal_disetujui" value="{{ old('nominal_disetujui') }}"
+               placeholder="Contoh: Rp500.000">
+        <div class="form-text">Isi hanya jika pengajuan disetujui atau masih dalam status pending. Kosongkan jika tidak ada nominal yang disetujui.</div>
+        @error('nominal_disetujui')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Barang Disetujui</label>
+        <input type="text" class="form-control @error('barang_disetujui') is-invalid @enderror"
+               name="barang_disetujui" value="{{ old('barang_disetujui') }}"
+               placeholder="Contoh: 26 Papan Peringatan">
+        <div class="form-text">Isi hanya jika pengajuan disetujui atau masih dalam status pending. Kosongkan jika tidak ada barang yang disetujui.</div>
+        @error('barang_disetujui')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
 </div>
+
 
 
    
