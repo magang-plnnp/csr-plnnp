@@ -59,7 +59,7 @@
     <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
   </div>
-  <button type="submit" class="btn btn-primary w-100">Submit</button>
+  <button type="submit" style="background-color: #78C841; color: white;" class="btn w-100">Submit</button>
 </form>
 
           </div>
