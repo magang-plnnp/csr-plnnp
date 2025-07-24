@@ -33,6 +33,7 @@ class MonitoringController extends Controller
     Proposal::where('id', $request->proposal_id)
         ->update(['keterangan' => $request->keterangan]);
 
+    session()->flash('success', 'Keterangan berhasil diperbarui.');
     return response()->json(['message' => 'Keterangan berhasil diperbarui']);
 }
 }
