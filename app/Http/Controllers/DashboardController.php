@@ -71,13 +71,7 @@ $allNamaPics = DB::table('users')
     $tipologiList = DB::table('tipologi')->pluck('kode', 'id')->toArray();
     $picList = DB::table('users')->pluck('nama', 'id')->toArray();
 
-    // Pie Chart: total proposal per tipologi
-    // $totalPerTipologi = Proposal::when($selectedUserId, function ($query) use ($selectedUserId) {
-    //     $query->where('nama_pic_id', $selectedUserId);
-    // })
-    //     ->select('tipologi_id', DB::raw('COUNT(*) as total'))
-    //     ->groupBy('tipologi_id')
-    //     ->pluck('total', 'tipologi_id');
+
     $totalPerTipologi = Proposal::when($selectedNamaPic, function ($query) use ($selectedNamaPic) {
         $query->whereHas('namaPic', function ($q) use ($selectedNamaPic) {
             $q->where('nama', $selectedNamaPic);
@@ -87,51 +81,39 @@ $allNamaPics = DB::table('users')
         ->groupBy('tipologi_id')
         ->pluck('total', 'tipologi_id');
 
-
-    // Tabel PIC vs Tipologi
-    // $jumlahPerPicTipologi = Proposal::when($selectedUserId, function ($query) use ($selectedUserId) {
-    //     $query->where('nama_pic_id', $selectedUserId);
-    // })
-    //     ->select('nama_pic_id', 'tipologi_id', DB::raw('COUNT(*) as jumlah'))
-    //     ->groupBy('nama_pic_id', 'tipologi_id')
-    //     ->get()
-    //     ->groupBy('nama_pic_id');
-    $jumlahPerPicTipologi = Proposal::when($selectedNamaPic, function ($query) use ($selectedNamaPic) {
-        $query->whereHas('namaPic', function ($q) use ($selectedNamaPic) {
-            $q->where('nama', $selectedNamaPic);
-        });
-    })
-        ->select('nama_pic_id', 'tipologi_id', DB::raw('COUNT(*) as jumlah'))
-        ->groupBy('nama_pic_id', 'tipologi_id')
-        ->get()
-        ->groupBy('nama_pic_id');
+$progressPerPicTipologi = Proposal::select('nama_pic_id', 'tipologi_id', DB::raw('SUM(progress) as total_progress'), DB::raw('COUNT(*) as total_proposal'))
+    ->groupBy('nama_pic_id', 'tipologi_id')
+    ->get()
+    ->groupBy('nama_pic_id');
 
 
     $picTable = [];
-    foreach ($picList as $picId => $picNama) {
-        $row = [
-            'nama' => $picNama,
-            'jumlah' => [],
-            'persen' => [],
-            'total' => 0,
-        ];
+foreach ($picList as $picId => $picNama) {
+    $row = [
+        'nama' => $picNama,
+        'jumlah' => [],
+        'persen' => [],
+        'total' => 0,
+    ];
 
-        foreach ($tipologiList as $tipologiId => $kode) {
-            $found = isset($jumlahPerPicTipologi[$picId])
-                ? $jumlahPerPicTipologi[$picId]->firstWhere('tipologi_id', $tipologiId)
-                : null;
+    foreach ($tipologiList as $tipologiId => $kode) {
+        $found = isset($progressPerPicTipologi[$picId])
+            ? $progressPerPicTipologi[$picId]->firstWhere('tipologi_id', $tipologiId)
+            : null;
 
-            $jumlah = $found ? $found->jumlah : 0;
-            $total = $totalPerTipologi[$tipologiId] ?? 1;
-            $persen = $jumlah > 0 ? round($jumlah / $total * 100) : 0;
+        $totalProgress = $found ? $found->total_progress : 0;
+        $totalProposal = $found ? $found->total_proposal : 0;
 
-            $row['jumlah'][$kode] = $jumlah;
-            $row['persen'][$kode] = $persen;
-            $row['total'] += $jumlah;
-        }
+        $averageProgress = $totalProposal > 0 ? round($totalProgress / $totalProposal) : 0;
 
-        $picTable[] = $row;
+        $row['jumlah'][$kode] = $totalProposal; 
+        $row['persen'][$kode] = $averageProgress;
+        $row['total'] += $totalProposal;
     }
+
+    $picTable[] = $row;
+}
+
 
     return view('dashboard.index', [
         'proposal' => $proposal,
