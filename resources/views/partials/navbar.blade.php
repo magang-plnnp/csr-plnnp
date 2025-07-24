@@ -79,12 +79,22 @@
         @csrf
     </form>
 </li> --}}
-        <li class="sidebar-item">
-            <a class="sidebar-link" href="#" onclick="showLogoutModal()">
-                <span><i class="ti ti-logout"></i></span>
-                <span class="hide-menu">Logout</span>
+@if(Auth::user()->role === 'user')
+<li class="sidebar-item">
+            <a class="sidebar-link" href="/profile" aria-expanded="false">
+                <span>
+                    <i class="ti ti-clipboard"></i>
+                </span>
+                <span class="hide-menu">Profile</span>
             </a>
         </li>
+        @endif
+<li class="sidebar-item">
+    <a class="sidebar-link" href="#" onclick="showLogoutModal()">
+        <span><i class="ti ti-logout"></i></span>
+        <span class="hide-menu">Logout</span>
+    </a>
+</li>
 
     </ul>
 </nav>
