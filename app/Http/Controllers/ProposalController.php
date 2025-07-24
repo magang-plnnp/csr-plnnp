@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Proposal;
-use App\Models\TipeProses;
 use App\Models\Tipologi;
+use App\Models\SubProses;
+use App\Models\TipeProses;
 use Illuminate\Http\Request;
 
 class ProposalController extends Controller
@@ -24,7 +25,7 @@ class ProposalController extends Controller
     {
         return view('proposal.pengajuan.create', [
             'tipologi' => Tipologi::all(),
-            'proses' => TipeProses::all(),
+            'proses' => TipeProses::with('subProses')->get(),
         ]);
     }
 
@@ -34,11 +35,9 @@ class ProposalController extends Controller
     public function store(Request $request)
     {
         // Validasi data input
-        $angka = preg_replace('/[^0-9]/', '', $request->nominal_pengajuan);
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'instansi_pengajuan' => 'required|string|max:255',
-            // 'lokasi' => 'required|string|max:255',
             'kecamatan_id' => 'required',
             'kecamatan_nama' => 'required|string',
             'kelurahan_id' => 'required',
@@ -48,15 +47,15 @@ class ProposalController extends Controller
             'barang_pengajuan' => 'nullable|string|max:255',
             'tipologi_id' => 'required|exists:tipologi,id',
             'status' => 'required',
-            'nominal_disetujui' => 'nullable|numeric',
+            'nominal_disetujui' => 'nullable',
             'barang_disetujui' => 'nullable|string|max:255',
             'nama_pic_id' => 'required|string|max:255',
             'tipe_proses_id' => 'required|exists:tipe_proses,id',
             'keterangan' => 'nullable|string|max:1000',
             'overdue' => 'nullable|date',
-
         ]);
 
+        // Bersihkan nilai rupiah menjadi angka
         $validated['nominal_pengajuan'] = $request->nominal_pengajuan
             ? preg_replace('/[^0-9]/', '', $request->nominal_pengajuan)
             : null;
@@ -65,12 +64,26 @@ class ProposalController extends Controller
             ? preg_replace('/[^0-9]/', '', $request->nominal_disetujui)
             : null;
 
-        // Simpan ke database
-        Proposal::create($validated);
+        // Simpan proposal
+        $proposal = Proposal::create($validated);
+
+        // Ambil semua sub_proses dari tipe_proses yang dipilih
+        $subProsesList = SubProses::where('tipe_proses_id', $proposal->tipe_proses_id)->get();
+
+        // Insert checklist untuk setiap sub proses
+        foreach ($subProsesList as $subProses) {
+            \App\Models\ProposalProsesChecklist::create([
+                'proposal_id' => $proposal->id,
+                'sub_proses_id' => $subProses->id,
+                'is_checked' => false,
+                'checked_at' => null,
+            ]);
+        }
 
         // Redirect dengan pesan sukses
         return redirect()->route('proposal.index')->with('success', 'Data proposal berhasil disimpan.');
     }
+
 
 
     /**

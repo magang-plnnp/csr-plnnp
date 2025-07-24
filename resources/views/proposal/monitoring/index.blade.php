@@ -130,13 +130,15 @@
                                             <p class="mb-0 fw-normal">{{ $data->lokasi }}</p>
                                         </td>
                                         <td>
-                                            <p class="mb-0 fw-normal">{{ $data->tanggal_disposisi }}</p>
+                                            <p class="mb-0 fw-normal">
+                                                {{ \Carbon\Carbon::parse($data->tanggal_disposisi)->translatedFormat('d F Y') }}
+                                            </p>
                                         </td>
-                                       <td>
-    <p class="mb-0 fw-normal">
-        {{ $data->nominal_pengajuan ? 'Rp' . number_format($data->nominal_pengajuan, 0, ',', '.') : '-' }}
-    </p>
-</td>
+                                        <td>
+                                            <p class="mb-0 fw-normal">
+                                                {{ $data->nominal_pengajuan ? 'Rp' . number_format($data->nominal_pengajuan, 0, ',', '.') : '-' }}
+                                            </p>
+                                        </td>
                                         <td>
                                             <p class="mb-0 fw-normal">{{ $data->barang_pengajuan }}</p>
                                         </td>
@@ -146,11 +148,11 @@
                                         <td>
                                             <p class="mb-0 fw-normal">{{ $data->status }}</p>
                                         </td>
-                                      <td>
-    <p class="mb-0 fw-normal">
-        {{ $data->nominal_disetujui ? 'Rp' . number_format($data->nominal_disetujui, 0, ',', '.') : '-' }}
-    </p>
-</td>
+                                        <td>
+                                            <p class="mb-0 fw-normal">
+                                                {{ $data->nominal_disetujui ? 'Rp' . number_format($data->nominal_disetujui, 0, ',', '.') : '-' }}
+                                            </p>
+                                        </td>
                                         <td>
                                             <p class="mb-0 fw-normal">{{ $data->barang_disetujui ?? '-' }}</p>
                                         </td>
@@ -181,12 +183,12 @@
                                                 </button>
                                             </p>
                                         </td>
-                                       <td>
+                                        <td>
                                             <p class="mb-0 fw-normal">
-    {{ \Carbon\Carbon::parse($data->overdue)->translatedFormat('d F Y') }}
-</p>
+                                                {{ \Carbon\Carbon::parse($data->overdue)->translatedFormat('d F Y') }}
+                                            </p>
 
-                                         </td>
+                                        </td>
                                         <td class="progress-col">{{ $percent }}%</td>
                                     </tr>
                                 @endforeach
@@ -215,8 +217,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" style="background-color: #78C841; color: white;"class="btn">Simpan</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" style="background-color: #78C841; color: white;"class="btn">Simpan</button>
                     </div>
                 </div>
             </form>
