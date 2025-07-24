@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\TipologiController;
@@ -31,6 +32,9 @@ use App\Http\Controllers\ProposalProsesChecklistController;
 Route::get('/tes', function () {
     return view('tes');
 });
+Route::get('/profile', function () {
+    return view('profile.index');
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -52,6 +56,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('sub-proses', SubProsesController::class);
     Route::resource('proposal-proses-checklist', ProposalProsesChecklistController::class);
     Route::post('/sub-proses/reorder', [SubProsesController::class, 'reorder']);
+
+    Route::put('/update-password', [ProfileController::class, 'updatePassword'])->name('password.update');
 });
 
 Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');

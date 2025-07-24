@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -70,13 +71,23 @@ class UserController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $id,
+            'password' => 'nullable|string', // Password bersifat opsional
         ]);
 
         $user = User::findOrFail($id);
-        $user->update([
+
+        // Siapkan data yang akan diupdate
+        $data = [
             'nama' => $request->nama,
             'username' => $request->username,
-        ]);
+        ];
+
+        // Jika password diisi, update juga
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
 
         return redirect()->back()->with('success', 'Data pengguna berhasil diperbarui.');
     }

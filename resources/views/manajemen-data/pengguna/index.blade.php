@@ -163,6 +163,11 @@
                             <label for="edit-username" class="form-label">Username</label>
                             <input type="text" class="form-control" id="edit-username" name="username" required>
                         </div>
+                        <div class="mb-3">
+    <label for="edit-password" class="form-label">Password Baru (opsional)</label>
+    <input type="password" class="form-control" id="edit-password" name="password" placeholder="Kosongkan jika tidak ingin mengubah">
+</div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn bg-secondary-subtle text-dark"
