@@ -109,7 +109,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn bg-secondary-subtle text-dark" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="submit" style="background-color: #78C841; color: white;" class="btn">Simpan</button>
                     </div>
                 </div>
             </form>
@@ -164,7 +164,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn bg-secondary-subtle text-dark" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-success">Simpan</button>
+                        <button type="submit"  style="background-color: #78C841; color: white;" class="btn">Simpan</button>
                     </div>
                 </div>
             </form>
@@ -223,7 +223,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn bg-secondary-subtle text-dark" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="submit"  style="background-color: #78C841; color: white;" class="btn">Simpan</button>
                     </div>
                 </div>
             </form>

@@ -30,7 +30,8 @@
                             </a>
                             <a href="#"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                class="btn btn-outline-primary mx-3 mt-2 d-block">
+                                style="background-color: #78C841; color: white;"
+                                class="btn mx-3 mt-2 d-block">
                                 Logout
                             </a>
 

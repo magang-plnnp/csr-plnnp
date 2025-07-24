@@ -119,7 +119,7 @@
                      <div class="modal-footer">
                          <button type="button" class="btn bg-secondary-subtle text-dark"
                              data-bs-dismiss="modal">Batal</button>
-                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                         <button type="submit"  style="background-color: #78C841; color: white;" class="btn">Simpan Perubahan</button>
                      </div>
                  </div>
              </form>

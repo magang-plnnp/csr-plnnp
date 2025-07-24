@@ -321,7 +321,7 @@
      @endpush
      @if (session('success'))
          <div class="position-fixed top-0 end-0 p-3 mt-5 me-5" style="z-index: 9999">
-             <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive"
+             <div style="background-color: #78C841; color: white;" class="toast align-items-center border-0 show" role="alert" aria-live="assertive"
                  aria-atomic="true">
                  <div class="d-flex">
                      <div class="toast-body">
