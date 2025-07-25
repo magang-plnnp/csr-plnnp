@@ -112,9 +112,6 @@
                                             ->where('is_checked', 1)
                                             ->pluck('sub_proses_id')
                                             ->all();
-                                        $total = $subs->count();
-                                        $done = count(array_intersect($subs->pluck('id')->all(), $checked));
-                                        $percent = $total ? round(($done / $total) * 100) : 0;
                                     @endphp
                                     <tr>
                                         <td>
@@ -163,6 +160,17 @@
                                             <p class="mb-0 fw-normal">{{ $data->tipeProses->nama ?? '-' }}</p>
                                         </td>
                                         <td class="berkas-container">
+                                            @php
+                                                // Hitung jumlah checklist sesuai progress
+                                                $jumlahChecklistSesuaiProgress = floor(($data->progress ?? 0) / 20);
+
+                                                // Ambil ID dari sub proses yang akan dicentang
+                                                $subIdsToCheck = $subs
+                                                    ->pluck('id')
+                                                    ->take($jumlahChecklistSesuaiProgress)
+                                                    ->all();
+                                            @endphp
+
                                             @foreach ($subs as $sub)
                                                 <div class="form-check">
                                                     <input class="form-check-input checklist-toggle" type="checkbox"
@@ -189,7 +197,7 @@
                                             </p>
 
                                         </td>
-                                        <td class="progress-col">{{ $percent }}%</td>
+                                        <td class="progress-col">{{ $data->progress }}%</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -363,6 +371,7 @@
             }
         </script>
         <script>
+            $subs = $data - > tipeProses ? - > subProses ?? collect();
             document.addEventListener("DOMContentLoaded", function() {
                 const toastElList = [].slice.call(document.querySelectorAll('.toast'))
                 toastElList.map(function(toastEl) {
