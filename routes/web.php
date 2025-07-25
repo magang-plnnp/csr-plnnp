@@ -25,10 +25,6 @@ use App\Http\Controllers\ProposalProsesChecklistController;
 |
 */
 
-
-
-
-
 Route::get('/tes', function () {
     return view('tes');
 });
@@ -43,12 +39,9 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-
     Route::get('/kecamatan', [WilayahController::class, 'getKecamatan']);
     Route::get('/kelurahan/{kecamatanId}', [WilayahController::class, 'getKelurahan']);
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-    Route::resource('pengguna', UserController::class);
     Route::resource('pengguna', UserController::class);
     Route::resource('tipologi', TipologiController::class);
     Route::resource('proposal', ProposalController::class);
@@ -56,18 +49,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('sub-proses', SubProsesController::class);
     Route::resource('proposal-proses-checklist', ProposalProsesChecklistController::class);
     Route::post('/sub-proses/reorder', [SubProsesController::class, 'reorder']);
-
     Route::put('/update-password', [ProfileController::class, 'updatePassword'])->name('password.update');
+    Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');
+    Route::post('/checklist/update', [ProposalProsesChecklistController::class, 'update'])->name('checklist.update');
+    Route::post('/monitoring/keterangan/update', [MonitoringController::class, 'updateKeterangan'])->name('monitoring.keterangan');
 });
 
-Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');
-Route::post('/checklist/update', [ProposalProsesChecklistController::class, 'update'])->name('checklist.update');
-Route::post('/monitoring/keterangan/update', [MonitoringController::class, 'updateKeterangan'])->name('monitoring.keterangan');
-
-// Route::get('/tipologi', function () {
-//     return view('manajemen-data.tipologi.index');
-// });
-
-// Route::get('/pengguna', function () {
-//     return view('manajemen-data.pengguna.index');
-// });
