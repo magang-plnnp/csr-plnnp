@@ -80,11 +80,8 @@
 
                                 <span class="mask opacity-6" style="background-color: #78C841;"></span>
 
-                                <h4 class="mt-5 text-white font-weight-bolder position-relative">"Bersama Membangun
-                                    Negeri Lewat Energi Berkelanjutan"</h4>
-                                <p class="text-white position-relative">Program CSR bukan hanya memberi, tapi
-                                    menciptakan dampak jangka panjang. PLN Nusantara Power hadir untuk mendorong
-                                    perubahan sosial melalui energi dan kolaborasi.</p>
+                                <h4 class="mt-5 text-white font-weight-bolder position-relative">"CSR PLN Nusantara Power<br>Unit Pembangkitan Paiton"</h4>
+                                <p class="text-white position-relative">Kelola program tanggung jawab sosial perusahaan dengan lebih efisien dari satu platform terpusat.</p>
                             </div>
                         </div>
                     </div>

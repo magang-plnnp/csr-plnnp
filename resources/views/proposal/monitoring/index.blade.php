@@ -275,36 +275,37 @@
                 $('#filter-pic, #filter-tipologi, #filter-status').on('change', applyFilters);
 
                 // Toggle checklist
-               // Benar: menggunakan event delegation agar bekerja untuk elemen dinamis
-$(document).on('change', '.checklist-toggle', function () {
-    const isChecked = $(this).is(':checked') ? 1 : 0;
-    const proposalId = $(this).data('proposal-id');
-    const subProsesId = $(this).data('sub-proses-id');
+                // Benar: menggunakan event delegation agar bekerja untuk elemen dinamis
+                $(document).on('change', '.checklist-toggle', function() {
+                    const isChecked = $(this).is(':checked') ? 1 : 0;
+                    const proposalId = $(this).data('proposal-id');
+                    const subProsesId = $(this).data('sub-proses-id');
 
-    $.ajax({
-        url: "{{ route('checklist.update') }}",
-        method: 'POST',
-        data: {
-            _token: "{{ csrf_token() }}",
-            proposal_id: proposalId,
-            sub_proses_id: subProsesId,
-            is_checked: isChecked
-        },
-        success: function(response) {
-            console.log(response.message);
+                    $.ajax({
+                        url: "{{ route('checklist.update') }}",
+                        method: 'POST',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            proposal_id: proposalId,
+                            sub_proses_id: subProsesId,
+                            is_checked: isChecked
+                        },
+                        success: function(response) {
+                            console.log(response.message);
 
-            // Ambil nilai progress dari response jika dikirimkan (lebih baik tambahkan)
-            if (response.progress !== undefined) {
-                // Update kolom progress langsung di baris yang sesuai
-                const row = $(`input[data-proposal-id="${proposalId}"]`).closest('tr');
-                row.find('.progress-col').text(response.progress + '%');
-            }
-        },
-        error: function () {
-            alert('Gagal memperbarui checklist!');
-        }
-    });
-});
+                            // Ambil nilai progress dari response jika dikirimkan (lebih baik tambahkan)
+                            if (response.progress !== undefined) {
+                                // Update kolom progress langsung di baris yang sesuai
+                                const row = $(`input[data-proposal-id="${proposalId}"]`).closest(
+                                    'tr');
+                                row.find('.progress-col').text(response.progress + '%');
+                            }
+                        },
+                        error: function() {
+                            alert('Gagal memperbarui checklist!');
+                        }
+                    });
+                });
 
 
 
@@ -331,7 +332,7 @@ $(document).on('change', '.checklist-toggle', function () {
                 });
 
                 // Buka modal titik tiga
-                $('.open-keterangan-modal').on('click', function() {
+                $(document).on('click', '.open-keterangan-modal', function() {
                     const id = $(this).data('id');
                     const keterangan = $(this).data('keterangan');
 
@@ -394,8 +395,8 @@ $(document).on('change', '.checklist-toggle', function () {
     @endpush
     @if (session('success'))
         <div class="position-fixed top-0 end-0 p-3 mt-5 me-5" style="z-index: 9999">
-            <div style="background-color: #78C841; color: white;" class="toast align-items-center border-0 show" role="alert" aria-live="assertive"
-                aria-atomic="true">
+            <div style="background-color: #78C841; color: white;" class="toast align-items-center border-0 show"
+                role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
                         {{ session('success') }}
