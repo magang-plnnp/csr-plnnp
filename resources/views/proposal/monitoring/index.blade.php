@@ -358,7 +358,13 @@
                         },
                         success: function() {
                             $('#keteranganModal').modal('hide');
-                            location.reload(); // atau update DOM langsung
+                            // Update nilai keterangan langsung di tabel
+                            const row = $(`button[data-id="${id}"]`).closest('tr');
+                            row.find('.keterangan-text').text(keterangan);
+                            row.find('.open-keterangan-modal').data('keterangan', keterangan);
+
+                            // Tampilkan toast
+                            showToast('Keterangan berhasil diperbarui');
                         },
                         error: function() {
                             alert('Gagal menyimpan keterangan');
@@ -381,30 +387,33 @@
             }
         </script>
         <script>
-            $subs = $data - > tipeProses ? - > subProses ?? collect();
-            document.addEventListener("DOMContentLoaded", function() {
-                const toastElList = [].slice.call(document.querySelectorAll('.toast'))
-                toastElList.map(function(toastEl) {
-                    const toast = new bootstrap.Toast(toastEl, {
-                        delay: 8000,
-                    });
-                    toast.show();
-                });
-            });
-        </script>
-    @endpush
-    @if (session('success'))
+            function showToast(message) {
+                const toastHtml = `
         <div class="position-fixed top-0 end-0 p-3 mt-5 me-5" style="z-index: 9999">
-            <div style="background-color: #78C841; color: white;" class="toast align-items-center border-0 show"
-                role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast align-items-center text-white border-0" role="alert"
+                style="background-color: #78C841;" aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">
-                    <div class="toast-body">
-                        {{ session('success') }}
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                        aria-label="Close"></button>
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
             </div>
-        </div>
-    @endif
+        </div>`;
+
+                const tempContainer = document.createElement('div');
+                tempContainer.innerHTML = toastHtml;
+                document.body.appendChild(tempContainer);
+
+                const toastEl = tempContainer.querySelector('.toast');
+                const bsToast = new bootstrap.Toast(toastEl, {
+                    delay: 3000
+                });
+                bsToast.show();
+
+                toastEl.addEventListener('hidden.bs.toast', () => {
+                    tempContainer.remove();
+                });
+            }
+        </script>
+    @endpush
 @endsection
