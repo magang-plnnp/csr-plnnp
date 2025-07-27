@@ -34,7 +34,7 @@ class ProposalProsesChecklistController extends Controller
             ->where('is_checked', 1)
             ->count();
 
-        $progress = $total ? round(($checked / $total) * 100) : 0;
+        $progress = $total > 0 ? round(($checked / $total) * 100) : 0;
 
         $proposal->update(['progress' => $progress]);
         // ======================================================
