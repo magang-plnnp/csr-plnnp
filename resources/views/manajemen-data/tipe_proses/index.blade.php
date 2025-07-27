@@ -109,7 +109,8 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn bg-secondary-subtle text-dark" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" style="background-color: #78C841; color: white;" class="btn">Simpan</button>
+                        <button type="submit" style="background-color: #78C841; color: white;"
+                            class="btn">Simpan</button>
                     </div>
                 </div>
             </form>
@@ -164,7 +165,8 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn bg-secondary-subtle text-dark" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit"  style="background-color: #78C841; color: white;" class="btn">Simpan</button>
+                        <button type="submit" style="background-color: #78C841; color: white;"
+                            class="btn">Simpan</button>
                     </div>
                 </div>
             </form>
@@ -191,7 +193,8 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn bg-secondary-subtle text-dark" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="submit" style="background-color: #78C841; color: white;"
+                            class="btn">Simpan</button>
                     </div>
                 </div>
             </form>
@@ -223,7 +226,8 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn bg-secondary-subtle text-dark" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit"  style="background-color: #78C841; color: white;" class="btn">Simpan</button>
+                        <button type="submit" style="background-color: #78C841; color: white;"
+                            class="btn">Simpan</button>
                     </div>
                 </div>
             </form>
@@ -255,8 +259,8 @@
     </div>
     @if (session('success'))
         <div class="position-fixed top-0 end-0 p-3 mt-5 me-5" style="z-index: 9999">
-            <div style="background-color: #78C841; color: white;" class="toast align-items-center border-0 show" role="alert" aria-live="assertive"
-                aria-atomic="true">
+            <div style="background-color: #78C841; color: white;" class="toast align-items-center border-0 show"
+                role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
                         {{ session('success') }}

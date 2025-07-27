@@ -164,9 +164,10 @@
                             <input type="text" class="form-control" id="edit-username" name="username" required>
                         </div>
                         <div class="mb-3">
-    <label for="edit-password" class="form-label">Password Baru (opsional)</label>
-    <input type="password" class="form-control" id="edit-password" name="password" placeholder="Kosongkan jika tidak ingin mengubah">
-</div>
+                            <label for="edit-password" class="form-label">Password Baru (opsional)</label>
+                            <input type="password" class="form-control" id="edit-password" name="password"
+                                placeholder="Kosongkan jika tidak ingin mengubah">
+                        </div>
 
                     </div>
                     <div class="modal-footer">
@@ -306,8 +307,8 @@
         </script>
         @if (session('success'))
             <div class="position-fixed top-0 end-0 p-3 mt-5 me-5" style="z-index: 9999">
-                <div style="background-color: #78C841; color: white;" class="toast align-items-center border-0 show" role="alert" aria-live="assertive"
-                    aria-atomic="true">
+                <div style="background-color: #78C841; color: white;" class="toast align-items-center border-0 show"
+                    role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="d-flex">
                         <div class="toast-body">
                             {{ session('success') }}
