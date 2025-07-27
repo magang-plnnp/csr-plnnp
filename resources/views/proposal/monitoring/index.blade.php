@@ -267,29 +267,38 @@
                 $('#filter-pic, #filter-tipologi, #filter-status').on('change', applyFilters);
 
                 // Toggle checklist
-                $('.checklist-toggle').on('change', function() {
-                    const isChecked = $(this).is(':checked') ? 1 : 0;
-                    const proposalId = $(this).data('proposal-id');
-                    const subProsesId = $(this).data('sub-proses-id');
+               // Benar: menggunakan event delegation agar bekerja untuk elemen dinamis
+$(document).on('change', '.checklist-toggle', function () {
+    const isChecked = $(this).is(':checked') ? 1 : 0;
+    const proposalId = $(this).data('proposal-id');
+    const subProsesId = $(this).data('sub-proses-id');
 
-                    $.ajax({
-                        url: "{{ route('checklist.update') }}",
-                        method: 'POST',
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            proposal_id: proposalId,
-                            sub_proses_id: subProsesId,
-                            is_checked: isChecked
-                        },
-                        success: function(response) {
-                            console.log(response.message);
-                            location.reload(); // opsional
-                        },
-                        error: function() {
-                            alert('Gagal memperbarui checklist!');
-                        }
-                    });
-                });
+    $.ajax({
+        url: "{{ route('checklist.update') }}",
+        method: 'POST',
+        data: {
+            _token: "{{ csrf_token() }}",
+            proposal_id: proposalId,
+            sub_proses_id: subProsesId,
+            is_checked: isChecked
+        },
+        success: function(response) {
+            console.log(response.message);
+
+            // Ambil nilai progress dari response jika dikirimkan (lebih baik tambahkan)
+            if (response.progress !== undefined) {
+                // Update kolom progress langsung di baris yang sesuai
+                const row = $(`input[data-proposal-id="${proposalId}"]`).closest('tr');
+                row.find('.progress-col').text(response.progress + '%');
+            }
+        },
+        error: function () {
+            alert('Gagal memperbarui checklist!');
+        }
+    });
+});
+
+
 
                 // Inline input keterangan
                 $('.keterangan-input').on('change', function() {

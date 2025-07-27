@@ -41,7 +41,8 @@ class ProposalProsesChecklistController extends Controller
 
         return response()->json([
             'message' => 'Checklist berhasil diperbarui.',
-            'data' => $checklist
+            'data' => $checklist,
+            'progress' => $progress
         ]);
     }
 }
