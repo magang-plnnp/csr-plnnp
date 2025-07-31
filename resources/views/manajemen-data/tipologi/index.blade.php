@@ -62,28 +62,25 @@
                                              <p class="mb-0 fw-normal">{{ $data->deskripsi }}</p>
                                          </td>
                                          <td>
-                                             <div class="dropdown">
-                                                 <button class="btn btn-sm btn-light border-0" type="button"
-                                                     id="dropdownMenuButton{{ $data->id }}" data-bs-toggle="dropdown"
-                                                     aria-expanded="false">
-                                                     <i class="fas fa-ellipsis-h"></i> {{-- tiga titik horizontal --}}
+                                             <div class="d-flex justify-content-center align-items-center gap-2">
+                                                 {{-- Tombol Edit --}}
+                                                 <button type="button"
+                                                     class="btn btn-sm btn-light border-0 text-primary btn-edit"
+                                                     data-bs-toggle="modal" data-bs-target="#editModal"
+                                                     data-id="{{ $data->id }}" data-kode="{{ $data->kode }}"
+                                                     data-deskripsi="{{ $data->deskripsi }}">
+                                                     <i class="fas fa-edit"></i>
                                                  </button>
-                                                 <ul class="dropdown-menu"
-                                                     aria-labelledby="dropdownMenuButton{{ $data->id }}">
-                                                     <button type="button" class="dropdown-item text-primary btn-edit"
-                                                         data-bs-toggle="modal" data-bs-target="#editModal"
-                                                         data-id="{{ $data->id }}" data-kode="{{ $data->kode }}"
-                                                         data-deskripsi="{{ $data->deskripsi }}">
-                                                         Edit
-                                                     </button>
-                                                     <button type="button" class="dropdown-item text-danger btn-delete"
-                                                         data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                         data-id="{{ $data->id }}" data-nama="{{ $data->kode }}">
-                                                         Hapus
-                                                     </button>
-                                                     </li>
-                                                 </ul>
+
+                                                 {{-- Tombol Hapus --}}
+                                                 <button type="button"
+                                                     class="btn btn-sm btn-light border-0 text-danger btn-delete"
+                                                     data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                     data-id="{{ $data->id }}" data-nama="{{ $data->kode }}">
+                                                     <i class="fas fa-trash-alt"></i>
+                                                 </button>
                                              </div>
+
                                          </td>
                                      </tr>
                                  @endforeach
@@ -119,7 +116,8 @@
                      <div class="modal-footer">
                          <button type="button" class="btn bg-secondary-subtle text-dark"
                              data-bs-dismiss="modal">Batal</button>
-                         <button type="submit"  style="background-color: #78C841; color: white;" class="btn">Simpan Perubahan</button>
+                         <button type="submit" style="background-color: #78C841; color: white;" class="btn">Simpan
+                             Perubahan</button>
                      </div>
                  </div>
              </form>
@@ -260,8 +258,8 @@
      @endpush
      @if (session('success'))
          <div class="position-fixed top-0 end-0 p-3 mt-5 me-5" style="z-index: 9999">
-             <div style="background-color: #78C841; color: white;" class="toast align-items-center border-0 show" role="alert" aria-live="assertive"
-                 aria-atomic="true">
+             <div style="background-color: #78C841; color: white;" class="toast align-items-center border-0 show"
+                 role="alert" aria-live="assertive" aria-atomic="true">
                  <div class="d-flex">
                      <div class="toast-body">
                          {{ session('success') }}

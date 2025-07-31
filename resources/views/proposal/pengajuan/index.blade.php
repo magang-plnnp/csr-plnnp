@@ -125,18 +125,19 @@
                                              <p class="mb-0 fw-normal">{{ $data->instansi_pengajuan }}</p>
                                          </td>
                                          <td>
-                                             <p class="mb-0 fw-normal">{{ $data->kecamatan_nama }} - {{ $data->kelurahan_nama }}</p>
+                                             <p class="mb-0 fw-normal">{{ $data->kecamatan_nama }} -
+                                                 {{ $data->kelurahan_nama }}</p>
                                          </td>
                                          <td>
-                                            <p class="mb-0 fw-normal">
-    {{ \Carbon\Carbon::parse($data->tanggal_disposisi)->translatedFormat('d F Y') }}
-</p>
+                                             <p class="mb-0 fw-normal">
+                                                 {{ \Carbon\Carbon::parse($data->tanggal_disposisi)->translatedFormat('d F Y') }}
+                                             </p>
                                          </td>
                                          <td>
-    <p class="mb-0 fw-normal">
-        {{ $data->nominal_pengajuan ? 'Rp' . number_format($data->nominal_pengajuan, 0, ',', '.') : '-' }}
-    </p>
-</td>
+                                             <p class="mb-0 fw-normal">
+                                                 {{ $data->nominal_pengajuan ? 'Rp' . number_format($data->nominal_pengajuan, 0, ',', '.') : '-' }}
+                                             </p>
+                                         </td>
 
                                          <td>
                                              <p class="mb-0 fw-normal">{{ $data->barang_pengajuan }}</p>
@@ -147,15 +148,15 @@
                                          <td>
                                              <p class="mb-0 fw-normal">{{ $data->status }}</p>
                                          </td>
-                                        <td>
-    <p class="mb-0 fw-normal">
-        {{ $data->nominal_disetujui ? 'Rp' . number_format($data->nominal_disetujui, 0, ',', '.') : '-' }}
-    </p>
-</td>
+                                         <td>
+                                             <p class="mb-0 fw-normal">
+                                                 {{ $data->nominal_disetujui ? 'Rp' . number_format($data->nominal_disetujui, 0, ',', '.') : '-' }}
+                                             </p>
+                                         </td>
 
                                          <td>
-    <p class="mb-0 fw-normal">{{ $data->barang_disetujui ?? '-' }}</p>
-</td>
+                                             <p class="mb-0 fw-normal">{{ $data->barang_disetujui ?? '-' }}</p>
+                                         </td>
 
                                          {{-- <td data-pic="{{ $data->namaPic->nama }}">
                                             <p class="mb-0 fw-normal">{{ $data->namaPic->nama }}</p>
@@ -171,36 +172,29 @@
                                              <p class="mb-0 fw-normal">{{ $data->keterangan }}</p>
                                          </td>
                                          <td>
-                                            <p class="mb-0 fw-normal">
-    {{ \Carbon\Carbon::parse($data->overdue)->translatedFormat('d F Y') }}
-</p>
+                                             <p class="mb-0 fw-normal">
+                                                 {{ \Carbon\Carbon::parse($data->overdue)->translatedFormat('d F Y') }}
+                                             </p>
 
                                          </td>
                                          <td>
                                              <p class="mb-0 fw-normal">{{ $data->progress }}</p>
                                          </td>
                                          <td>
-                                             <div class="dropdown">
-                                                 <button class="btn btn-sm btn-light border-0" type="button"
-                                                     id="dropdownMenuButton{{ $data->id }}" data-bs-toggle="dropdown"
-                                                     aria-expanded="false">
-                                                     <i class="fas fa-ellipsis-h"></i> {{-- tiga titik horizontal --}}
+                                             <div class="d-flex gap-2">
+                                                 {{-- Tombol Edit --}}
+                                                 <a href="{{ route('proposal.edit', $data->id) }}"
+                                                     class="btn btn-sm btn-light border-0 text-primary">
+                                                     <i class="fas fa-edit"></i>
+                                                 </a>
+
+                                                 {{-- Tombol Hapus --}}
+                                                 <button type="button"
+                                                     class="btn btn-sm btn-light border-0 text-danger btn-delete"
+                                                     data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                     data-id="{{ $data->id }}" data-nama="{{ $data->judul }}">
+                                                     <i class="fas fa-trash-alt"></i>
                                                  </button>
-                                                 <ul class="dropdown-menu"
-                                                     aria-labelledby="dropdownMenuButton{{ $data->id }}">
-                                                     <li>
-                                                         <a href="{{ route('proposal.edit', $data->id) }}"
-                                                             class="dropdown-item text-primary">
-                                                             Edit
-                                                         </a>
-                                                     </li>
-                                                     <button type="button" class="dropdown-item text-danger btn-delete"
-                                                         data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                         data-id="{{ $data->id }}" data-nama="{{ $data->judul }}">
-                                                         Hapus
-                                                     </button>
-                                                     </li>
-                                                 </ul>
                                              </div>
                                          </td>
                                      </tr>
@@ -321,8 +315,8 @@
      @endpush
      @if (session('success'))
          <div class="position-fixed top-0 end-0 p-3 mt-5 me-5" style="z-index: 9999">
-             <div style="background-color: #78C841; color: white;" class="toast align-items-center border-0 show" role="alert" aria-live="assertive"
-                 aria-atomic="true">
+             <div style="background-color: #78C841; color: white;" class="toast align-items-center border-0 show"
+                 role="alert" aria-live="assertive" aria-atomic="true">
                  <div class="d-flex">
                      <div class="toast-body">
                          {{ session('success') }}
