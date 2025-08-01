@@ -180,27 +180,20 @@
                                              <p class="mb-0 fw-normal">{{ $data->progress }}</p>
                                          </td>
                                          <td>
-                                             <div class="dropdown">
-                                                 <button class="btn btn-sm btn-light border-0" type="button"
-                                                     id="dropdownMenuButton{{ $data->id }}" data-bs-toggle="dropdown"
-                                                     aria-expanded="false">
-                                                     <i class="fas fa-ellipsis-h"></i> {{-- tiga titik horizontal --}}
+                                             <div class="d-flex gap-2">
+                                                 {{-- Tombol Edit --}}
+                                                 <a href="{{ route('proposal.edit', $data->id) }}"
+                                                     class="btn btn-sm btn-light border-0 text-primary">
+                                                     <i class="fas fa-edit"></i>
+                                                 </a>
+
+                                                 {{-- Tombol Hapus --}}
+                                                 <button type="button"
+                                                     class="btn btn-sm btn-light border-0 text-danger btn-delete"
+                                                     data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                     data-id="{{ $data->id }}" data-nama="{{ $data->judul }}">
+                                                     <i class="fas fa-trash-alt"></i>
                                                  </button>
-                                                 <ul class="dropdown-menu"
-                                                     aria-labelledby="dropdownMenuButton{{ $data->id }}">
-                                                     <li>
-                                                         <a href="{{ route('proposal.edit', $data->id) }}"
-                                                             class="dropdown-item text-primary">
-                                                             Edit
-                                                         </a>
-                                                     </li>
-                                                     <button type="button" class="dropdown-item text-danger btn-delete"
-                                                         data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                         data-id="{{ $data->id }}" data-nama="{{ $data->judul }}">
-                                                         Hapus
-                                                     </button>
-                                                     </li>
-                                                 </ul>
                                              </div>
                                          </td>
                                      </tr>
