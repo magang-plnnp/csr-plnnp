@@ -9,14 +9,35 @@ use App\Models\MasterPosKelurahan;
 
 class WilayahController extends Controller
 {
-    public function getKecamatan()
-    {
-        $kecamatan = MasterPosKecamatan::where('kode_kabupaten', '3513')
-            ->orderBy('nama_kecamatan')
-            ->get(['kode_kecamatan as id', 'nama_kecamatan as name']);
+public function getKecamatan()
+{
+    $kecamatan = MasterPosKecamatan::whereIn('kode_kabupaten', ['3513', '3574', '3512'])
+        ->orderBy('nama_kecamatan')
+        ->get(['kode_kecamatan', 'nama_kecamatan', 'kode_kabupaten']);
 
-        return response()->json($kecamatan);
-    }
+    $grouped = collect([
+        '3513' => 'Kabupaten Probolinggo',
+        '3574' => 'Kota Probolinggo',
+        '3512' => 'Kabupaten Situbondo'
+    ]);
+
+    $result = $grouped->map(function ($label, $kode) use ($kecamatan) {
+        $options = $kecamatan->where('kode_kabupaten', $kode)->map(function ($item) {
+            return [
+                'id' => $item->kode_kecamatan,
+                'name' => $item->nama_kecamatan
+            ];
+        })->values();
+
+        return [
+            'label' => $label,
+            'options' => $options
+        ];
+    })->values();
+
+    return response()->json($result);
+}
+
 
     public function getKelurahan($kecamatanId)
 {
