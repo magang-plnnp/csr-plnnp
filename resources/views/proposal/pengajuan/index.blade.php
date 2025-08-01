@@ -39,11 +39,10 @@
                                  @endforeach
                              </select>
 
-                             <select id="filter-status" class="form-select" style="min-width: 200px;">
-                                 <option value="">-- Semua Status --</option>
-                                 @foreach ($proposal->pluck('status')->unique() as $status)
-                                     <option value="{{ $status }}">{{ $status }}</option>
-                                 @endforeach
+                             <select id="filter-progress" class="form-select" style="min-width: 200px;">
+                                 <option value="">-- Semua Progress --</option>
+                                 <option value="selesai">Selesai</option>
+                                 <option value="belum">Belum Selesai</option>
                              </select>
                          </div>
 
@@ -125,18 +124,19 @@
                                              <p class="mb-0 fw-normal">{{ $data->instansi_pengajuan }}</p>
                                          </td>
                                          <td>
-                                             <p class="mb-0 fw-normal">{{ $data->kecamatan_nama }} - {{ $data->kelurahan_nama }}</p>
+                                             <p class="mb-0 fw-normal">{{ $data->kecamatan_nama }} -
+                                                 {{ $data->kelurahan_nama }}</p>
                                          </td>
                                          <td>
-                                            <p class="mb-0 fw-normal">
-    {{ \Carbon\Carbon::parse($data->tanggal_disposisi)->translatedFormat('d F Y') }}
-</p>
+                                             <p class="mb-0 fw-normal">
+                                                 {{ \Carbon\Carbon::parse($data->tanggal_disposisi)->translatedFormat('d F Y') }}
+                                             </p>
                                          </td>
                                          <td>
-    <p class="mb-0 fw-normal">
-        {{ $data->nominal_pengajuan ? 'Rp' . number_format($data->nominal_pengajuan, 0, ',', '.') : '-' }}
-    </p>
-</td>
+                                             <p class="mb-0 fw-normal">
+                                                 {{ $data->nominal_pengajuan ? 'Rp' . number_format($data->nominal_pengajuan, 0, ',', '.') : '-' }}
+                                             </p>
+                                         </td>
 
                                          <td>
                                              <p class="mb-0 fw-normal">{{ $data->barang_pengajuan }}</p>
@@ -147,15 +147,15 @@
                                          <td>
                                              <p class="mb-0 fw-normal">{{ $data->status }}</p>
                                          </td>
-                                        <td>
-    <p class="mb-0 fw-normal">
-        {{ $data->nominal_disetujui ? 'Rp' . number_format($data->nominal_disetujui, 0, ',', '.') : '-' }}
-    </p>
-</td>
+                                         <td>
+                                             <p class="mb-0 fw-normal">
+                                                 {{ $data->nominal_disetujui ? 'Rp' . number_format($data->nominal_disetujui, 0, ',', '.') : '-' }}
+                                             </p>
+                                         </td>
 
                                          <td>
-    <p class="mb-0 fw-normal">{{ $data->barang_disetujui ?? '-' }}</p>
-</td>
+                                             <p class="mb-0 fw-normal">{{ $data->barang_disetujui ?? '-' }}</p>
+                                         </td>
 
                                          {{-- <td data-pic="{{ $data->namaPic->nama }}">
                                             <p class="mb-0 fw-normal">{{ $data->namaPic->nama }}</p>
@@ -171,9 +171,9 @@
                                              <p class="mb-0 fw-normal">{{ $data->keterangan }}</p>
                                          </td>
                                          <td>
-                                            <p class="mb-0 fw-normal">
-    {{ \Carbon\Carbon::parse($data->overdue)->translatedFormat('d F Y') }}
-</p>
+                                             <p class="mb-0 fw-normal">
+                                                 {{ \Carbon\Carbon::parse($data->overdue)->translatedFormat('d F Y') }}
+                                             </p>
 
                                          </td>
                                          <td>
@@ -250,18 +250,24 @@
              function applyFilters() {
                  const pic = $('#filter-pic').val().toLowerCase();
                  const tipologi = $('#filter-tipologi').val().toLowerCase();
-                 const status = $('#filter-status').val().toLowerCase();
+                 const progressFilter = $('#filter-progress').val(); // baru
 
                  const table = $('#proposalTable').DataTable();
 
-                 table.columns(11).search(pic); // PIC
-                 table.columns(7).search(tipologi); // Tipologi
-                 table.columns(8).search(status); // Status
+                 table.columns(11).search(pic);
+                 table.columns(7).search(tipologi);
+                 table.column(15).search('', true, false);
+
+                 if (progressFilter === 'selesai') {
+                     table.column(15).search('^100$', true, false);
+                 } else if (progressFilter === 'belum') {
+                     table.column(15).search('^(?!100$).*$', true, false);
+                 }
 
                  table.draw();
              }
 
-             $('#filter-pic, #filter-tipologi, #filter-status').on('change', applyFilters);
+             $('#filter-pic, #filter-tipologi, #filter-progress').on('change', applyFilters);
          </script>
          <script>
              $('#proposalTable').DataTable({
@@ -321,8 +327,8 @@
      @endpush
      @if (session('success'))
          <div class="position-fixed top-0 end-0 p-3 mt-5 me-5" style="z-index: 9999">
-             <div style="background-color: #78C841; color: white;" class="toast align-items-center border-0 show" role="alert" aria-live="assertive"
-                 aria-atomic="true">
+             <div style="background-color: #78C841; color: white;" class="toast align-items-center border-0 show"
+                 role="alert" aria-live="assertive" aria-atomic="true">
                  <div class="d-flex">
                      <div class="toast-body">
                          {{ session('success') }}

@@ -30,7 +30,7 @@
                             <div class="card card-plain">
                                 <div class="card-header pb-0 text-start">
                                     <h4 class="font-weight-bolder">Sign In</h4>
-                                    <p class="mb-0">Masukkan Useername dan Password</p>
+                                    <p class="mb-0">Masukkan Username dan Password</p>
                                 </div>
                                 <div class="card-body">
                                     <form method="POST" action="{{ route('login') }}">
@@ -80,8 +80,10 @@
 
                                 <span class="mask opacity-6" style="background-color: #78C841;"></span>
 
-                                <h4 class="mt-5 text-white font-weight-bolder position-relative">"CSR PLN Nusantara Power<br>Unit Pembangkitan Paiton"</h4>
-                                <p class="text-white position-relative">Kelola program tanggung jawab sosial perusahaan dengan lebih efisien dari satu platform terpusat.</p>
+                                <h4 class="mt-5 text-white font-weight-bolder position-relative">"CSR PLN Nusantara
+                                    Power<br>Unit Pembangkitan Paiton"</h4>
+                                <p class="text-white position-relative">Kelola program tanggung jawab sosial perusahaan
+                                    dengan lebih efisien dari satu platform terpusat.</p>
                             </div>
                         </div>
                     </div>
