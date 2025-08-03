@@ -3,17 +3,201 @@
 @push('styles')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <style>
+        /* Freeze Header */
+        table.dataTable thead th {
+            position: sticky;
+            top: 0;
+            background-color: white !important;
+            z-index: 10;
+        }
+
+        /* Freeze Kolom "No" (kolom pertama) dan "Judul" (kolom kedua) */
+        table.dataTable tbody td:first-child,
+        table.dataTable thead th:first-child {
+            position: sticky;
+            left: 0;
+            background-color: white !important;
+            z-index: 11;
+        }
+
+        table.dataTable tbody td:nth-child(2),
+        table.dataTable thead th:nth-child(2) {
+            position: sticky;
+            left: 60px; /* Sesuaikan dengan lebar kolom pertama */
+            background-color: white !important;
+            z-index: 11;
+        }
+         /* CSS untuk mengatasi masalah transparansi pada Fixed Columns */
+
+        /* Warna tombol pagination aktif dari DataTables (Bootstrap 5) */
         .dataTables_wrapper .dataTables_paginate .pagination .page-item.active .page-link {
             background-color: #78C841 !important;
             border-color: #78C841 !important;
             color: white !important;
         }
 
+        /* Opsional: hover untuk tombol aktif */
         .dataTables_wrapper .dataTables_paginate .pagination .page-item.active .page-link:hover {
             background-color: #66b638 !important;
             color: white !important;
         }
-    </style>
+
+        /* Wrapper untuk DataTable */
+        div.dataTables_wrapper {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* table.dataTable td p,
+        table.dataTable td span,
+        table.dataTable th h6 {
+            white-space: nowrap !important;
+        } */
+         
+        table.dataTable,
+        table.dataTable th,
+        table.dataTable td,
+        table.dataTable td > *,
+        table.dataTable th > * {
+            white-space: normal !important;
+        }
+
+        .text-wrap,
+        .text-break {
+            white-space: normal !important;
+        }
+
+        /* NO-WRAP semua elemen di tabel #proposalTable */
+        #proposalTable * {
+            white-space: normal !important;
+            word-break: keep-all !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Paksa semua elemen dalam tabel untuk nowrap
+        #proposalTable,
+        #proposalTable th,
+        #proposalTable td,
+        #proposalTable th *,
+        #proposalTable td * {
+            white-space: nowrap !important;
+        } */
+
+        /* Hindari teks meluber */
+        #proposalTable td {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Supaya bisa scroll horizontal */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        /* SOLUSI UTAMA: Fixed Columns styling */
+        /* Background untuk kolom yang di-freeze - SELALU SOLID */
+        .DTFC_LeftWrapper table.dataTable thead th {
+            background-color: #f8f9fa !important; /* Background header yang solid */
+            position: relative;
+            z-index: 10 !important;
+            border-right: 1px solid #dee2e6 !important;
+        }
+
+        .DTFC_LeftWrapper table.dataTable tbody td {
+            background-color: #ffffff !important; /* Background sel yang SELALU solid */
+            position: relative;
+            z-index: 10 !important;
+            border-right: 1px solid #dee2e6 !important;
+        }
+
+        /* Wrapper untuk kolom kiri - SELALU SOLID */
+        .DTFC_LeftWrapper {
+            background-color: #ffffff !important;
+            z-index: 5 !important;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15) !important;
+            border-right: 2px solid #dee2e6 !important;
+        }
+
+        /* PENTING: Override hover effect agar tetap solid */
+        .DTFC_LeftWrapper table.dataTable tbody tr:hover td {
+            background-color: #f1f3f4 !important; /* Warna hover yang tetap solid */
+        }
+
+        /* Hover effect untuk tabel utama (non-freeze) */
+        table.dataTable tbody tr:hover {
+            background-color: transparent !important;
+        }
+
+        table.dataTable tbody tr:hover td:not(.DTFC_LeftWrapper td) {
+            background-color: #f8f9fa !important;
+        }
+
+        /* Pastikan header di kolom freeze SELALU solid */
+        .DTFC_LeftWrapper table.dataTable thead th {
+            background-color: #f8f9fa !important;
+            font-weight: 600 !important;
+            border-bottom: 2px solid #dee2e6 !important;
+        }
+
+        /* Styling khusus untuk kolom yang tidak di-freeze */
+        .DTFC_ScrollWrapper table.dataTable {
+            margin-left: 0 !important;
+        }
+
+        /* Pastikan tidak ada overlap yang aneh */
+        .DTFC_LeftWrapper table.dataTable {
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+        }
+
+        /* Styling untuk border yang konsisten */
+        .DTFC_LeftWrapper table.dataTable td,
+        .DTFC_LeftWrapper table.dataTable th {
+            border-left: 1px solid #dee2e6 !important;
+        }
+
+        /* Border untuk kolom pertama */
+        .DTFC_LeftWrapper table.dataTable td:first-child,
+        .DTFC_LeftWrapper table.dataTable th:first-child {
+            border-left: 1px solid #dee2e6 !important;
+        }
+
+        /* Menghilangkan double border */
+        .DTFC_ScrollWrapper table.dataTable td:first-child,
+        .DTFC_ScrollWrapper table.dataTable th:first-child {
+            border-left: none !important;
+        }
+        /* FORCE SOLID BACKGROUND - Tambahkan di paling bawah */
+        .DTFC_LeftWrapper .table td,
+        .DTFC_LeftWrapper .table th {
+            background-color: #fff !important;
+            background: #fff !important;
+        }
+
+        .DTFC_LeftWrapper .table tbody tr td {
+            background-color: #ffffff !important;
+            background: #ffffff !important;
+        }
+
+        .DTFC_LeftWrapper .table thead tr th {
+            background-color: #f8f9fa !important;
+            background: #f8f9fa !important;
+        }
+
+        /* Override semua kemungkinan hover dan stripe */
+        .DTFC_LeftWrapper .table-striped tbody tr:nth-of-type(odd) td,
+        .DTFC_LeftWrapper .table tbody tr:hover td,
+        .DTFC_LeftWrapper .table tbody tr.selected td {
+            background-color: #ffffff !important;
+            background: #ffffff !important;
+        }
+
+        .DTFC_LeftWrapper .table tbody tr:hover td {
+            background-color: #f1f3f4 !important;
+            background: #f1f3f4 !important;
+        }
+     </style>
 @endpush
 
 @section('content')
@@ -48,59 +232,59 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table id="proposalTable" class="table table-bordered mb-0 align-middle fixed-table">
+                        <table id="proposalTable" class="table table-bordered nowrap" style="width: 100%">
                             <thead class="text-dark fs-4">
                                 <tr>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">No</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">No</span>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">Judul</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Judul</span>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">Instansi</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Instansi</span>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">Lokasi</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Lokasi</span>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">Tanggal</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Tanggal</span>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">Nominal Pengajuan</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Nominal Pengajuan</span>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">Barang Pengajuan</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Barang Pengajuan</span>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">Tipologi</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Tipologi</span>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">Status</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Status</span>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">Nominal Disetujui</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Nominal Disetujui</span>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">Barang Disetujui</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Barang Disetujui</span>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">PIC</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">PIC</span>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">Proses</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Proses</span>
                                     </th>
                                     <th class="berkas-checklist">
-                                        <h6 class="fw-semibold mb-0">Berkas</h6>
+                                        <span class="fw-semibold mb-0">Berkas</span>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">Keterangan</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Keterangan</span>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">Overdue</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Overdue</span>
                                     </th>
-                                    <th>
-                                        <h6 class="fw-semibold mb-0">Progress (%)</h6>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Progress (%)</span>
                                     </th>
                                 </tr>
                             </thead>
@@ -237,6 +421,7 @@
         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
 
         <script>
             let table;
@@ -245,6 +430,10 @@
                 // Inisialisasi DataTable
                 table = $('#proposalTable').DataTable({
                     scrollX: true,
+                    scrollCollapse: true,
+                    fixedColumns: {
+                    leftColumns: 2 // Kolom ke-1 (No) dan ke-2 (Judul) dibekukan
+                },
                     language: {
                         search: "Cari",
                         lengthMenu: "Tampil _MENU_",
