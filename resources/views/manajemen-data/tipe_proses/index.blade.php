@@ -40,29 +40,25 @@
                                                 {{-- <td>{{ $sub->order_index }}</td> --}}
                                                 <td>{{ $sub->nama_sub }}</td>
                                                 <td>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-sm btn-light border-0" type="button"
-                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="fas fa-ellipsis-h"></i>
+                                                    <div class="d-flex justify-content-center align-items-center gap-2">
+                                                        {{-- Tombol Edit --}}
+                                                        <button type="button"
+                                                            class="btn btn-sm btn-light border-0 text-primary btn-edit-sub"
+                                                            data-id="{{ $sub->id }}" data-nama="{{ $sub->nama_sub }}"
+                                                            data-order="{{ $sub->order_index }}" data-bs-toggle="modal"
+                                                            data-bs-target="#editSubModal">
+                                                            <i class="fas fa-edit"></i>
                                                         </button>
-                                                        <ul class="dropdown-menu">
-                                                            <button type="button"
-                                                                class="dropdown-item text-primary btn-edit-sub"
-                                                                data-id="{{ $sub->id }}"
-                                                                data-nama="{{ $sub->nama_sub }}"
-                                                                data-order="{{ $sub->order_index }}" data-bs-toggle="modal"
-                                                                data-bs-target="#editSubModal">
-                                                                Edit
-                                                            </button>
-                                                            <button type="button"
-                                                                class="dropdown-item text-danger btn-delete-sub"
-                                                                data-id="{{ $sub->id }}"
-                                                                data-nama="{{ $sub->nama_sub }}" data-bs-toggle="modal"
-                                                                data-bs-target="#deleteSubModal">
-                                                                Hapus
-                                                            </button>
-                                                        </ul>
+
+                                                        {{-- Tombol Hapus --}}
+                                                        <button type="button"
+                                                            class="btn btn-sm btn-light border-0 text-danger btn-delete-sub"
+                                                            data-id="{{ $sub->id }}" data-nama="{{ $sub->nama_sub }}"
+                                                            data-bs-toggle="modal" data-bs-target="#deleteSubModal">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
                                                     </div>
+
                                                 </td>
                                             </tr>
                                         @endforeach
