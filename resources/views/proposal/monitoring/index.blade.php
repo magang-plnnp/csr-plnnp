@@ -23,11 +23,13 @@
         table.dataTable tbody td:nth-child(2),
         table.dataTable thead th:nth-child(2) {
             position: sticky;
-            left: 60px; /* Sesuaikan dengan lebar kolom pertama */
+            left: 60px;
+            /* Sesuaikan dengan lebar kolom pertama */
             background-color: white !important;
             z-index: 11;
         }
-         /* CSS untuk mengatasi masalah transparansi pada Fixed Columns */
+
+        /* CSS untuk mengatasi masalah transparansi pada Fixed Columns */
 
         /* Warna tombol pagination aktif dari DataTables (Bootstrap 5) */
         .dataTables_wrapper .dataTables_paginate .pagination .page-item.active .page-link {
@@ -49,16 +51,16 @@
         }
 
         /* table.dataTable td p,
-        table.dataTable td span,
-        table.dataTable th h6 {
-            white-space: nowrap !important;
-        } */
-         
+                    table.dataTable td span,
+                    table.dataTable th h6 {
+                        white-space: nowrap !important;
+                    } */
+
         table.dataTable,
         table.dataTable th,
         table.dataTable td,
-        table.dataTable td > *,
-        table.dataTable th > * {
+        table.dataTable td>*,
+        table.dataTable th>* {
             white-space: normal !important;
         }
 
@@ -76,13 +78,13 @@
         }
 
         /* Paksa semua elemen dalam tabel untuk nowrap
-        #proposalTable,
-        #proposalTable th,
-        #proposalTable td,
-        #proposalTable th *,
-        #proposalTable td * {
-            white-space: nowrap !important;
-        } */
+                    #proposalTable,
+                    #proposalTable th,
+                    #proposalTable td,
+                    #proposalTable th *,
+                    #proposalTable td * {
+                        white-space: nowrap !important;
+                    } */
 
         /* Hindari teks meluber */
         #proposalTable td {
@@ -98,14 +100,16 @@
         /* SOLUSI UTAMA: Fixed Columns styling */
         /* Background untuk kolom yang di-freeze - SELALU SOLID */
         .DTFC_LeftWrapper table.dataTable thead th {
-            background-color: #f8f9fa !important; /* Background header yang solid */
+            background-color: #f8f9fa !important;
+            /* Background header yang solid */
             position: relative;
             z-index: 10 !important;
             border-right: 1px solid #dee2e6 !important;
         }
 
         .DTFC_LeftWrapper table.dataTable tbody td {
-            background-color: #ffffff !important; /* Background sel yang SELALU solid */
+            background-color: #ffffff !important;
+            /* Background sel yang SELALU solid */
             position: relative;
             z-index: 10 !important;
             border-right: 1px solid #dee2e6 !important;
@@ -121,7 +125,8 @@
 
         /* PENTING: Override hover effect agar tetap solid */
         .DTFC_LeftWrapper table.dataTable tbody tr:hover td {
-            background-color: #f1f3f4 !important; /* Warna hover yang tetap solid */
+            background-color: #f1f3f4 !important;
+            /* Warna hover yang tetap solid */
         }
 
         /* Hover effect untuk tabel utama (non-freeze) */
@@ -168,6 +173,7 @@
         .DTFC_ScrollWrapper table.dataTable th:first-child {
             border-left: none !important;
         }
+
         /* FORCE SOLID BACKGROUND - Tambahkan di paling bawah */
         .DTFC_LeftWrapper .table td,
         .DTFC_LeftWrapper .table th {
@@ -197,7 +203,7 @@
             background-color: #f1f3f4 !important;
             background: #f1f3f4 !important;
         }
-     </style>
+    </style>
 @endpush
 
 @section('content')
@@ -224,8 +230,11 @@
 
                             <select id="filter-progress" class="form-select" style="min-width: 200px;">
                                 <option value="">-- Semua Progress --</option>
-                                <option value="selesai">Selesai</option>
-                                <option value="belum">Belum Selesai</option>
+                                <option value="20">20%</option>
+                                <option value="40">40%</option>
+                                <option value="60">60%</option>
+                                <option value="80">80%</option>
+                                <option value="100">100%</option>
                             </select>
                         </div>
                         <a href="#" id="exportExcel" style="background-color: #78C841; color: white;" class="btn">
@@ -396,7 +405,8 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="keteranganModal" tabindex="-1" aria-labelledby="keteranganModalLabel" aria-hidden="true">
+    <div class="modal fade" id="keteranganModal" tabindex="-1" aria-labelledby="keteranganModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <form id="keteranganForm">
                 <div class="modal-content">
@@ -449,8 +459,8 @@
                     scrollX: true,
                     scrollCollapse: true,
                     fixedColumns: {
-                    leftColumns: 2 // Kolom ke-1 (No) dan ke-2 (Judul) dibekukan
-                },
+                        leftColumns: 2 // Kolom ke-1 (No) dan ke-2 (Judul) dibekukan
+                    },
                     language: {
                         search: "Cari",
                         lengthMenu: "Tampil _MENU_",
@@ -587,12 +597,11 @@
 
                 table.columns(11).search(pic);
                 table.columns(7).search(tipologi);
-                table.column(16).search('', true, false);
 
-                if (progressFilter === 'selesai') {
-                    table.column(16).search('^100%$', true, false);
-                } else if (progressFilter === 'belum') {
-                    table.column(16).search('^(?!100%).*$', true, false);
+                if (progressFilter) {
+                    table.column(16).search('^' + progressFilter + '%$', true, false);
+                } else {
+                    table.column(16).search('', true, false);
                 }
 
                 table.draw();
