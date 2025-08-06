@@ -11,6 +11,7 @@ use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\TipologiController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KelayakanController;
 use App\Http\Controllers\SubProsesController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\TipeProsesController;
@@ -48,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('pengguna', UserController::class);
     Route::resource('tipologi', TipologiController::class);
     Route::resource('berita-acara', BeritaAcaraController::class);
+    Route::resource('kelayakan', KelayakanController::class);
     Route::resource('proposal', ProposalController::class);
     Route::resource('tipe-proses', TipeProsesController::class);
     Route::resource('sub-proses', SubProsesController::class);

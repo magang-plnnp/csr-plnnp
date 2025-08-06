@@ -67,11 +67,19 @@
                 <span class="hide-menu">Form</span>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="/berita-acara" aria-expanded="false">
+                <a class="sidebar-link {{ Request::is('berita-acara*') ? 'active' : '' }}" href="/berita-acara"
+                    aria-expanded="false">
                     <span>
                         <i class="ti ti-user"></i>
                     </span>
                     <span class="hide-menu">Berita Acara</span>
+                </a>
+                <a class="sidebar-link {{ Request::is('kelayakan*') ? 'active' : '' }}" href="/kelayakan"
+                    aria-expanded="false">
+                    <span>
+                        <i class="ti ti-user"></i>
+                    </span>
+                    <span class="hide-menu">Kelayakan</span>
                 </a>
             </li>
         @endif
