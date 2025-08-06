@@ -268,16 +268,25 @@
                     .then(res => res.json())
                     .then(data => {
                         kecamatanSelect.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
-                        data.forEach(item => {
-                            const opt = document.createElement('option');
-                            opt.value = item.id;
-                            opt.textContent = item.name;
-                            kecamatanSelect.appendChild(opt);
+
+                        data.forEach(group => {
+                            const optgroup = document.createElement('optgroup');
+                            optgroup.label = group.label;
+
+                            group.options.forEach(item => {
+                                const option = document.createElement('option');
+                                option.value = item.id;
+                                option.textContent = item.name;
+                                optgroup.appendChild(option);
+                            });
+
+                            kecamatanSelect.appendChild(optgroup);
                         });
 
                         $('#kecamatan').select2({
-                            placeholder: "-- Pilih Kecamatan --",
+                            placeholder: "-- Pilih atau Ketik Kecamatan --",
                             theme: 'bootstrap4',
+                            tags: true, // kalau kamu ingin tetap bisa ketik manual
                             allowClear: true
                         });
 
@@ -288,6 +297,7 @@
                             }, 200);
                         }
                     });
+
 
                 // Ganti event handler ke jQuery
                 $('#kecamatan').on('change', function() {

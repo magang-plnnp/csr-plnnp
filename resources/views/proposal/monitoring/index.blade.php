@@ -38,11 +38,10 @@
                                 @endforeach
                             </select>
 
-                            <select id="filter-status" class="form-select" style="min-width: 200px;">
-                                <option value="">-- Semua Status --</option>
-                                @foreach ($proposals->pluck('status')->unique() as $status)
-                                    <option value="{{ $status }}">{{ $status }}</option>
-                                @endforeach
+                            <select id="filter-progress" class="form-select" style="min-width: 200px;">
+                                <option value="">-- Semua Progress --</option>
+                                <option value="selesai">Selesai</option>
+                                <option value="belum">Belum Selesai</option>
                             </select>
                         </div>
                         <a href="#" id="exportExcel" style="background-color: #78C841; color: white;" class="btn">
@@ -290,7 +289,7 @@
                 });
 
                 // Filter dropdown
-                $('#filter-pic, #filter-tipologi, #filter-status').on('change', applyFilters);
+                $('#filter-pic, #filter-tipologi, #filter-progress').on('change', applyFilters);
 
                 // Toggle checklist
                 // Benar: menggunakan event delegation agar bekerja untuk elemen dinamis
@@ -395,11 +394,17 @@
             function applyFilters() {
                 const pic = $('#filter-pic').val().toLowerCase();
                 const tipologi = $('#filter-tipologi').val().toLowerCase();
-                const status = $('#filter-status').val().toLowerCase();
+                const progressFilter = $('#filter-progress').val();
 
-                table.columns(11).search(pic); // Kolom PIC
-                table.columns(7).search(tipologi); // Kolom Tipologi
-                table.columns(8).search(status); // Kolom Status
+                table.columns(11).search(pic);
+                table.columns(7).search(tipologi);
+                table.column(16).search('', true, false);
+
+                if (progressFilter === 'selesai') {
+                    table.column(16).search('^100%$', true, false);
+                } else if (progressFilter === 'belum') {
+                    table.column(16).search('^(?!100%).*$', true, false);
+                }
 
                 table.draw();
             }
