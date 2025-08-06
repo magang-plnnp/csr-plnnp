@@ -1,5 +1,7 @@
 <?php
 
+use App\Exports\ProposalExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
@@ -53,5 +55,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');
     Route::post('/checklist/update', [ProposalProsesChecklistController::class, 'update'])->name('checklist.update');
     Route::post('/monitoring/keterangan/update', [MonitoringController::class, 'updateKeterangan'])->name('monitoring.keterangan');
+    // Route::get('/export-proposals', function () {
+    //     return Excel::download(new ProposalExport, 'data_proposal.xlsx');
+    // });
+    Route::get('/export-proposals', [ProposalController::class, 'export']);
 });
-

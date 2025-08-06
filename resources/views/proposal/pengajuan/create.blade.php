@@ -26,8 +26,9 @@
 
                                 <div class="mb-3">
                                     <label class="form-label">Judul Pengajuan</label>
-                                    <input type="text" class="form-control @error('judul') is-invalid @enderror"
-                                        name="judul" value="{{ old('judul') }}" required
+                                    <input type="text" id="judul"
+                                        class="form-control @error('judul') is-invalid @enderror" name="judul"
+                                        value="{{ old('judul') }}" required
                                         placeholder="Contoh: Pengajuan Bantuan Dana Desa">
                                     @error('judul')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -157,7 +158,7 @@
                                         <input type="text" id="nominal_disetujui"
                                             class="form-control @error('nominal_disetujui') is-invalid @enderror"
                                             name="nominal_disetujui" value="{{ old('nominal_disetujui') }}"
-                                            placeholder="Contoh: Rp500.000">
+                                            placeholder="Contoh: Rp500.000" required>
                                         <div class="form-text">Isi hanya jika pengajuan disetujui atau masih dalam status
                                             pending. Kosongkan jika tidak ada nominal yang disetujui.</div>
                                         @error('nominal_disetujui')

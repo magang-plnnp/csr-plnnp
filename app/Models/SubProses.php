@@ -18,4 +18,10 @@ class SubProses extends Model
     {
         return $this->hasMany(ProposalProsesChecklist::class);
     }
+
+    public function checklistForProposal($proposalId)
+    {
+        return $this->hasOne(ProposalProsesChecklist::class)
+            ->where('proposal_id', $proposalId);
+    }
 }

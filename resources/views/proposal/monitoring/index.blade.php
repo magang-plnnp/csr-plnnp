@@ -45,6 +45,10 @@
                                 @endforeach
                             </select>
                         </div>
+                        <a href="#" id="exportExcel" style="background-color: #78C841; color: white;" class="btn">
+                            <i class="fas fa-plus me-1"></i> Export Excel
+                        </a>
+
                     </div>
 
                     <div class="table-responsive">
@@ -240,6 +244,20 @@
 
         <script>
             let table;
+
+            $('#exportExcel').on('click', function() {
+                const tipologi = $('#filter-tipologi').val(); // ambil dari filtermu
+                const pic = $('#filter-pic').val(); // ambil dari filtermu
+                const status = $('#filter-status').val(); // ambil dari filtermu
+
+                let query = $.param({
+                    status: status,
+                    tipologi: tipologi,
+                    pic: pic,
+                });
+                window.location.href = `/export-proposals?${query}`;
+            });
+
 
             $(document).ready(function() {
                 // Inisialisasi DataTable
