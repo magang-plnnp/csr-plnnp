@@ -4,6 +4,7 @@ use App\Exports\ProposalExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BeritaAcaraController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WilayahController;
@@ -46,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('pengguna', UserController::class);
     Route::resource('tipologi', TipologiController::class);
+    Route::resource('berita-acara', BeritaAcaraController::class);
     Route::resource('proposal', ProposalController::class);
     Route::resource('tipe-proses', TipeProsesController::class);
     Route::resource('sub-proses', SubProsesController::class);
