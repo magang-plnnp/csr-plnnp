@@ -18,6 +18,7 @@ class Kelayakan extends Model
         'tujuan',
         'indikator_lingkungan',
         'indikator_sosial',
+        'file_pdf',
     ];
 
     public function proposal()

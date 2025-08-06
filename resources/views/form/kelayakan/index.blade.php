@@ -1,11 +1,6 @@
  @extends('layouts.app')
  @section('title', 'CSR PLN Nusantara Power UP Paiton')
  @push('styles')
-     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-     {{-- Select2 Bootstrap 4 Theme --}}
-     <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css"
-         rel="stylesheet" />
-
      <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
      <style>
          /* Warna tombol pagination aktif dari DataTables (Bootstrap 5) */
@@ -69,7 +64,7 @@
                                              <h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6>
                                          </td>
                                          <td>
-                                             <h6 class="fw-semibold mb-0">{{ $data->proposal->nama }}</h6>
+                                             <h6 class="fw-semibold mb-0">{{ $data->proposal->judul }}</h6>
                                          </td>
                                          <td>
                                              <p class="mb-0 fw-normal">{{ $data->dasar_pelaksanaan }}</p>
@@ -81,7 +76,10 @@
                                              <p class="mb-0 fw-normal">{{ $data->tujuan }}</p>
                                          </td>
                                          <td>
-                                             <p class="mb-0 fw-normal">{{ $data->file }}</p>
+                                             <p class="mb-0 fw-normal"> <a href="{{ asset('storage/' . $data->file_pdf) }}"
+                                                     target="_blank" class="btn btn-sm btn-primary">
+                                                     PDF
+                                                 </a></p>
                                          </td>
                                          <td>
                                              <div class="d-flex justify-content-center align-items-center gap-2">
@@ -149,19 +147,19 @@
      <!-- Modal Create -->
      <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
          <div class="modal-dialog">
-             <form method="POST" action="{{ route('berita-acara.store') }}">
+             <form method="POST" action="{{ route('kelayakan.store') }}">
                  @csrf
                  <div class="modal-content">
                      <div class="modal-header">
-                         <h5 class="modal-title" id="createModalLabel">Tambah Berita Acara</h5>
+                         <h5 class="modal-title" id="createModalLabel">Tambah Form Kelayakan</h5>
                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                      </div>
                      <div class="modal-body">
                          <div class="mb-3">
                              <label class="form-label">Proposal</label>
-                             <select name="proposal_id  "
-                                 class="form-control select2 @error('proposal_id') is-invalid @enderror" required>
-                                 <option value="">-- Pilih Proposal --</option>
+                             <select name="proposal_id" class="form-control @error('proposal_id') is-invalid @enderror"
+                                 required>
+                                 <option value="">-- Pilih Tipologi --</option>
                                  @foreach ($proposal as $item)
                                      <option value="{{ $item->id }}"
                                          {{ old('proposal_id') == $item->id ? 'selected' : '' }}>
@@ -169,19 +167,23 @@
                                      </option>
                                  @endforeach
                              </select>
-                             @error('proposal_id ')
+                             @error('proposal_id')
                                  <div class="invalid-feedback">{{ $message }}</div>
                              @enderror
                          </div>
 
 
                          <div class="mb-3">
-                             <label for="create-deskripsi" class="form-label">Dasar Pelaksanaan</label>
-                             <textarea class="form-control" id="create-deskripsi" name="deskripsi" required></textarea>
+                             <label for="dasar_pelaksanaan" class="form-label">Dasar Pelaksanaan</label>
+                             <textarea class="form-control" id="dasar_pelaksanaan" name="dasar_pelaksanaan" required></textarea>
                          </div>
                          <div class="mb-3">
-                             <label for="create-deskripsi" class="form-label">Jabatan</label>
-                             <textarea class="form-control" id="create-deskripsi" name="deskripsi" required></textarea>
+                             <label for="latar_belakang" class="form-label">Latar Belakang</label>
+                             <textarea class="form-control" id="latar_belakang" name="latar_belakang" required></textarea>
+                         </div>
+                         <div class="mb-3">
+                             <label for="tujuan" class="form-label">Tujuan</label>
+                             <textarea class="form-control" id="tujuan" name="tujuan" required></textarea>
                          </div>
                      </div>
                      <div class="modal-footer">
@@ -297,17 +299,6 @@
                          delay: 8000,
                      });
                      toast.show();
-                 });
-             });
-         </script>
-
-         <script>
-             $(document).ready(function() {
-                 $('.select2').select2({
-                     theme: 'bootstrap4',
-                     width: '100%',
-                     placeholder: '-- Pilih Proposal --',
-                     allowClear: true
                  });
              });
          </script>
