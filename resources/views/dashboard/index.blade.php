@@ -206,15 +206,23 @@
     <script>
         const ctx = document.getElementById('jumlahPieChart').getContext('2d');
 
-        // Labels = Kode tipologi
-        const pieLabels = {!! json_encode(array_values($tipologiList)) !!};
-
-        // Data = Total proposal per tipologi
-        const pieData = {!! json_encode(
+        const tipologiList = {!! json_encode(array_values($tipologiList)) !!};
+        const rawData = {!! json_encode(
             array_map(function ($id) use ($totalPerTipologi) {
                 return $totalPerTipologi[$id] ?? 0;
             }, array_keys($tipologiList)),
         ) !!};
+
+        // Hitung total
+        const total = rawData.reduce((a, b) => a + b, 0);
+
+        // Label dengan jumlah dan persen
+        const pieLabels = tipologiList.map((label, i) => {
+            const value = rawData[i];
+            const percent = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+            return `${label}: ${value} (${percent}%)`;
+        });
+
 
         const pieColors = ['#ff9800', '#2196f3', '#f44336', '#ffeb3b', '#4caf50', '#9c27b0', '#00bcd4'];
 
@@ -223,18 +231,22 @@
             data: {
                 labels: pieLabels,
                 datasets: [{
-                    data: pieData,
+                    data: rawData,
                     backgroundColor: pieColors.slice(0, pieLabels.length),
                     borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         position: 'right',
                         labels: {
-                            color: '#333'
+                            color: '#333',
+                            font: {
+                                size: 10
+                            }
                         }
                     },
                     tooltip: {
@@ -243,12 +255,13 @@
                                 const total = context.dataset.data.reduce((a, b) => a + b, 0);
                                 const value = context.raw;
                                 const percentage = ((value / total) * 100).toFixed(1);
-                                return `${context.label}: ${value} (${percentage}%)`;
+                                return `${context.label}`;
                             }
                         }
                     }
                 }
             }
+
         });
     </script>
 @endpush
