@@ -61,31 +61,25 @@
                                             <p class="mb-0 fw-normal">{{ $data->username }}</p>
                                         </td>
                                         <td>
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-action" type="button"
-                                                    id="dropdownMenuButton{{ $data->id }}" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-h"></i>
+                                            <div class="d-flex justify-content-center align-items-center gap-2">
+                                                {{-- Tombol Edit --}}
+                                                <button type="button"
+                                                    class="btn btn-sm btn-light border-0 text-primary btn-edit"
+                                                    data-bs-toggle="modal" data-bs-target="#editModal"
+                                                    data-id="{{ $data->id }}" data-nama="{{ $data->nama }}"
+                                                    data-username="{{ $data->username }}">
+                                                    <i class="fas fa-edit"></i>
                                                 </button>
-                                                <ul class="dropdown-menu"
-                                                    aria-labelledby="dropdownMenuButton{{ $data->id }}">
-                                                    <li>
-                                                        <button type="button" class="dropdown-item text-primary btn-edit"
-                                                            data-bs-toggle="modal" data-bs-target="#editModal"
-                                                            data-id="{{ $data->id }}" data-nama="{{ $data->nama }}"
-                                                            data-username="{{ $data->username }}">
-                                                            Edit
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button type="button" class="dropdown-item text-danger btn-delete"
-                                                            data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                            data-id="{{ $data->id }}" data-nama="{{ $data->nama }}">
-                                                            Hapus
-                                                        </button>
-                                                    </li>
-                                                </ul>
+
+                                                {{-- Tombol Hapus --}}
+                                                <button type="button"
+                                                    class="btn btn-sm btn-light border-0 text-danger btn-delete"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                    data-id="{{ $data->id }}" data-nama="{{ $data->nama }}">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
                                             </div>
+
                                         </td>
 
                                     </tr>
