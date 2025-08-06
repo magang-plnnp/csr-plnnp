@@ -1,11 +1,6 @@
  @extends('layouts.app')
  @section('title', 'CSR PLN Nusantara Power UP Paiton')
  @push('styles')
-     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-     {{-- Select2 Bootstrap 4 Theme --}}
-     <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css"
-         rel="stylesheet" />
-
      <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
      <style>
          /* Warna tombol pagination aktif dari DataTables (Bootstrap 5) */
@@ -66,14 +61,21 @@
                                              <h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6>
                                          </td>
                                          <td>
-                                             <h6 class="fw-semibold mb-0">{{ $data->proposal->nama }}</h6>
+                                             <h6 class="fw-semibold mb-0">{{ $data->proposal->judul }}</h6>
                                          </td>
                                          <td>
-                                             <p class="mb-0 fw-normal">{{ $data->jabatan }}</p>
+                                             <p class="mb-0 fw-normal">{{ $data->nama_penerima }}</p>
                                          </td>
                                          <td>
-                                             <p class="mb-0 fw-normal">{{ $data->file }}</p>
+                                             <p class="mb-0 fw-normal">{{ $data->jabatan_penerima }}</p>
                                          </td>
+                                         <td>
+                                             <p class="mb-0 fw-normal"> <a href="{{ asset('storage/' . $data->file_pdf) }}"
+                                                     target="_blank" class="btn btn-sm btn-primary">
+                                                     PDF
+                                                 </a></p>
+                                         </td>
+
                                          <td>
                                              <div class="d-flex justify-content-center align-items-center gap-2">
                                                  {{-- Tombol Edit --}}
@@ -150,9 +152,9 @@
                      <div class="modal-body">
                          <div class="mb-3">
                              <label class="form-label">Proposal</label>
-                             <select name="proposal_id  "
-                                 class="form-control select2 @error('proposal_id') is-invalid @enderror" required>
-                                 <option value="">-- Pilih Proposal --</option>
+                             <select name="proposal_id" class="form-control @error('proposal_id') is-invalid @enderror"
+                                 required>
+                                 <option value="">-- Pilih Tipologi --</option>
                                  @foreach ($proposal as $item)
                                      <option value="{{ $item->id }}"
                                          {{ old('proposal_id') == $item->id ? 'selected' : '' }}>
@@ -160,19 +162,18 @@
                                      </option>
                                  @endforeach
                              </select>
-                             @error('proposal_id ')
+                             @error('proposal_id')
                                  <div class="invalid-feedback">{{ $message }}</div>
                              @enderror
                          </div>
 
-
                          <div class="mb-3">
-                             <label for="create-deskripsi" class="form-label">Nama</label>
-                             <textarea class="form-control" id="create-deskripsi" name="deskripsi" required></textarea>
+                             <label for="nama_penerima" class="form-label">Nama</label>
+                             <textarea class="form-control" id="nama_penerima" name="nama_penerima" required></textarea>
                          </div>
                          <div class="mb-3">
-                             <label for="create-deskripsi" class="form-label">Jabatan</label>
-                             <textarea class="form-control" id="create-deskripsi" name="deskripsi" required></textarea>
+                             <label for="jabatan_penerima" class="form-label">Jabatan</label>
+                             <textarea class="form-control" id="jabatan_penerima" name="jabatan_penerima" required></textarea>
                          </div>
                      </div>
                      <div class="modal-footer">
@@ -216,14 +217,9 @@
 
 
      @push('scripts')
-         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
          <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
          <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
-         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
-
          <script>
              $('#tipologiTable').DataTable({
                  language: {
@@ -288,17 +284,6 @@
                          delay: 8000,
                      });
                      toast.show();
-                 });
-             });
-         </script>
-
-         <script>
-             $(document).ready(function() {
-                 $('.select2').select2({
-                     theme: 'bootstrap4',
-                     width: '100%',
-                     placeholder: '-- Pilih Proposal --',
-                     allowClear: true
                  });
              });
          </script>

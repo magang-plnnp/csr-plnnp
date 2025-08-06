@@ -176,7 +176,7 @@
 
 
                          <div class="mb-3">
-                             <label for="create-deskripsi" class="form-label">Nama</label>
+                             <label for="create-deskripsi" class="form-label">Dasar Pelaksanaan</label>
                              <textarea class="form-control" id="create-deskripsi" name="deskripsi" required></textarea>
                          </div>
                          <div class="mb-3">
