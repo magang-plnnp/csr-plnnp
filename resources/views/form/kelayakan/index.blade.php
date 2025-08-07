@@ -77,9 +77,9 @@
                                          </td>
                                          <td>
                                              <p class="mb-0 fw-normal"> <a href="{{ asset('storage/' . $data->file_pdf) }}"
-                                                     target="_blank" class="btn btn-sm btn-primary">
-                                                     PDF
-                                                 </a></p>
+                                                     target="_blank">Lihat
+                                                     PDF</a></p>
+
                                          </td>
                                          <td>
                                              <div class="d-flex justify-content-center align-items-center gap-2">
