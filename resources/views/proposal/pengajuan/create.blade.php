@@ -16,8 +16,11 @@
                     <h5 class="card-title fw-semibold mb-4">Input Data Proposal</h5>
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('proposal.store') }}" method="POST">
+                            <form method="POST" action="{{ route('proposal.store') }}" enctype="multipart/form-data"
+                                novalidate id="formProposal">
                                 @csrf
+                                <input type="hidden" id="kabupaten_id" name="kabupaten_id">
+                                <input type="hidden" id="kabupaten_nama" name="kabupaten_nama">
                                 <input type="hidden" id="kecamatan_id" name="kecamatan_id">
                                 <input type="hidden" id="kecamatan_nama" name="kecamatan_nama">
                                 <input type="hidden" id="kelurahan_id" name="kelurahan_id">
@@ -31,7 +34,7 @@
                                         value="{{ old('judul') }}" required
                                         placeholder="Contoh: Pengajuan Bantuan Dana Desa">
                                     @error('judul')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">Judul Pengajuan wajib diisi</div>
                                     @enderror
                                 </div>
 
@@ -43,8 +46,22 @@
                                         placeholder="Contoh: Dinas Sosial Kabupaten Malang">
 
                                     @error('instansi_pengajuan')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">Instansi Pengajuan wajib diisi</div>
                                     @enderror
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Kabupaten / Kota</label>
+                                        <select id="kabupaten" name="kabupaten_id"
+                                            class="form-select @error('kabupaten_id') is-invalid @enderror" required>
+                                            <option value="">-- Pilih Kabupaten / Kota --</option>
+                                        </select>
+                                        <div class="form-text">Pilih Kabupaten atau Kota sesuai wilayah pengajuan.</div>
+                                        @error('kabupaten_id')
+                                            <div class="invalid-feedback">Kabupaten / Kota wajib diisi</div>
+                                        @enderror
+                                    </div>
                                 </div>
 
                                 <div class="row">
@@ -57,7 +74,7 @@
                                         <div class="form-text">Pilih kecamatan sesuai dengan wilayah pengajuan yang berada
                                             di Kabupaten Probolinggo.</div>
                                         @error('kecamatan_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            <div class="invalid-feedback">Kecamatan wajib diisi</div>
                                         @enderror
                                     </div>
 
@@ -71,12 +88,10 @@
                                         <div class="form-text">Pilih kelurahan atau desa yang berada di dalam kecamatan yang
                                             telah dipilih.</div>
                                         @error('kelurahan_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            <div class="invalid-feedback">Kelurahan wajib diisi</div>
                                         @enderror
                                     </div>
                                 </div>
-
-
 
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal Disposisi</label>
@@ -84,7 +99,7 @@
                                         class="form-control @error('tanggal_disposisi') is-invalid @enderror"
                                         name="tanggal_disposisi" value="{{ old('tanggal_disposisi') }}" required>
                                     @error('tanggal_disposisi')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">Tanggal Disposisi wajib diisi</div>
                                     @enderror
                                 </div>
 
@@ -95,9 +110,9 @@
                                             class="form-control @error('nominal_pengajuan') is-invalid @enderror"
                                             name="nominal_pengajuan" value="{{ old('nominal_pengajuan') }}"
                                             placeholder="Contoh: Rp500.000">
-                                        <div class="form-text">Bisa dikosongi jika tidak ada nominal uang</div>
+                                        <div class="form-text">Nominal Pengajuan wajib diisi. Gunakan tanda '-'
+                                            apabila data kosong.</div>
                                         @error('nominal_pengajuan')
-                                            <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
 
@@ -107,9 +122,9 @@
                                             class="form-control @error('barang_pengajuan') is-invalid @enderror"
                                             name="barang_pengajuan" value="{{ old('barang_pengajuan') }}"
                                             placeholder="Contoh: 26 Papan Peringatan">
-                                        <div class="form-text">Bisa dikosongi jika tidak ada barang pengajuan</div>
+                                        <div class="form-text">Barang Pengajuan wajib diisi. Gunakan tanda '-'
+                                            apabila data kosong</div>
                                         @error('barang_pengajuan')
-                                            <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -129,7 +144,7 @@
                                             @endforeach
                                         </select>
                                         @error('tipologi_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            <div class="invalid-feedback">Tipologi wajib diisi</div>
                                         @enderror
                                     </div>
 
@@ -138,7 +153,8 @@
                                         <select class="form-control @error('status') is-invalid @enderror" name="status"
                                             required>
                                             <option value="">-- Pilih Status Persetujuan --</option>
-                                            <option value="disetujui" {{ old('status') == 'disetujui' ? 'selected' : '' }}>
+                                            <option value="disetujui"
+                                                {{ old('status') == 'disetujui' ? 'selected' : '' }}>
                                                 Setuju</option>
                                             <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>
                                                 Pending</option>
@@ -146,7 +162,7 @@
                                                 Tolak</option>
                                         </select>
                                         @error('status')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            <div class="invalid-feedback">Setuju / Tidak setuju wajib diisi</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -159,10 +175,9 @@
                                             class="form-control @error('nominal_disetujui') is-invalid @enderror"
                                             name="nominal_disetujui" value="{{ old('nominal_disetujui') }}"
                                             placeholder="Contoh: Rp500.000" required>
-                                        <div class="form-text">Isi hanya jika pengajuan disetujui atau masih dalam status
-                                            pending. Kosongkan jika tidak ada nominal yang disetujui.</div>
+                                        <div class="form-text">Nominal Disetujui wajib diisi. Gunakan tanda '-' apabila
+                                            data kosong.</div>
                                         @error('nominal_disetujui')
-                                            <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
 
@@ -172,10 +187,9 @@
                                             class="form-control @error('barang_disetujui') is-invalid @enderror"
                                             name="barang_disetujui" value="{{ old('barang_disetujui') }}"
                                             placeholder="Contoh: 26 Papan Peringatan">
-                                        <div class="form-text">Isi hanya jika pengajuan disetujui atau masih dalam status
-                                            pending. Kosongkan jika tidak ada barang yang disetujui.</div>
+                                        <div class="form-text">Barang Disetujui wajib diisi. Gunakan tanda '-' apabila
+                                            data kosong.</div>
                                         @error('barang_disetujui')
-                                            <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -213,7 +227,7 @@
                                         @endforeach
                                     </select>
                                     @error('tipe_proses_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">Proses wajib diisi</div>
                                     @enderror
                                 </div>
 
@@ -231,15 +245,17 @@
 
                                 <div class="mb-3">
                                     <label class="form-label">Overdue</label>
-                                    <input type="date" class="form-control @error('overdue') is-invalid @enderror"
-                                        name="overdue" value="{{ old('overdue') }}">
+                                    <input type="date" name="overdue"
+                                        class="form-control @error('overdue') is-invalid @enderror" required>
                                     @error('overdue')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">Overdue wajib diisi</div>
                                     @enderror
-                                </div>
 
-                                <button type="submit" style="background-color: #78C841; color: white;"
-                                    class="btn">Submit</button>
+
+                                    <button type="submit" style="background-color: #78C841; color: white;"
+                                        class="btn mt-3">
+                                        Submit
+                                    </button>
                             </form>
 
                         </div>
@@ -255,134 +271,88 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                // Inisialisasi dropdown
+                const kabupatenSelect = document.getElementById('kabupaten');
                 const kecamatanSelect = document.getElementById('kecamatan');
                 const kelurahanSelect = document.getElementById('kelurahan');
 
+                const kabupatenIdInput = document.getElementById('kabupaten_id');
+                const kabupatenNamaInput = document.getElementById('kabupaten_nama');
                 const kecamatanIdInput = document.getElementById('kecamatan_id');
                 const kecamatanNamaInput = document.getElementById('kecamatan_nama');
                 const kelurahanIdInput = document.getElementById('kelurahan_id');
                 const kelurahanNamaInput = document.getElementById('kelurahan_nama');
 
-                // Fetch kecamatan
-                fetch('/kecamatan')
-                    .then(res => res.json())
+                fetch('/kabupaten')
+                    .then(response => response.json())
                     .then(data => {
-                        kecamatanSelect.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
-
-                        data.forEach(group => {
-                            const optgroup = document.createElement('optgroup');
-                            optgroup.label = group.label;
-
-                            group.options.forEach(item => {
-                                const option = document.createElement('option');
-                                option.value = item.id;
-                                option.textContent = item.name;
-                                optgroup.appendChild(option);
-                            });
-
-                            kecamatanSelect.appendChild(optgroup);
+                        data.forEach(item => {
+                            const option = new Option(item.name, item.id);
+                            option.setAttribute('data-name', item.name);
+                            kabupatenSelect.add(option);
                         });
-
-                        $('#kecamatan').select2({
-                            placeholder: "-- Pilih atau Ketik Kecamatan --",
-                            theme: 'bootstrap4',
-                            tags: true, // kalau kamu ingin tetap bisa ketik manual
-                            allowClear: true
-                        });
-
-                        const oldKecamatanId = "{{ old('kecamatan_id') }}";
-                        if (oldKecamatanId) {
-                            setTimeout(() => {
-                                $('#kecamatan').val(oldKecamatanId).trigger('change');
-                            }, 200);
-                        }
                     });
 
+                kabupatenSelect.addEventListener('change', function() {
+                    const kabupatenId = this.value;
+                    const kabupatenNama = this.options[this.selectedIndex].getAttribute('data-name');
 
-                // Ganti event handler ke jQuery
-                $('#kecamatan').on('change', function() {
-                    const selectedId = $(this).val();
-                    const selectedText = $(this).find('option:selected').text();
+                    kabupatenIdInput.value = kabupatenId;
+                    kabupatenNamaInput.value = kabupatenNama;
 
-                    console.log("Kecamatan selected:", selectedId);
+                    kecamatanSelect.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+                    kelurahanSelect.innerHTML = '<option value="">-- Pilih Kelurahan / Desa --</option>';
+                    kecamatanIdInput.value = '';
+                    kecamatanNamaInput.value = '';
+                    kelurahanIdInput.value = '';
+                    kelurahanNamaInput.value = '';
 
-                    if (kecamatanIdInput) kecamatanIdInput.value = selectedId;
-                    if (kecamatanNamaInput) kecamatanNamaInput.value = selectedText;
-
-                    if (!selectedId) {
-                        kelurahanSelect.innerHTML = '<option value="">-- Pilih Kelurahan / Desa --</option>';
-                        $('#kelurahan').val('').trigger('change');
-                        return;
+                    if (kabupatenId) {
+                        fetch(`/kecamatan/${kabupatenId}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                data.forEach(item => {
+                                    const option = new Option(item.name, item.id);
+                                    option.setAttribute('data-name', item.name);
+                                    kecamatanSelect.add(option);
+                                });
+                            });
                     }
-
-                    fetch(`/kelurahan/${selectedId}`)
-                        .then(res => res.json())
-                        .then(data => {
-                            console.log("Kelurahan loaded:", data);
-
-                            kelurahanSelect.innerHTML =
-                                '<option value="">-- Pilih Kelurahan / Desa --</option>';
-                            data.forEach(item => {
-                                const opt = document.createElement('option');
-                                opt.value = item.id;
-                                opt.textContent = item.name;
-                                kelurahanSelect.appendChild(opt);
-                            });
-
-                            if ($.fn.select2 && $('#kelurahan').hasClass("select2-hidden-accessible")) {
-                                $('#kelurahan').select2('destroy');
-                            }
-
-                            $('#kelurahan').select2({
-                                placeholder: "-- Pilih Kelurahan / Desa --",
-                                theme: 'bootstrap4',
-                                allowClear: true
-                            });
-
-                            const oldKelurahanId = "{{ old('kelurahan_id') }}";
-                            if (oldKelurahanId) {
-                                setTimeout(() => {
-                                    $('#kelurahan').val(oldKelurahanId).trigger('change');
-                                }, 100);
-                            }
-                        })
-                        .catch(err => {
-                            console.error("Gagal memuat kelurahan:", err);
-                            kelurahanSelect.innerHTML =
-                                '<option value="">-- Gagal Memuat Kelurahan --</option>';
-                        });
                 });
 
-                $('#kelurahan').on('change', function() {
-                    const selectedValue = $(this).val();
-                    const selectedText = $(this).find('option:selected').text();
+                kecamatanSelect.addEventListener('change', function() {
+                    const kecamatanId = this.value;
+                    const kecamatanNama = this.options[this.selectedIndex].getAttribute('data-name');
 
-                    if (kelurahanIdInput) kelurahanIdInput.value = selectedValue;
-                    if (kelurahanNamaInput) kelurahanNamaInput.value = selectedText;
+                    kecamatanIdInput.value = kecamatanId;
+                    kecamatanNamaInput.value = kecamatanNama;
+
+                    kelurahanSelect.innerHTML = '<option value="">-- Pilih Kelurahan / Desa --</option>';
+                    kelurahanIdInput.value = '';
+                    kelurahanNamaInput.value = '';
+
+                    if (kecamatanId) {
+                        fetch(`/kelurahan/${kecamatanId}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                data.forEach(item => {
+                                    const option = new Option(item.name, item.id);
+                                    option.setAttribute('data-name', item.name);
+                                    kelurahanSelect.add(option);
+                                });
+                            });
+                    }
                 });
-            });
-        </script>
 
+                kelurahanSelect.addEventListener('change', function() {
+                    const kelurahanId = this.value;
+                    const kelurahanNama = this.options[this.selectedIndex].getAttribute('data-name');
 
+                    kelurahanIdInput.value = kelurahanId;
+                    kelurahanNamaInput.value = kelurahanNama;
+                });
 
-        <script>
-            function formatRupiah(angka, prefix = 'Rp') {
-                let number_string = angka.replace(/[^,\d]/g, '').toString(),
-                    split = number_string.split(','),
-                    sisa = split[0].length % 3,
-                    rupiah = split[0].substr(0, sisa),
-                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-                if (ribuan) {
-                    const separator = sisa ? '.' : '';
-                    rupiah += separator + ribuan.join('.');
-                }
-
-                rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
-                return prefix + ' ' + rupiah;
-            }
-
-            document.addEventListener('DOMContentLoaded', function() {
+                // Format Rupiah
                 const inputPengajuan = document.getElementById('nominal_pengajuan');
                 const inputDisetujui = document.getElementById('nominal_disetujui');
 
@@ -398,6 +368,22 @@
                         input.value = formatRupiah(input.value.replace(/[^0-9]/g, ''));
                     }
                 });
+
+                function formatRupiah(angka, prefix = 'Rp') {
+                    let number_string = angka.replace(/[^,\d]/g, '').toString(),
+                        split = number_string.split(','),
+                        sisa = split[0].length % 3,
+                        rupiah = split[0].substr(0, sisa),
+                        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                    if (ribuan) {
+                        const separator = sisa ? '.' : '';
+                        rupiah += separator + ribuan.join('.');
+                    }
+
+                    rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+                    return prefix + ' ' + rupiah;
+                }
             });
         </script>
     @endpush
