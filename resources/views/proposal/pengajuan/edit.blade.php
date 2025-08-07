@@ -39,6 +39,25 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
+                                        <label class="form-label">Kabupaten / Kota</label>
+                                        <select id="kabupaten"
+                                            class="form-select select2 @error('kabupaten_id') is-invalid @enderror"
+                                            style="width: 100%">
+                                            <option></option>
+                                        </select>
+                                        <input type="hidden" name="kabupaten_id" id="kabupaten_id"
+                                            value="{{ old('kabupaten_id', $proposal->kabupaten_id) }}">
+                                        <input type="hidden" name="kabupaten_nama" id="kabupaten_nama"
+                                            value="{{ old('kabupaten_nama', $proposal->kabupaten_nama) }}">
+                                        <div class="form-text">Pilih Kabupaten atau Kota sesuai wilayah pengajuan.</div>
+                                        @error('kabupaten_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
                                         <label class="form-label">Kecamatan</label>
                                         <select id="kecamatan"
                                             class="form-select select2 @error('kecamatan_id') is-invalid @enderror"
@@ -241,17 +260,24 @@
         </div>
     </div>
 
-
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
             $(document).ready(function() {
+                let kabupatenIdValue = "{{ old('kabupaten_id', $proposal->kabupaten_id) }}";
+                let kabupatenNamaValue = "{{ old('kabupaten_nama', $proposal->kabupaten_nama) }}";
                 let kecamatanIdValue = "{{ old('kecamatan_id', $proposal->kecamatan_id) }}";
                 let kecamatanNamaValue = "{{ old('kecamatan_nama', $proposal->kecamatan_nama) }}";
                 let kelurahanIdValue = "{{ old('kelurahan_id', $proposal->kelurahan_id) }}";
                 let kelurahanNamaValue = "{{ old('kelurahan_nama', $proposal->kelurahan_nama) }}";
 
                 // Init Select2
+                $('#kabupaten').select2({
+                    theme: 'bootstrap4',
+                    placeholder: '-- Pilih Kabupaten / Kota --',
+                    allowClear: true
+                });
+
                 $('#kecamatan').select2({
                     theme: 'bootstrap4',
                     placeholder: '-- Pilih Kecamatan --',
@@ -264,34 +290,47 @@
                     allowClear: true
                 });
 
-                // Fetch Kecamatan
-                fetch('/kecamatan')
+                // Fetch Kabupaten
+                fetch('/kabupaten')
                     .then(res => res.json())
                     .then(data => {
-                        const kecSelect = $('#kecamatan');
-                        kecSelect.empty().append('<option></option>');
+                        const kabSelect = $('#kabupaten');
+                        kabSelect.empty().append('<option></option>');
 
-                        data.forEach(group => {
-                            const optgroup = document.createElement('optgroup');
-                            optgroup.label = group.label;
-
-                            group.options.forEach(item => {
-                                const option = new Option(item.name, item.id, false, item.id ==
-                                    kecamatanIdValue);
-                                optgroup.appendChild(option);
-                            });
-
-                            kecSelect.append(optgroup);
+                        data.forEach(item => {
+                            const option = new Option(item.name, item.id, false, item.id ==
+                                kabupatenIdValue);
+                            option.setAttribute('data-name', item.name);
+                            kabSelect.append(option);
                         });
 
-                        if (kecamatanIdValue) {
-                            $('#kecamatan').val(kecamatanIdValue).trigger('change');
-                            $('#kecamatan_id').val(kecamatanIdValue);
-                            $('#kecamatan_nama').val(kecamatanNamaValue);
-                            fetchKelurahan(kecamatanIdValue, kelurahanIdValue);
+                        if (kabupatenIdValue) {
+                            $('#kabupaten').val(kabupatenIdValue).trigger('change');
+                            $('#kabupaten_id').val(kabupatenIdValue);
+                            $('#kabupaten_nama').val(kabupatenNamaValue);
+                            fetchKecamatan(kabupatenIdValue, kecamatanIdValue);
                         }
                     });
 
+                $('#kabupaten').on('change', function() {
+                    const selectedId = $(this).val();
+                    const selectedText = $(this).find("option:selected").text();
+
+                    $('#kabupaten_id').val(selectedId);
+                    $('#kabupaten_nama').val(selectedText);
+
+                    $('#kecamatan').empty().trigger('change');
+                    $('#kelurahan').empty().trigger('change');
+
+                    $('#kecamatan_id').val('');
+                    $('#kecamatan_nama').val('');
+                    $('#kelurahan_id').val('');
+                    $('#kelurahan_nama').val('');
+
+                    if (selectedId) {
+                        fetchKecamatan(selectedId);
+                    }
+                });
 
                 $('#kecamatan').on('change', function() {
                     const selectedId = $(this).val();
@@ -301,15 +340,44 @@
                     $('#kecamatan_nama').val(selectedText);
 
                     $('#kelurahan').empty().trigger('change');
-                    fetchKelurahan(selectedId);
+                    $('#kelurahan_id').val('');
+                    $('#kelurahan_nama').val('');
+
+                    if (selectedId) {
+                        fetchKelurahan(selectedId);
+                    }
                 });
 
                 $('#kelurahan').on('change', function() {
                     const selectedId = $(this).val();
                     const selectedText = $(this).find("option:selected").text();
+
                     $('#kelurahan_id').val(selectedId);
                     $('#kelurahan_nama').val(selectedText);
                 });
+
+                function fetchKecamatan(kabupatenId, selectedKecamatanId = null) {
+                    fetch(`/kecamatan/${kabupatenId}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            const kecSelect = $('#kecamatan');
+                            kecSelect.empty().append('<option></option>');
+
+                            data.forEach(item => {
+                                const option = new Option(item.name, item.id, false, item.id ==
+                                    selectedKecamatanId);
+                                option.setAttribute('data-name', item.name);
+                                kecSelect.append(option);
+                            });
+
+                            if (selectedKecamatanId) {
+                                $('#kecamatan').val(selectedKecamatanId).trigger('change');
+                                $('#kecamatan_id').val(selectedKecamatanId);
+                                $('#kecamatan_nama').val(kecamatanNamaValue);
+                                fetchKelurahan(selectedKecamatanId, kelurahanIdValue);
+                            }
+                        });
+                }
 
                 function fetchKelurahan(kecamatanId, selectedKelurahanId = null) {
                     fetch(`/kelurahan/${kecamatanId}`)
@@ -321,6 +389,7 @@
                             data.forEach(item => {
                                 const option = new Option(item.name, item.id, false, item.id ==
                                     selectedKelurahanId);
+                                option.setAttribute('data-name', item.name);
                                 kelSelect.append(option);
                             });
 
@@ -356,7 +425,6 @@
                     return prefix + ' ' + rupiah;
                 }
 
-                // Event input untuk format saat ngetik
                 [pengajuanInput, disetujuiInput].forEach(input => {
                     input.addEventListener('input', function(e) {
                         let value = e.target.value.replace(/[^0-9]/g, '');
@@ -367,7 +435,6 @@
                         }
                     });
 
-                    // Format ulang value default saat halaman pertama dimuat
                     if (input.value) {
                         input.value = formatRupiah(input.value.replace(/[^0-9]/g, ''));
                     }
