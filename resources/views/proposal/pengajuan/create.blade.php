@@ -16,7 +16,8 @@
                     <h5 class="card-title fw-semibold mb-4">Input Data Proposal</h5>
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('proposal.store') }}" method="POST">
+                            <form method="POST" action="{{ route('proposal.store') }}" enctype="multipart/form-data"
+                                novalidate id="formProposal">
                                 @csrf
                                 <input type="hidden" id="kabupaten_id" name="kabupaten_id">
                                 <input type="hidden" id="kabupaten_nama" name="kabupaten_nama">
@@ -33,7 +34,7 @@
                                         value="{{ old('judul') }}" required
                                         placeholder="Contoh: Pengajuan Bantuan Dana Desa">
                                     @error('judul')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">Judul Pengajuan wajib diisi</div>
                                     @enderror
                                 </div>
 
@@ -45,7 +46,7 @@
                                         placeholder="Contoh: Dinas Sosial Kabupaten Malang">
 
                                     @error('instansi_pengajuan')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">Instansi Pengajuan wajib diisi</div>
                                     @enderror
                                 </div>
 
@@ -58,7 +59,7 @@
                                         </select>
                                         <div class="form-text">Pilih Kabupaten atau Kota sesuai wilayah pengajuan.</div>
                                         @error('kabupaten_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            <div class="invalid-feedback">Kabupaten / Kota wajib diisi</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -73,7 +74,7 @@
                                         <div class="form-text">Pilih kecamatan sesuai dengan wilayah pengajuan yang berada
                                             di Kabupaten Probolinggo.</div>
                                         @error('kecamatan_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            <div class="invalid-feedback">Kecamatan wajib diisi</div>
                                         @enderror
                                     </div>
 
@@ -87,7 +88,7 @@
                                         <div class="form-text">Pilih kelurahan atau desa yang berada di dalam kecamatan yang
                                             telah dipilih.</div>
                                         @error('kelurahan_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            <div class="invalid-feedback">Kelurahan wajib diisi</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -98,7 +99,7 @@
                                         class="form-control @error('tanggal_disposisi') is-invalid @enderror"
                                         name="tanggal_disposisi" value="{{ old('tanggal_disposisi') }}" required>
                                     @error('tanggal_disposisi')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">Tanggal Disposisi wajib diisi</div>
                                     @enderror
                                 </div>
 
@@ -109,9 +110,9 @@
                                             class="form-control @error('nominal_pengajuan') is-invalid @enderror"
                                             name="nominal_pengajuan" value="{{ old('nominal_pengajuan') }}"
                                             placeholder="Contoh: Rp500.000">
-                                        <div class="form-text">Bisa dikosongi jika tidak ada nominal uang</div>
+                                        <div class="form-text">Nominal Pengajuan wajib diisi. Gunakan tanda '-'
+                                            apabila data kosong.</div>
                                         @error('nominal_pengajuan')
-                                            <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
 
@@ -121,9 +122,9 @@
                                             class="form-control @error('barang_pengajuan') is-invalid @enderror"
                                             name="barang_pengajuan" value="{{ old('barang_pengajuan') }}"
                                             placeholder="Contoh: 26 Papan Peringatan">
-                                        <div class="form-text">Bisa dikosongi jika tidak ada barang pengajuan</div>
+                                        <div class="form-text">Barang Pengajuan wajib diisi. Gunakan tanda '-'
+                                            apabila data kosong</div>
                                         @error('barang_pengajuan')
-                                            <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -143,7 +144,7 @@
                                             @endforeach
                                         </select>
                                         @error('tipologi_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            <div class="invalid-feedback">Tipologi wajib diisi</div>
                                         @enderror
                                     </div>
 
@@ -161,7 +162,7 @@
                                                 Tolak</option>
                                         </select>
                                         @error('status')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            <div class="invalid-feedback">Setuju / Tidak setuju wajib diisi</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -174,10 +175,9 @@
                                             class="form-control @error('nominal_disetujui') is-invalid @enderror"
                                             name="nominal_disetujui" value="{{ old('nominal_disetujui') }}"
                                             placeholder="Contoh: Rp500.000" required>
-                                        <div class="form-text">Isi hanya jika pengajuan disetujui atau masih dalam status
-                                            pending. Kosongkan jika tidak ada nominal yang disetujui.</div>
+                                        <div class="form-text">Nominal Disetujui wajib diisi. Gunakan tanda '-' apabila
+                                            data kosong.</div>
                                         @error('nominal_disetujui')
-                                            <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
 
@@ -187,10 +187,9 @@
                                             class="form-control @error('barang_disetujui') is-invalid @enderror"
                                             name="barang_disetujui" value="{{ old('barang_disetujui') }}"
                                             placeholder="Contoh: 26 Papan Peringatan">
-                                        <div class="form-text">Isi hanya jika pengajuan disetujui atau masih dalam status
-                                            pending. Kosongkan jika tidak ada barang yang disetujui.</div>
+                                        <div class="form-text">Barang Disetujui wajib diisi. Gunakan tanda '-' apabila
+                                            data kosong.</div>
                                         @error('barang_disetujui')
-                                            <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -228,7 +227,7 @@
                                         @endforeach
                                     </select>
                                     @error('tipe_proses_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">Proses wajib diisi</div>
                                     @enderror
                                 </div>
 
@@ -246,15 +245,17 @@
 
                                 <div class="mb-3">
                                     <label class="form-label">Overdue</label>
-                                    <input type="date" class="form-control @error('overdue') is-invalid @enderror"
-                                        name="overdue" value="{{ old('overdue') }}">
+                                    <input type="date" name="overdue"
+                                        class="form-control @error('overdue') is-invalid @enderror" required>
                                     @error('overdue')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">Overdue wajib diisi</div>
                                     @enderror
-                                </div>
 
-                                <button type="submit" style="background-color: #78C841; color: white;"
-                                    class="btn">Submit</button>
+
+                                    <button type="submit" style="background-color: #78C841; color: white;"
+                                        class="btn mt-3">
+                                        Submit
+                                    </button>
                             </form>
 
                         </div>
