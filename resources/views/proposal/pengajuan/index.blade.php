@@ -51,10 +51,10 @@
         }
 
         /* table.dataTable td p,
-                                                        table.dataTable td span,
-                                                        table.dataTable th h6 {
-                                                            white-space: nowrap !important;
-                                                        } */
+                                                                        table.dataTable td span,
+                                                                        table.dataTable th h6 {
+                                                                            white-space: nowrap !important;
+                                                                        } */
 
         table.dataTable,
         table.dataTable th,
@@ -78,13 +78,13 @@
         }
 
         /* Paksa semua elemen dalam tabel untuk nowrap
-                                                        #proposalTable,
-                                                        #proposalTable th,
-                                                        #proposalTable td,
-                                                        #proposalTable th *,
-                                                        #proposalTable td * {
-                                                            white-space: nowrap !important;
-                                                        } */
+                                                                        #proposalTable,
+                                                                        #proposalTable th,
+                                                                        #proposalTable td,
+                                                                        #proposalTable th *,
+                                                                        #proposalTable td * {
+                                                                            white-space: nowrap !important;
+                                                                        } */
 
         /* Hindari teks meluber */
         #proposalTable td {

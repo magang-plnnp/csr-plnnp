@@ -175,9 +175,10 @@ class ProposalController extends Controller
         if ($request->has('status') && $request->status !== null) {
             $query->where('status', $request->status);
         }
-        if ($request->has('pic') && $request->pic !== null) {
-            $query->where('nama_pic_id', $request->pic); // ✅ cocok
-        }
+
+        $query->whereHas('namaPic', function ($q) use ($request) {
+            $q->where('nama', $request->pic);
+        });
 
         if ($request->has('tipologi') && $request->tipologi !== null) {
             $query->whereHas('tipologi', function ($q) use ($request) {
