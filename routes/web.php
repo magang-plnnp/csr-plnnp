@@ -43,7 +43,8 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-    Route::get('/kecamatan', [WilayahController::class, 'getKecamatan']);
+    Route::get('/kabupaten', [WilayahController::class, 'getKabupaten']);
+    Route::get('/kecamatan/{kabupatenId}', [WilayahController::class, 'getKecamatan']);
     Route::get('/kelurahan/{kecamatanId}', [WilayahController::class, 'getKelurahan']);
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('pengguna', UserController::class);

@@ -18,6 +18,8 @@
                         <div class="card-body">
                             <form action="{{ route('proposal.store') }}" method="POST">
                                 @csrf
+                                <input type="hidden" id="kabupaten_id" name="kabupaten_id">
+                                <input type="hidden" id="kabupaten_nama" name="kabupaten_nama">
                                 <input type="hidden" id="kecamatan_id" name="kecamatan_id">
                                 <input type="hidden" id="kecamatan_nama" name="kecamatan_nama">
                                 <input type="hidden" id="kelurahan_id" name="kelurahan_id">
@@ -49,6 +51,20 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
+                                        <label class="form-label">Kabupaten / Kota</label>
+                                        <select id="kabupaten" name="kabupaten_id"
+                                            class="form-select @error('kabupaten_id') is-invalid @enderror" required>
+                                            <option value="">-- Pilih Kabupaten / Kota --</option>
+                                        </select>
+                                        <div class="form-text">Pilih Kabupaten atau Kota sesuai wilayah pengajuan.</div>
+                                        @error('kabupaten_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
                                         <label class="form-label">Kecamatan</label>
                                         <select id="kecamatan" name="kecamatan_id"
                                             class="form-select @error('kecamatan_id') is-invalid @enderror" required>
@@ -75,8 +91,6 @@
                                         @enderror
                                     </div>
                                 </div>
-
-
 
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal Disposisi</label>
@@ -138,7 +152,8 @@
                                         <select class="form-control @error('status') is-invalid @enderror" name="status"
                                             required>
                                             <option value="">-- Pilih Status Persetujuan --</option>
-                                            <option value="disetujui" {{ old('status') == 'disetujui' ? 'selected' : '' }}>
+                                            <option value="disetujui"
+                                                {{ old('status') == 'disetujui' ? 'selected' : '' }}>
                                                 Setuju</option>
                                             <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>
                                                 Pending</option>
@@ -255,134 +270,88 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                // Inisialisasi dropdown
+                const kabupatenSelect = document.getElementById('kabupaten');
                 const kecamatanSelect = document.getElementById('kecamatan');
                 const kelurahanSelect = document.getElementById('kelurahan');
 
+                const kabupatenIdInput = document.getElementById('kabupaten_id');
+                const kabupatenNamaInput = document.getElementById('kabupaten_nama');
                 const kecamatanIdInput = document.getElementById('kecamatan_id');
                 const kecamatanNamaInput = document.getElementById('kecamatan_nama');
                 const kelurahanIdInput = document.getElementById('kelurahan_id');
                 const kelurahanNamaInput = document.getElementById('kelurahan_nama');
 
-                // Fetch kecamatan
-                fetch('/kecamatan')
-                    .then(res => res.json())
+                fetch('/kabupaten')
+                    .then(response => response.json())
                     .then(data => {
-                        kecamatanSelect.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
-
-                        data.forEach(group => {
-                            const optgroup = document.createElement('optgroup');
-                            optgroup.label = group.label;
-
-                            group.options.forEach(item => {
-                                const option = document.createElement('option');
-                                option.value = item.id;
-                                option.textContent = item.name;
-                                optgroup.appendChild(option);
-                            });
-
-                            kecamatanSelect.appendChild(optgroup);
+                        data.forEach(item => {
+                            const option = new Option(item.name, item.id);
+                            option.setAttribute('data-name', item.name);
+                            kabupatenSelect.add(option);
                         });
-
-                        $('#kecamatan').select2({
-                            placeholder: "-- Pilih atau Ketik Kecamatan --",
-                            theme: 'bootstrap4',
-                            tags: true, // kalau kamu ingin tetap bisa ketik manual
-                            allowClear: true
-                        });
-
-                        const oldKecamatanId = "{{ old('kecamatan_id') }}";
-                        if (oldKecamatanId) {
-                            setTimeout(() => {
-                                $('#kecamatan').val(oldKecamatanId).trigger('change');
-                            }, 200);
-                        }
                     });
 
+                kabupatenSelect.addEventListener('change', function() {
+                    const kabupatenId = this.value;
+                    const kabupatenNama = this.options[this.selectedIndex].getAttribute('data-name');
 
-                // Ganti event handler ke jQuery
-                $('#kecamatan').on('change', function() {
-                    const selectedId = $(this).val();
-                    const selectedText = $(this).find('option:selected').text();
+                    kabupatenIdInput.value = kabupatenId;
+                    kabupatenNamaInput.value = kabupatenNama;
 
-                    console.log("Kecamatan selected:", selectedId);
+                    kecamatanSelect.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+                    kelurahanSelect.innerHTML = '<option value="">-- Pilih Kelurahan / Desa --</option>';
+                    kecamatanIdInput.value = '';
+                    kecamatanNamaInput.value = '';
+                    kelurahanIdInput.value = '';
+                    kelurahanNamaInput.value = '';
 
-                    if (kecamatanIdInput) kecamatanIdInput.value = selectedId;
-                    if (kecamatanNamaInput) kecamatanNamaInput.value = selectedText;
-
-                    if (!selectedId) {
-                        kelurahanSelect.innerHTML = '<option value="">-- Pilih Kelurahan / Desa --</option>';
-                        $('#kelurahan').val('').trigger('change');
-                        return;
+                    if (kabupatenId) {
+                        fetch(`/kecamatan/${kabupatenId}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                data.forEach(item => {
+                                    const option = new Option(item.name, item.id);
+                                    option.setAttribute('data-name', item.name);
+                                    kecamatanSelect.add(option);
+                                });
+                            });
                     }
-
-                    fetch(`/kelurahan/${selectedId}`)
-                        .then(res => res.json())
-                        .then(data => {
-                            console.log("Kelurahan loaded:", data);
-
-                            kelurahanSelect.innerHTML =
-                                '<option value="">-- Pilih Kelurahan / Desa --</option>';
-                            data.forEach(item => {
-                                const opt = document.createElement('option');
-                                opt.value = item.id;
-                                opt.textContent = item.name;
-                                kelurahanSelect.appendChild(opt);
-                            });
-
-                            if ($.fn.select2 && $('#kelurahan').hasClass("select2-hidden-accessible")) {
-                                $('#kelurahan').select2('destroy');
-                            }
-
-                            $('#kelurahan').select2({
-                                placeholder: "-- Pilih Kelurahan / Desa --",
-                                theme: 'bootstrap4',
-                                allowClear: true
-                            });
-
-                            const oldKelurahanId = "{{ old('kelurahan_id') }}";
-                            if (oldKelurahanId) {
-                                setTimeout(() => {
-                                    $('#kelurahan').val(oldKelurahanId).trigger('change');
-                                }, 100);
-                            }
-                        })
-                        .catch(err => {
-                            console.error("Gagal memuat kelurahan:", err);
-                            kelurahanSelect.innerHTML =
-                                '<option value="">-- Gagal Memuat Kelurahan --</option>';
-                        });
                 });
 
-                $('#kelurahan').on('change', function() {
-                    const selectedValue = $(this).val();
-                    const selectedText = $(this).find('option:selected').text();
+                kecamatanSelect.addEventListener('change', function() {
+                    const kecamatanId = this.value;
+                    const kecamatanNama = this.options[this.selectedIndex].getAttribute('data-name');
 
-                    if (kelurahanIdInput) kelurahanIdInput.value = selectedValue;
-                    if (kelurahanNamaInput) kelurahanNamaInput.value = selectedText;
+                    kecamatanIdInput.value = kecamatanId;
+                    kecamatanNamaInput.value = kecamatanNama;
+
+                    kelurahanSelect.innerHTML = '<option value="">-- Pilih Kelurahan / Desa --</option>';
+                    kelurahanIdInput.value = '';
+                    kelurahanNamaInput.value = '';
+
+                    if (kecamatanId) {
+                        fetch(`/kelurahan/${kecamatanId}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                data.forEach(item => {
+                                    const option = new Option(item.name, item.id);
+                                    option.setAttribute('data-name', item.name);
+                                    kelurahanSelect.add(option);
+                                });
+                            });
+                    }
                 });
-            });
-        </script>
 
+                kelurahanSelect.addEventListener('change', function() {
+                    const kelurahanId = this.value;
+                    const kelurahanNama = this.options[this.selectedIndex].getAttribute('data-name');
 
+                    kelurahanIdInput.value = kelurahanId;
+                    kelurahanNamaInput.value = kelurahanNama;
+                });
 
-        <script>
-            function formatRupiah(angka, prefix = 'Rp') {
-                let number_string = angka.replace(/[^,\d]/g, '').toString(),
-                    split = number_string.split(','),
-                    sisa = split[0].length % 3,
-                    rupiah = split[0].substr(0, sisa),
-                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-                if (ribuan) {
-                    const separator = sisa ? '.' : '';
-                    rupiah += separator + ribuan.join('.');
-                }
-
-                rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
-                return prefix + ' ' + rupiah;
-            }
-
-            document.addEventListener('DOMContentLoaded', function() {
+                // Format Rupiah
                 const inputPengajuan = document.getElementById('nominal_pengajuan');
                 const inputDisetujui = document.getElementById('nominal_disetujui');
 
@@ -398,6 +367,22 @@
                         input.value = formatRupiah(input.value.replace(/[^0-9]/g, ''));
                     }
                 });
+
+                function formatRupiah(angka, prefix = 'Rp') {
+                    let number_string = angka.replace(/[^,\d]/g, '').toString(),
+                        split = number_string.split(','),
+                        sisa = split[0].length % 3,
+                        rupiah = split[0].substr(0, sisa),
+                        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                    if (ribuan) {
+                        const separator = sisa ? '.' : '';
+                        rupiah += separator + ribuan.join('.');
+                    }
+
+                    rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+                    return prefix + ' ' + rupiah;
+                }
             });
         </script>
     @endpush

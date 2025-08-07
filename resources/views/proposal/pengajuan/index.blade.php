@@ -51,10 +51,10 @@
         }
 
         /* table.dataTable td p,
-                        table.dataTable td span,
-                        table.dataTable th h6 {
-                            white-space: nowrap !important;
-                        } */
+                                    table.dataTable td span,
+                                    table.dataTable th h6 {
+                                        white-space: nowrap !important;
+                                    } */
 
         table.dataTable,
         table.dataTable th,
@@ -78,13 +78,13 @@
         }
 
         /* Paksa semua elemen dalam tabel untuk nowrap
-                        #proposalTable,
-                        #proposalTable th,
-                        #proposalTable td,
-                        #proposalTable th *,
-                        #proposalTable td * {
-                            white-space: nowrap !important;
-                        } */
+                                    #proposalTable,
+                                    #proposalTable th,
+                                    #proposalTable td,
+                                    #proposalTable th *,
+                                    #proposalTable td * {
+                                        white-space: nowrap !important;
+                                    } */
 
         /* Hindari teks meluber */
         #proposalTable td {
@@ -307,8 +307,9 @@
                                         <td><span class="fw-normal">{{ $loop->iteration }}</span></td>
                                         <td><span class="fw-normal">{{ $data->judul }}</span></td>
                                         <td><span class="fw-normal">{{ $data->instansi_pengajuan }}</span></td>
-                                        <td><span class="fw-normal">{{ $data->kecamatan_nama }} -
-                                                {{ $data->kelurahan_nama }}</span></td>
+                                        <td><span
+                                                class="fw-normal">{{ $data->kabupaten_nama }}-{{ $data->kecamatan_nama }}-{{ $data->kelurahan_nama }}</span>
+                                        </td>
                                         <td><span
                                                 class="fw-normal">{{ \Carbon\Carbon::parse($data->tanggal_disposisi)->translatedFormat('d F Y') }}</span>
                                         </td>
