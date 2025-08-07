@@ -13,7 +13,12 @@ class BeritaAcaraController extends Controller
 {
     public function index()
     {
-        return view('form.berita-acara.index', ['beritaacara' => BeritaAcara::all(), 'proposal' => Proposal::all()]);
+        $beritaacara = BeritaAcara::all();
+
+        // Ambil hanya proposal yang belum punya berita acara
+        $proposal = Proposal::doesntHave('beritaAcara')->get();
+
+        return view('form.berita-acara.index', compact('beritaacara', 'proposal'));
     }
 
     public function store(Request $request)

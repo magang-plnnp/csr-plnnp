@@ -12,7 +12,12 @@ class KelayakanController extends Controller
 {
     public function index()
     {
-        return view('form.kelayakan.index', ['kelayakan' => Kelayakan::all(), 'proposal' => Proposal::all()]);
+        $kelayakan = Kelayakan::all();
+
+        // Ambil hanya proposal yang belum memiliki kelayakan
+        $proposal = Proposal::doesntHave('kelayakan')->get();
+
+        return view('form.kelayakan.index', compact('kelayakan', 'proposal'));
     }
 
     public function store(Request $request)
