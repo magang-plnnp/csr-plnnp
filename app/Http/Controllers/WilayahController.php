@@ -3,48 +3,39 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use App\Models\MasterPosKabkota;
 use App\Models\MasterPosKecamatan;
 use App\Models\MasterPosKelurahan;
 
 class WilayahController extends Controller
 {
-public function getKecamatan()
-{
-    $kecamatan = MasterPosKecamatan::whereIn('kode_kabupaten', ['3513', '3574', '3512'])
-        ->orderBy('nama_kecamatan')
-        ->get(['kode_kecamatan', 'nama_kecamatan', 'kode_kabupaten']);
+    // Ambil data kabupaten/kota
+    public function getKabupaten()
+    {
+        $kabupaten = MasterPosKabkota::whereIn('kode_kabupaten', ['3513', '3574', '3512'])
+            ->orderBy('nama_kabupaten')
+            ->get(['kode_kabupaten as id', 'nama_kabupaten as name']);
 
-    $grouped = collect([
-        '3513' => 'Kabupaten Probolinggo',
-        '3574' => 'Kota Probolinggo',
-        '3512' => 'Kabupaten Situbondo'
-    ]);
+        return response()->json($kabupaten);
+    }
 
-    $result = $grouped->map(function ($label, $kode) use ($kecamatan) {
-        $options = $kecamatan->where('kode_kabupaten', $kode)->map(function ($item) {
-            return [
-                'id' => $item->kode_kecamatan,
-                'name' => $item->nama_kecamatan
-            ];
-        })->values();
+    // Ambil kecamatan berdasarkan kode kabupaten
+    public function getKecamatan($kabupatenId)
+    {
+        $kecamatan = MasterPosKecamatan::where('kode_kabupaten', $kabupatenId)
+            ->orderBy('nama_kecamatan')
+            ->get(['kode_kecamatan as id', 'nama_kecamatan as name']);
 
-        return [
-            'label' => $label,
-            'options' => $options
-        ];
-    })->values();
+        return response()->json($kecamatan);
+    }
 
-    return response()->json($result);
-}
-
-
+    // Ambil kelurahan berdasarkan kode kecamatan
     public function getKelurahan($kecamatanId)
-{
-    $kelurahan = MasterPosKelurahan::where('kode_kecamatan', $kecamatanId)
-        ->orderBy('nama_desa_kelurahan')
-        ->get(['kode_desa as id', 'nama_desa_kelurahan as name']);
+    {
+        $kelurahan = MasterPosKelurahan::where('kode_kecamatan', $kecamatanId)
+            ->orderBy('nama_desa_kelurahan')
+            ->get(['kode_desa as id', 'nama_desa_kelurahan as name']);
 
-    return response()->json($kelurahan);
-}
+        return response()->json($kelurahan);
+    }
 }

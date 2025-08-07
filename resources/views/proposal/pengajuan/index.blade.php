@@ -227,11 +227,13 @@
                                 @endforeach
                             </select>
 
-                            <select id="filter-status" class="form-select" style="min-width: 200px;">
-                                <option value="">-- Semua Status --</option>
-                                @foreach ($proposal->pluck('status')->unique() as $status)
-                                    <option value="{{ $status }}">{{ $status }}</option>
-                                @endforeach
+                            <select id="filter-progress" class="form-select" style="min-width: 200px;">
+                                <option value="">-- Semua Progress --</option>
+                                <option value="20">20%</option>
+                                <option value="40">40%</option>
+                                <option value="60">60%</option>
+                                <option value="80">80%</option>
+                                <option value="100">100%</option>
                             </select>
                         </div>
 
@@ -311,8 +313,9 @@
                                         <td><span class="fw-normal">{{ $loop->iteration }}</span></td>
                                         <td><span class="fw-normal">{{ $data->judul }}</span></td>
                                         <td><span class="fw-normal">{{ $data->instansi_pengajuan }}</span></td>
-                                        <td><span class="fw-normal">{{ $data->kecamatan_nama }} -
-                                                {{ $data->kelurahan_nama }}</span></td>
+                                        <td><span
+                                                class="fw-normal">{{ $data->kabupaten_nama }}-{{ $data->kecamatan_nama }}-{{ $data->kelurahan_nama }}</span>
+                                        </td>
                                         <td><span
                                                 class="fw-normal">{{ \Carbon\Carbon::parse($data->tanggal_disposisi)->translatedFormat('d F Y') }}</span>
                                         </td>
@@ -420,18 +423,22 @@
             function applyFilters() {
                 const pic = $('#filter-pic').val().toLowerCase();
                 const tipologi = $('#filter-tipologi').val().toLowerCase();
-                const status = $('#filter-status').val().toLowerCase();
+                const progressFilter = $('#filter-progress').val();
 
                 const table = $('#proposalTable').DataTable();
 
-                table.columns(11).search(pic); // PIC
-                table.columns(7).search(tipologi); // Tipologi
-                table.columns(8).search(status); // Status
+                table.columns(11).search(pic);
+                table.columns(7).search(tipologi);
+
+                if (progressFilter) {
+                    table.column(15).search('^' + progressFilter + '$', true, false);
+                } else {
+                    table.column(15).search('', true, false);
+                }
 
                 table.draw();
             }
-
-            $('#filter-pic, #filter-tipologi, #filter-status').on('change', applyFilters);
+            $('#filter-pic, #filter-tipologi, #filter-progress').on('change', applyFilters);
             // Tambahkan script ini setelah inisialisasi DataTable
             function forceFixedColumnsBackground() {
                 // Target semua elemen dengan position sticky

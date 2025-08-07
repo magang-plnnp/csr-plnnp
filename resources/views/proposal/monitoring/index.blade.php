@@ -51,10 +51,10 @@
         }
 
         /* table.dataTable td p,
-                                                table.dataTable td span,
-                                                table.dataTable th h6 {
-                                                    white-space: nowrap !important;
-                                                } */
+           table.dataTable td span,
+           table.dataTable th h6 {
+           white-space: nowrap !important;
+        } */
 
         table.dataTable,
         table.dataTable th,
@@ -230,8 +230,11 @@
 
                             <select id="filter-progress" class="form-select" style="min-width: 200px;">
                                 <option value="">-- Semua Progress --</option>
-                                <option value="selesai">Selesai</option>
-                                <option value="belum">Belum Selesai</option>
+                                <option value="20">20%</option>
+                                <option value="40">40%</option>
+                                <option value="60">60%</option>
+                                <option value="80">80%</option>
+                                <option value="100">100%</option>
                             </select>
                         </div>
                         <a href="#" id="exportExcel" style="background-color: #78C841; color: white;" class="btn">
@@ -616,12 +619,11 @@
 
                 table.columns(11).search(pic);
                 table.columns(7).search(tipologi);
-                table.column(16).search('', true, false);
 
-                if (progressFilter === 'selesai') {
-                    table.column(16).search('^100%$', true, false);
-                } else if (progressFilter === 'belum') {
-                    table.column(16).search('^(?!100%).*$', true, false);
+                if (progressFilter) {
+                    table.column(16).search('^' + progressFilter + '%$', true, false);
+                } else {
+                    table.column(16).search('', true, false);
                 }
 
                 table.draw();

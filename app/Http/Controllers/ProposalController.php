@@ -43,6 +43,8 @@ class ProposalController extends Controller
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'instansi_pengajuan' => 'required|string|max:255',
+            'kabupaten_id' => 'required',
+            'kabupaten_nama' => 'required|string',
             'kecamatan_id' => 'required',
             'kecamatan_nama' => 'required|string',
             'kelurahan_id' => 'required',
@@ -123,7 +125,8 @@ class ProposalController extends Controller
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'instansi_pengajuan' => 'required|string|max:255',
-            // 'lokasi' => 'required|string|max:255',
+            'kabupaten_id' => 'required',
+            'kabupaten_nama' => 'required|string',
             'kecamatan_id' => 'required',
             'kecamatan_nama' => 'required|string',
             'kelurahan_id' => 'required',
