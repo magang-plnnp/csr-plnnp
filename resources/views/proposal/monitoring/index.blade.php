@@ -51,10 +51,10 @@
         }
 
         /* table.dataTable td p,
-                    table.dataTable td span,
-                    table.dataTable th h6 {
-                        white-space: nowrap !important;
-                    } */
+           table.dataTable td span,
+           table.dataTable th h6 {
+           white-space: nowrap !important;
+        } */
 
         table.dataTable,
         table.dataTable th,
@@ -78,13 +78,13 @@
         }
 
         /* Paksa semua elemen dalam tabel untuk nowrap
-                    #proposalTable,
-                    #proposalTable th,
-                    #proposalTable td,
-                    #proposalTable th *,
-                    #proposalTable td * {
-                        white-space: nowrap !important;
-                    } */
+                                                #proposalTable,
+                                                #proposalTable th,
+                                                #proposalTable td,
+                                                #proposalTable th *,
+                                                #proposalTable td * {
+                                                    white-space: nowrap !important;
+                                                } */
 
         /* Hindari teks meluber */
         #proposalTable td {
@@ -298,6 +298,12 @@
                                     <th style="white-space: nowrap;" class="nowrap">
                                         <span class="fw-semibold mb-0">Progress (%)</span>
                                     </th>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Berita Acara</span>
+                                    </th>
+                                    <th style="white-space: nowrap;" class="nowrap">
+                                        <span class="fw-semibold mb-0">Kelayakan</span>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -394,6 +400,22 @@
 
                                         </td>
                                         <td class="progress-col">{{ $data->progress }}%</td>
+                                        <td>
+                                            @if ($data->beritaAcara && $data->beritaAcara->file_pdf)
+                                                <a href="{{ asset('storage/' . $data->beritaAcara->file_pdf) }}"
+                                                    target="_blank">Lihat PDF</a>
+                                            @else
+                                                <span class="text-muted">-</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($data->kelayakan && $data->kelayakan->file_pdf)
+                                                <a href="{{ asset('storage/' . $data->kelayakan->file_pdf) }}"
+                                                    target="_blank">Lihat PDF</a>
+                                            @else
+                                                <span class="text-muted">-</span>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

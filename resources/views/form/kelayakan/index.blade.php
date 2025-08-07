@@ -2,6 +2,9 @@
  @section('title', 'CSR PLN Nusantara Power UP Paiton')
  @push('styles')
      <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+     <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css"
+         rel="stylesheet" />
      <style>
          /* Warna tombol pagination aktif dari DataTables (Bootstrap 5) */
          .dataTables_wrapper .dataTables_paginate .pagination .page-item.active .page-link {
@@ -77,9 +80,9 @@
                                          </td>
                                          <td>
                                              <p class="mb-0 fw-normal"> <a href="{{ asset('storage/' . $data->file_pdf) }}"
-                                                     target="_blank" class="btn btn-sm btn-primary">
-                                                     PDF
-                                                 </a></p>
+                                                     target="_blank">Lihat
+                                                     PDF</a></p>
+
                                          </td>
                                          <td>
                                              <div class="d-flex justify-content-center align-items-center gap-2">
@@ -87,8 +90,11 @@
                                                  <button type="button"
                                                      class="btn btn-sm btn-light border-0 text-primary btn-edit"
                                                      data-bs-toggle="modal" data-bs-target="#editModal"
-                                                     data-id="{{ $data->id }}" data-kode="{{ $data->kode }}"
-                                                     data-deskripsi="{{ $data->deskripsi }}">
+                                                     data-id="{{ $data->id }}"
+                                                     data-proposal="{{ $data->proposal->judul }}"
+                                                     data-dasar="{{ $data->dasar_pelaksanaan }}"
+                                                     data-latar="{{ $data->latar_belakang }}"
+                                                     data-tujuan="{{ $data->tujuan }}">
                                                      <i class="fas fa-edit"></i>
                                                  </button>
 
@@ -96,7 +102,8 @@
                                                  <button type="button"
                                                      class="btn btn-sm btn-light border-0 text-danger btn-delete"
                                                      data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                     data-id="{{ $data->id }}" data-nama="{{ $data->kode }}">
+                                                     data-id="{{ $data->id }}"
+                                                     data-nama="{{ $data->proposal->judul }}">
                                                      <i class="fas fa-trash-alt"></i>
                                                  </button>
                                              </div>
@@ -120,17 +127,25 @@
                  @method('PUT')
                  <div class="modal-content">
                      <div class="modal-header">
-                         <h5 class="modal-title" id="editModalLabel">Edit Tipologi</h5>
+                         <h5 class="modal-title" id="editModalLabel">Edit Form Kelayakan</h5>
                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                      </div>
                      <div class="modal-body">
                          <div class="mb-3">
-                             <label for="edit-kode" class="form-label">Kode</label>
-                             <input type="text" class="form-control" id="edit-kode" name="kode" required>
+                             <label for="edit-proposal" class="form-label">Proposal</label>
+                             <input type="text" class="form-control" id="edit-proposal" name="proposal" disabled>
                          </div>
                          <div class="mb-3">
-                             <label for="edit-deskripsi" class="form-label">Deskripsi</label>
-                             <textarea class="form-control" id="edit-deskripsi" name="deskripsi" required></textarea>
+                             <label for="edit-dasar" class="form-label">Dasar Pelaksanaan</label>
+                             <input type="text" class="form-control" id="edit-dasar" name="dasar_pelaksanaan">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-latar" class="form-label">Latar Belakang</label>
+                             <input type="text" class="form-control" id="edit-latar" name="latar_belakang">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-tujuan" class="form-label">Tujuan</label>
+                             <input type="text" class="form-control" id="edit-tujuan" name="tujuan">
                          </div>
                      </div>
                      <div class="modal-footer">
@@ -157,9 +172,9 @@
                      <div class="modal-body">
                          <div class="mb-3">
                              <label class="form-label">Proposal</label>
-                             <select name="proposal_id" class="form-control @error('proposal_id') is-invalid @enderror"
-                                 required>
-                                 <option value="">-- Pilih Tipologi --</option>
+                             <select name="proposal_id" id="select-proposal"
+                                 class="form-select @error('proposal_id') is-invalid @enderror" required>
+                                 <option value="">-- Pilih Proposal --</option>
                                  @foreach ($proposal as $item)
                                      <option value="{{ $item->id }}"
                                          {{ old('proposal_id') == $item->id ? 'selected' : '' }}>
@@ -227,13 +242,28 @@
 
 
      @push('scripts')
-         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+         {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
          <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
          <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
+         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+         <!-- Select2 JS -->
          <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
+         <script>
+             $(document).ready(function() {
+                 $('#createModal').on('shown.bs.modal', function() {
+                     $('#select-proposal').select2({
+                         dropdownParent: $('#createModal'),
+                         width: '100%',
+                         theme: 'bootstrap4',
+                         placeholder: '-- Pilih Proposal --'
+                     });
+                 });
+             });
+         </script>
 
          <script>
              $('#tipologiTable').DataTable({
@@ -268,14 +298,18 @@
          <script>
              $(document).on('click', '.btn-edit', function() {
                  const id = $(this).data('id');
-                 const kode = $(this).data('kode');
-                 const deskripsi = $(this).data('deskripsi');
+                 const proposal = $(this).data('proposal');
+                 const dasar = $(this).data('dasar');
+                 const latar = $(this).data('latar');
+                 const tujuan = $(this).data('tujuan');
 
-                 $('#edit-kode').val(kode);
-                 $('#edit-deskripsi').val(deskripsi);
+                 $('#edit-proposal').val(proposal);
+                 $('#edit-dasar').val(dasar);
+                 $('#edit-latar').val(latar);
+                 $('#edit-tujuan').val(tujuan);
 
                  // Update action form dengan ID yang dipilih
-                 $('#editForm').attr('action', '/tipologi/' + id);
+                 $('#editForm').attr('action', '/kelayakan/' + id);
              });
          </script>
 
@@ -285,8 +319,8 @@
                  const id = $(this).data('id');
                  const nama = $(this).data('nama');
 
-                 $('#deleteDataName').text("Kode: " + nama);
-                 $('#deleteForm').attr('action', '/tipologi/' + id);
+                 $('#deleteDataName').text(nama);
+                 $('#deleteForm').attr('action', '/kelayakan/' + id);
              });
          </script>
 

@@ -15,33 +15,13 @@ class ProposalController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function export(Request $request)
-    {
-        $query = Proposal::with(['tipologi', 'tipeProses.subProses', 'namaPic']);
 
-        // dd($request->all());
-        if ($request->has('status') && $request->status !== null) {
-            $query->where('status', $request->status);
-        }
-        if ($request->has('pic') && $request->pic !== null) {
-            $query->where('nama_pic_id', $request->pic); // ✅ cocok
-        }
-
-        if ($request->has('tipologi') && $request->tipologi !== null) {
-            $query->whereHas('tipologi', function ($q) use ($request) {
-                $q->where('kode', $request->tipologi);
-            });
-        }
-
-
-        $data = $query->get();
-
-        return Excel::download(new ProposalExport($data), 'data_proposal.xlsx');
-    }
     public function index()
     {
-        return view('proposal.pengajuan.index', ['proposal' => Proposal::all()]);
+        $proposal = Proposal::with(['beritaAcara', 'kelayakan'])->get();
+        return view('proposal.pengajuan.index', compact('proposal'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -188,5 +168,29 @@ class ProposalController extends Controller
         $proposal->delete();
 
         return redirect()->route('proposal.index')->with('success', 'Data proposal berhasil dihapus.');
+    }
+
+    public function export(Request $request)
+    {
+        $query = Proposal::with(['tipologi', 'tipeProses.subProses', 'namaPic']);
+
+        // dd($request->all());
+        if ($request->has('status') && $request->status !== null) {
+            $query->where('status', $request->status);
+        }
+        if ($request->has('pic') && $request->pic !== null) {
+            $query->where('nama_pic_id', $request->pic); // ✅ cocok
+        }
+
+        if ($request->has('tipologi') && $request->tipologi !== null) {
+            $query->whereHas('tipologi', function ($q) use ($request) {
+                $q->where('kode', $request->tipologi);
+            });
+        }
+
+
+        $data = $query->get();
+
+        return Excel::download(new ProposalExport($data), 'data_proposal.xlsx');
     }
 }

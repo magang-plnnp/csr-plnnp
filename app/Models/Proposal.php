@@ -34,6 +34,16 @@ class Proposal extends Model
         'updated_at',
     ];
 
+    public function beritaAcara()
+    {
+        return $this->hasOne(BeritaAcara::class);
+    }
+
+    public function kelayakan()
+    {
+        return $this->hasOne(Kelayakan::class);
+    }
+
     public function tipologi()
     {
         return $this->belongsTo(Tipologi::class);
