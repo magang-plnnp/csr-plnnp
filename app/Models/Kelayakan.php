@@ -18,6 +18,12 @@ class Kelayakan extends Model
         'tujuan',
         'indikator_lingkungan',
         'indikator_sosial',
+        'jumlah_penerima_manfaat',
+        'jenis_stakeholder',
+        'pejabat_instansi',
+        'bantuan_diajukan',
+        'data_terdahulu',
+        'catatan_khusus',
         'file_pdf',
     ];
 

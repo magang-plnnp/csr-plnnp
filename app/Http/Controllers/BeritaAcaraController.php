@@ -50,6 +50,15 @@ class BeritaAcaraController extends Controller
             ->with('success', 'Berita acara berhasil dibuat dan PDF telah disimpan.');
     }
 
+
+    public function show($id)
+    {
+        $beritaAcara = \App\Models\BeritaAcara::with('proposal')->findOrFail($id);
+
+        return view('pdf.berita_acara', compact('data'));
+    }
+
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -100,4 +109,5 @@ class BeritaAcaraController extends Controller
         return redirect()->route('berita-acara.index')
             ->with('success', 'Data Berita acara dan file PDF berhasil dihapus.');
     }
+
 }
