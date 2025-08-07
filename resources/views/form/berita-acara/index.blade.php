@@ -2,6 +2,10 @@
  @section('title', 'CSR PLN Nusantara Power UP Paiton')
  @push('styles')
      <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+     <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css"
+         rel="stylesheet" />
+
      <style>
          /* Warna tombol pagination aktif dari DataTables (Bootstrap 5) */
          .dataTables_wrapper .dataTables_paginate .pagination .page-item.active .page-link {
@@ -118,7 +122,7 @@
                  @method('PUT')
                  <div class="modal-content">
                      <div class="modal-header">
-                         <h5 class="modal-title" id="editModalLabel">Edit Tipologi</h5>
+                         <h5 class="modal-title" id="editModalLabel">Edit Berita Acara</h5>
                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                      </div>
                      <div class="modal-body">
@@ -159,9 +163,9 @@
                      <div class="modal-body">
                          <div class="mb-3">
                              <label class="form-label">Proposal</label>
-                             <select name="proposal_id" class="form-control @error('proposal_id') is-invalid @enderror"
-                                 required>
-                                 <option value="">-- Pilih Tipologi --</option>
+                             <select name="proposal_id" id="select-proposal"
+                                 class="form-select @error('proposal_id') is-invalid @enderror" required>
+                                 <option value="">-- Pilih Proposal --</option>
                                  @foreach ($proposal as $item)
                                      <option value="{{ $item->id }}"
                                          {{ old('proposal_id') == $item->id ? 'selected' : '' }}>
@@ -169,6 +173,7 @@
                                      </option>
                                  @endforeach
                              </select>
+
                              @error('proposal_id')
                                  <div class="invalid-feedback">{{ $message }}</div>
                              @enderror
@@ -226,9 +231,27 @@
 
 
      @push('scripts')
-         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+         {{-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> --}}
          <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
          <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+         <!-- Select2 JS -->
+         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+         <script>
+             $(document).ready(function() {
+                 $('#createModal').on('shown.bs.modal', function() {
+                     $('#select-proposal').select2({
+                         dropdownParent: $('#createModal'),
+                         width: '100%',
+                         theme: 'bootstrap4',
+                         placeholder: '-- Pilih Proposal --'
+                     });
+                 });
+             });
+         </script>
+
+
          <script>
              $('#tipologiTable').DataTable({
                  language: {
