@@ -147,54 +147,92 @@
      <!-- Modal Create -->
      <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
          <div class="modal-dialog">
-             <form method="POST" action="{{ route('kelayakan.store') }}">
-                 @csrf
-                 <div class="modal-content">
-                     <div class="modal-header">
-                         <h5 class="modal-title" id="createModalLabel">Tambah Form Kelayakan</h5>
-                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                     </div>
-                     <div class="modal-body">
-                         <div class="mb-3">
-                             <label class="form-label">Proposal</label>
-                             <select name="proposal_id" class="form-control @error('proposal_id') is-invalid @enderror"
-                                 required>
-                                 <option value="">-- Pilih Tipologi --</option>
-                                 @foreach ($proposal as $item)
-                                     <option value="{{ $item->id }}"
-                                         {{ old('proposal_id') == $item->id ? 'selected' : '' }}>
-                                         {{ $item->judul }}
-                                     </option>
-                                 @endforeach
-                             </select>
-                             @error('proposal_id')
-                                 <div class="invalid-feedback">{{ $message }}</div>
-                             @enderror
-                         </div>
+            <form method="POST" action="{{ route('kelayakan.store') }}">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createModalLabel">Tambah Form Kelayakan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Proposal</label>
+                            <select name="proposal_id" class="form-control @error('proposal_id') is-invalid @enderror" required>
+                                <option value="">-- Pilih Proposal --</option>
+                                @foreach ($proposal as $item)
+                                    <option value="{{ $item->id }}" {{ old('proposal_id') == $item->id ? 'selected' : '' }}>
+                                        {{ $item->judul }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('proposal_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
 
+                        <div class="mb-3">
+                            <label for="dasar_pelaksanaan" class="form-label">Dasar Pelaksanaan</label>
+                            <textarea class="form-control" id="dasar_pelaksanaan" name="dasar_pelaksanaan" required>{{ old('dasar_pelaksanaan') }}</textarea>
+                        </div>
 
-                         <div class="mb-3">
-                             <label for="dasar_pelaksanaan" class="form-label">Dasar Pelaksanaan</label>
-                             <textarea class="form-control" id="dasar_pelaksanaan" name="dasar_pelaksanaan" required></textarea>
-                         </div>
-                         <div class="mb-3">
-                             <label for="latar_belakang" class="form-label">Latar Belakang</label>
-                             <textarea class="form-control" id="latar_belakang" name="latar_belakang" required></textarea>
-                         </div>
-                         <div class="mb-3">
-                             <label for="tujuan" class="form-label">Tujuan</label>
-                             <textarea class="form-control" id="tujuan" name="tujuan" required></textarea>
-                         </div>
-                     </div>
-                     <div class="modal-footer">
-                         <button type="button" class="btn bg-secondary-subtle text-dark"
-                             data-bs-dismiss="modal">Batal</button>
-                         <button type="submit" style="background-color: #78C841; color:whitesmoke"
-                             class="btn">Tambah</button>
-                     </div>
-                 </div>
-             </form>
-         </div>
+                        <div class="mb-3">
+                            <label for="latar_belakang" class="form-label">Latar Belakang</label>
+                            <textarea class="form-control" id="latar_belakang" name="latar_belakang" required>{{ old('latar_belakang') }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tujuan" class="form-label">Tujuan</label>
+                            <textarea class="form-control" id="tujuan" name="tujuan" required>{{ old('tujuan') }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="indikator_lingkungan" class="form-label">Indikator Lingkungan</label>
+                            <textarea class="form-control" id="indikator_lingkungan" name="indikator_lingkungan">{{ old('indikator_lingkungan') }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="indikator_sosial" class="form-label">Indikator Sosial</label>
+                            <textarea class="form-control" id="indikator_sosial" name="indikator_sosial">{{ old('indikator_sosial') }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="jumlah_penerima_manfaat" class="form-label">Jumlah Penerima Manfaat</label>
+                            <input type="text" class="form-control" name="jumlah_penerima_manfaat" id="jumlah_penerima_manfaat" value="{{ old('jumlah_penerima_manfaat') }}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="jenis_stakeholder" class="form-label">Jenis Stakeholder</label>
+                            <input type="text" class="form-control" name="jenis_stakeholder" id="jenis_stakeholder" value="{{ old('jenis_stakeholder') }}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="pejabat_instansi" class="form-label">Pejabat Instansi</label>
+                            <input type="text" class="form-control" name="pejabat_instansi" id="pejabat_instansi" value="{{ old('pejabat_instansi') }}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="bantuan_yang_diajukan" class="form-label">Bantuan yang Diajukan</label>
+                            <textarea class="form-control" id="bantuan_yang_diajukan" name="bantuan_yang_diajukan">{{ old('bantuan_yang_diajukan') }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="data_terdahulu" class="form-label">Data Terdahulu</label>
+                            <input type="text" class="form-control" name="data_terdahulu" id="data_terdahulu" value="{{ old('data_terdahulu') }}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="catatan_khusus" class="form-label">Catatan Khusus</label>
+                            <textarea class="form-control" id="catatan_khusus" name="catatan_khusus">{{ old('catatan_khusus') }}</textarea>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn bg-secondary-subtle text-dark" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" style="background-color: #78C841; color:whitesmoke" class="btn">Tambah</button>
+                    </div>
+                </div>
+            </form>
+        </div>
      </div>
 
 

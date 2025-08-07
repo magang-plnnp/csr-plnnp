@@ -22,6 +22,14 @@ class KelayakanController extends Controller
             'dasar_pelaksanaan' => 'required|string|max:255',
             'latar_belakang' => 'required|string|max:255',
             'tujuan' => 'required|string|max:255',
+            'indikator_lingkungan' => 'nullable|string',
+            'indikator_sosial' => 'nullable|string',
+            'jumlah_penerima_manfaat' => 'nullable|string|max:255',
+            'jenis_stakeholder' => 'nullable|string|max:255',
+            'pejabat_instansi' => 'nullable|string|max:255',
+            'bantuan_diajukan' => 'nullable|string',
+            'data_terdahulu' => 'nullable|string|max:255',
+            'catatan_khusus' => 'nullable|string|max:255',
         ]);
 
         // Simpan data ke database
@@ -30,6 +38,14 @@ class KelayakanController extends Controller
             'dasar_pelaksanaan' => $request->dasar_pelaksanaan,
             'latar_belakang' => $request->latar_belakang,
             'tujuan' => $request->tujuan,
+            'indikator_lingkungan' => $request->indikator_lingkungan,
+            'indikator_sosial' => $request->indikator_sosial,
+            'jumlah_penerima_manfaat' => $request->jumlah_penerima_manfaat,
+            'jenis_stakeholder' => $request->jenis_stakeholder,
+            'pejabat_instansi' => $request->jenis_stakeholder,
+            'bantuan_diajukan' => $request->bantuan_diajukan,
+            'data_terdahulu' => $request->data_terdahulu,
+            'catatan_khusus' => $request->catatan_khusus,
         ]);
 
         // Generate PDF berdasarkan view
@@ -62,6 +78,6 @@ class KelayakanController extends Controller
         $kelayakan->update(['file_pdf' => 'kelayakan/' . $pdfName]);
 
         return redirect()->route('kelayakan.index')
-            ->with('success', 'Berita acara berhasil dibuat dan PDF telah disimpan.');
+            ->with('success', 'Form Analisis Kelayakan berhasil dibuat dan PDF telah disimpan.');
     }
 }

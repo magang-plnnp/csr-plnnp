@@ -58,7 +58,14 @@
             margin-top: 10px;
             font-size: 10px;
         }
-
+        /* Hilangkan border kolom pertama (Prioritas) */
+        .table-matriks td:first-child {
+            border: none;
+        }
+        /* Hilangkan border baris terakhir (penjelasan kategori) */
+        .table-matriks tr:last-child td {
+            border: none;
+        }
         .table-matriks th,
         .table-matriks td {
             border: 1px solid #000;
@@ -115,6 +122,10 @@
             border: 1px solid black;
             vertical-align: top;
             padding: 4px;
+        }
+
+        .kop-table tr {
+            height: 30px;
         }
 
         .logo-cell {
@@ -276,21 +287,21 @@
         <div class="data-row">
             <div class="label">Indikator Lingkungan</div>
             <div class="separator">:</div>
-            <div class="value">-</div>
+            <div class="value">{{ $data->indikator_lingkungan }}</div>
         </div>
 
         <div class="data-row">
             <div class="label">Indikator Sosial</div>
             <div class="separator">:</div>
             <div class="value">
-                Terjalinnya hubungan yang baik antara PT PLN Nusantara Power dengan Stakeholder Bidang Hukum LBH CCI Propinsi Jatim.
+                {{ $data->indikator_sosial }}
             </div>
         </div>
 
         <div class="data-row">
             <div class="label">Jumlah Penerima Manfaat</div>
             <div class="separator">:</div>
-            <div class="value">100 penerima manfaat</div>
+            <div class="value">{{ $data->jumlah_penerima_manfaat }} penerima manfaat</div>
         </div>
 
         <div class="data-row">
@@ -302,13 +313,13 @@
         <div class="data-row">
             <div class="label">Jenis Stakeholder</div>
             <div class="separator">:</div>
-            <div class="value">Lembaga Bantuan Hukum</div>
+            <div class="value">{{ $data->jenis_stakeholder }}</div>
         </div>
 
         <div class="data-row">
             <div class="label">Mengetahui (Pejabat Instansi)</div>
             <div class="separator">:</div>
-            <div class="value">Hariyanto, CFLE., CLA. (Ketua)</div>
+            <div class="value">{{ $data->pejabat_instansi }}</div>
         </div>
 
         <div class="data-row">
@@ -323,12 +334,12 @@
     <div class="section">
         <p><strong>Analisa Matriks</strong>:</p>
         <table class="table-matriks">
-            <thead>
+            {{-- <thead>
                 <tr>
                     <th>Prioritas</th>
                     <th colspan="5">Nilai Dampak</th>
                 </tr>
-            </thead>
+            </thead> --}}
             <tbody>
                 <tr>
                     <td>Prioritas 1</td>
@@ -370,14 +381,18 @@
                     <td style="background-color: #ffc000;">Sedang</td>
                     <td style="background-color: #ffc000;">Sedang</td>
                 </tr>
+                <tr>
+                    <td></td>
+                    <td style="width:80px; word-wrap: break-word; white-space: normal;">Tidak ada dampak</td>
+                    <td>Kecil</td>
+                    <td>Sedang</td>
+                    <td>Tinggi</td>
+                    <td style="width:80px; word-wrap: break-word; white-space: normal;">Sangat Tinggi</td>
+                </tr>
             </tbody>
         </table>
 
         <div class="section">
-        <p><strong>Penjelasan Kategori:</strong></p>
-        <p>Tidak ada dampak</p>
-        <p>Kecil / Sedang / Tinggi / Sangat Tinggi</p>
-
         <p><strong>Keterangan:</strong></p>
         <table class="kategori-table">
             {{-- <thead>
@@ -388,19 +403,19 @@
             </thead> --}}
             <tbody>
                 <tr>
-                    <td style="background-color: #00b050;">Rendah</td>
+                    <td style="background-color: #00b050; text-align: center;">Rendah</td>
                     <td>Nilai bantuan 0% - 25%</td>
                 </tr>
                 <tr>
-                    <td style="background-color: #ffc000;">Sedang</td>
+                    <td style="background-color: #ffc000; text-align: center;">Sedang</td>
                     <td>Nilai bantuan 0% - 50%</td>
                 </tr>
                 <tr>
-                    <td style="background-color: #e36c09;">Tinggi</td>
+                    <td style="background-color: #e36c09; text-align: center;">Tinggi</td>
                     <td>Nilai bantuan 0% - 75%</td>
                 </tr>
                 <tr>
-                    <td style="background-color: #ff0000;">Ekstreme</td>
+                    <td style="background-color: #ff0000; text-align: center;">Ekstreme</td>
                     <td>Nilai bantuan 0% - 100%</td>
                 </tr>
             </tbody>
@@ -412,7 +427,7 @@
         <div class="data-row">
             <div class="label">Data Terdahulu</div>
             <div class="separator">:</div>
-            <div class="value">Program Baru</div>
+            <div class="value">{{ $data->data_terdahulu }}</div>
         </div>
 
         <div class="data-row">
@@ -430,7 +445,7 @@
         <div class="data-row">
             <div class="label">Catatan Khusus</div>
             <div class="separator">:</div>
-            <div class="value">-</div>
+            <div class="value">{{ $data->catatan_khusus }}</div>
         </div>
     </div>
 
