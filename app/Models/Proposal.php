@@ -11,11 +11,13 @@ class Proposal extends Model
     protected $fillable = [
         'judul',
         'instansi_pengajuan',
-        'lokasi',
+        'kabupaten_id',
+        'kabupaten_nama',
         'kecamatan_id',
         'kecamatan_nama',
         'kelurahan_id',
         'kelurahan_nama',
+        'lokasi',
         'tanggal_disposisi',
         'nominal_pengajuan',
         'barang_pengajuan',
@@ -31,6 +33,16 @@ class Proposal extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function beritaAcara()
+    {
+        return $this->hasOne(BeritaAcara::class);
+    }
+
+    public function kelayakan()
+    {
+        return $this->hasOne(Kelayakan::class);
+    }
 
     public function tipologi()
     {

@@ -2,6 +2,10 @@
  @section('title', 'CSR PLN Nusantara Power UP Paiton')
  @push('styles')
      <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+     <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css"
+         rel="stylesheet" />
+
      <style>
          /* Warna tombol pagination aktif dari DataTables (Bootstrap 5) */
          .dataTables_wrapper .dataTables_paginate .pagination .page-item.active .page-link {
@@ -71,9 +75,9 @@
                                          </td>
                                          <td>
                                              <p class="mb-0 fw-normal"> <a href="{{ asset('storage/' . $data->file_pdf) }}"
-                                                     target="_blank" class="btn btn-sm btn-primary">
-                                                     PDF
-                                                 </a></p>
+                                                     target="_blank">Lihat
+                                                     PDF</a></p>
+
                                          </td>
 
                                          <td>
@@ -82,8 +86,10 @@
                                                  <button type="button"
                                                      class="btn btn-sm btn-light border-0 text-primary btn-edit"
                                                      data-bs-toggle="modal" data-bs-target="#editModal"
-                                                     data-id="{{ $data->id }}" data-kode="{{ $data->kode }}"
-                                                     data-deskripsi="{{ $data->deskripsi }}">
+                                                     data-id="{{ $data->id }}"
+                                                     data-proposal="{{ $data->proposal->judul }}"
+                                                     data-nama="{{ $data->nama_penerima }}"
+                                                     data-jabatan="{{ $data->jabatan_penerima }}">
                                                      <i class="fas fa-edit"></i>
                                                  </button>
 
@@ -91,7 +97,8 @@
                                                  <button type="button"
                                                      class="btn btn-sm btn-light border-0 text-danger btn-delete"
                                                      data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                     data-id="{{ $data->id }}" data-nama="{{ $data->kode }}">
+                                                     data-id="{{ $data->id }}"
+                                                     data-nama="{{ $data->proposal->judul }}">
                                                      <i class="fas fa-trash-alt"></i>
                                                  </button>
                                              </div>
@@ -120,12 +127,16 @@
                      </div>
                      <div class="modal-body">
                          <div class="mb-3">
-                             <label for="edit-kode" class="form-label">Kode</label>
-                             <input type="text" class="form-control" id="edit-kode" name="kode" required>
+                             <label for="edit-proposal" class="form-label">Proposal</label>
+                             <input type="text" class="form-control" id="edit-proposal" disabled>
                          </div>
                          <div class="mb-3">
-                             <label for="edit-deskripsi" class="form-label">Deskripsi</label>
-                             <textarea class="form-control" id="edit-deskripsi" name="deskripsi" required></textarea>
+                             <label for="edit-nama" class="form-label">Nama Penerima</label>
+                             <input type="text" class="form-control" id="edit-nama" name="nama_penerima" required>
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-jabatan" class="form-label">Jabatan Penerima</label>
+                             <input type="text" class="form-control" id="edit-jabatan" name="jabatan_penerima" required>
                          </div>
                      </div>
                      <div class="modal-footer">
@@ -229,9 +240,27 @@
 
 
      @push('scripts')
-         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+         {{-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> --}}
          <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
          <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+         <!-- Select2 JS -->
+         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+         <script>
+             $(document).ready(function() {
+                 $('#createModal').on('shown.bs.modal', function() {
+                     $('#select-proposal').select2({
+                         dropdownParent: $('#createModal'),
+                         width: '100%',
+                         theme: 'bootstrap4',
+                         placeholder: '-- Pilih Proposal --'
+                     });
+                 });
+             });
+         </script>
+
+
          <script>
              $('#tipologiTable').DataTable({
                  language: {
@@ -292,14 +321,16 @@ document.getElementById('bantuan-wrapper').addEventListener('click', function(e)
          <script>
              $(document).on('click', '.btn-edit', function() {
                  const id = $(this).data('id');
-                 const kode = $(this).data('kode');
-                 const deskripsi = $(this).data('deskripsi');
+                 const nama = $(this).data('nama');
+                 const jabatan = $(this).data('jabatan');
+                 const proposal = $(this).data('proposal');
 
-                 $('#edit-kode').val(kode);
-                 $('#edit-deskripsi').val(deskripsi);
+                 $('#edit-nama').val(nama);
+                 $('#edit-jabatan').val(jabatan);
+                 $('#edit-proposal').val(proposal);
 
                  // Update action form dengan ID yang dipilih
-                 $('#editForm').attr('action', '/tipologi/' + id);
+                 $('#editForm').attr('action', '/berita-acara/' + id);
              });
          </script>
 
@@ -309,8 +340,8 @@ document.getElementById('bantuan-wrapper').addEventListener('click', function(e)
                  const id = $(this).data('id');
                  const nama = $(this).data('nama');
 
-                 $('#deleteDataName').text("Kode: " + nama);
-                 $('#deleteForm').attr('action', '/tipologi/' + id);
+                 $('#deleteDataName').text(nama);
+                 $('#deleteForm').attr('action', '/berita-acara/' + id);
              });
          </script>
 
