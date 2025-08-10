@@ -4,7 +4,6 @@ use App\Exports\ProposalExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BeritaAcaraController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WilayahController;
@@ -15,6 +14,8 @@ use App\Http\Controllers\KelayakanController;
 use App\Http\Controllers\SubProsesController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\TipeProsesController;
+use App\Http\Controllers\BeritaAcaraController;
+use App\Http\Controllers\BusinessSupportController;
 use App\Http\Controllers\ProposalProsesChecklistController;
 
 
@@ -64,4 +65,8 @@ Route::middleware('auth')->group(function () {
     //     return Excel::download(new ProposalExport, 'data_proposal.xlsx');
     // });
     Route::get('/export-proposals', [ProposalController::class, 'export']);
+
+    Route::get('/business-support', [BusinessSupportController::class, 'index'])->name('business-support.index');
+Route::post('/business-support', [BusinessSupportController::class, 'update'])->name('business-support.update');
+
 });

@@ -21,9 +21,10 @@ class Kelayakan extends Model
         'jumlah_penerima_manfaat',
         'jenis_stakeholder',
         'pejabat_instansi',
-        'bantuan_diajukan',
         'data_terdahulu',
         'catatan_khusus',
+        'prioritas',
+        'dampak',
         'file_pdf',
     ];
 

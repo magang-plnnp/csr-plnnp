@@ -23,34 +23,36 @@ class KelayakanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'proposal_id' => 'required|exists:proposal,id',
-            'dasar_pelaksanaan' => 'required|string|max:255',
-            'latar_belakang' => 'required|string|max:255',
-            'tujuan' => 'required|string|max:255',
-            'indikator_lingkungan' => 'nullable|string',
-            'indikator_sosial' => 'nullable|string',
-            'jumlah_penerima_manfaat' => 'nullable|string|max:255',
-            'jenis_stakeholder' => 'nullable|string|max:255',
-            'pejabat_instansi' => 'nullable|string|max:255',
-            'bantuan_diajukan' => 'nullable|string',
-            'data_terdahulu' => 'nullable|string|max:255',
-            'catatan_khusus' => 'nullable|string|max:255',
-        ]);
+        'proposal_id' => 'required|exists:proposal,id',
+        'dasar_pelaksanaan' => 'required|string|max:255',
+        'latar_belakang' => 'required|string|max:255',
+        'tujuan' => 'required|string|max:255',
+        'indikator_lingkungan' => 'nullable|string',
+        'indikator_sosial' => 'nullable|string',
+        'jumlah_penerima_manfaat' => 'nullable|string|max:255',
+        'jenis_stakeholder' => 'nullable|string|max:255',
+        'pejabat_instansi' => 'nullable|string|max:255',
+        'data_terdahulu' => 'nullable|string|max:255',
+        'catatan_khusus' => 'nullable|string|max:255',
+        'prioritas' => 'required|in:1,2,3,4,5',
+        'dampak' => 'required|in:1,2,3,4,5',
+    ]);
 
         // Simpan data ke database
         $kelayakan = Kelayakan::create([
-            'proposal_id' => $request->proposal_id,
-            'dasar_pelaksanaan' => $request->dasar_pelaksanaan,
-            'latar_belakang' => $request->latar_belakang,
-            'tujuan' => $request->tujuan,
-            'indikator_lingkungan' => $request->indikator_lingkungan,
-            'indikator_sosial' => $request->indikator_sosial,
-            'jumlah_penerima_manfaat' => $request->jumlah_penerima_manfaat,
-            'jenis_stakeholder' => $request->jenis_stakeholder,
-            'pejabat_instansi' => $request->jenis_stakeholder,
-            'bantuan_diajukan' => $request->bantuan_diajukan,
-            'data_terdahulu' => $request->data_terdahulu,
-            'catatan_khusus' => $request->catatan_khusus,
+        'proposal_id' => $request->proposal_id,
+        'dasar_pelaksanaan' => $request->dasar_pelaksanaan,
+        'latar_belakang' => $request->latar_belakang,
+        'tujuan' => $request->tujuan,
+        'indikator_lingkungan' => $request->indikator_lingkungan,
+        'indikator_sosial' => $request->indikator_sosial,
+        'jumlah_penerima_manfaat' => $request->jumlah_penerima_manfaat,
+        'jenis_stakeholder' => $request->jenis_stakeholder,
+        'pejabat_instansi' => $request->pejabat_instansi, 
+        'data_terdahulu' => $request->data_terdahulu,
+        'catatan_khusus' => $request->catatan_khusus,
+        'prioritas' => $request->prioritas,
+        'dampak' => $request->dampak,
         ]);
 
         // Generate PDF berdasarkan view
@@ -59,20 +61,88 @@ class KelayakanController extends Controller
         $pdf->setPaper('A4', 'portrait');
         $pdf->getDomPDF()->render();
 
-        // Tambahkan nomor halaman otomatis di header kanan atas
-        $pdf->getDomPDF()->getCanvas()->page_script(function ($pageNumber, $pageCount, $canvas, $fontMetrics) {
-            $fontBold = $fontMetrics->getFont('Arial', 'bold');
-            $fontNormal = $fontMetrics->getFont('Arial', 'normal');
-            $size = 6.5;
+        $prioritas = $request->prioritas;
+        $dampak = $request->dampak;
 
-            $x1 = 396; // posisi awal "Halaman:"
-            $x2 = 426; // posisi "2 dari 3", atur agar tidak menimpa
-            $y = 135;   // posisi vertikal tetap sama
+        // di dalam page_script
+$pdf->getDomPDF()->getCanvas()->page_script(function ($pageNumber, $pageCount, $canvas, $fontMetrics) use ($prioritas, $dampak) {
+    $fontBold = $fontMetrics->getFont('Arial', 'bold');
+    $fontNormal = $fontMetrics->getFont('Arial', 'normal');
+    $size = 6.5;
 
-            $canvas->text($x1, $y, "Halaman:", $fontBold, $size);
-            $canvas->text($x1 + 0.2, $y, "Halaman:", $fontBold, $size);
-            $canvas->text($x2, $y, "$pageNumber dari $pageCount", $fontNormal, $size);
-        });
+    $x1 = 396; // posisi awal "Halaman:"
+    $x2 = 426; // posisi "2 dari 3"
+    $y = 135;
+
+    $canvas->text($x1, $y, "Halaman:", $fontBold, $size);
+    $canvas->text($x1 + 0.2, $y, "Halaman:", $fontBold, $size);
+    $canvas->text($x2, $y, "$pageNumber dari $pageCount", $fontNormal, $size);
+
+    $canvas->line(50, 770, 550, 770, [0, 0, 0], 0.5);
+
+    $key = "{$prioritas}-{$dampak}";
+
+    if ($pageNumber == 2) {
+    $koordinatMatriks = [
+        '1-1' => [205, 186],
+        '1-2' => [265, 186],
+        '1-3' => [326, 186],
+        '1-4' => [390, 186],
+        '1-5' => [466, 186],
+
+        '2-1' => [205,206],
+        '2-2' => [268, 206],
+        '2-3' => [328, 206],
+        '2-4' => [390, 206],
+        '2-5' => [466, 206],
+
+        '3-1' => [205,226],
+        '3-2' => [269, 226],
+        '3-3' => [328, 226],
+        '3-4' => [395, 226],
+        '3-5' => [461, 226],
+
+        '4-1' => [205, 246],
+        '4-2' => [265, 246],
+        '4-3' => [326, 246],
+        '4-4' => [389, 246],
+        '4-5' => [460, 246],
+
+        '5-1' => [205, 266],
+        '5-2' => [265, 266],
+        '5-3' => [326, 266],
+        '5-4' => [393, 266],
+        '5-5' => [462, 266],
+    ];
+    }
+
+    if (isset($koordinatMatriks[$key])) {
+    [$cx, $cy] = $koordinatMatriks[$key];
+    $radiusX = 20;  // radius horizontal (lebar)
+    $radiusY = 7;  // radius vertikal (tinggi)
+    $segments = 100; // banyak garis untuk elips
+
+    $angleStep = 2 * pi() / $segments;
+
+    $prevX = $cx + $radiusX * cos(0);
+    $prevY = $cy + $radiusY * sin(0);
+
+    for ($i = 1; $i <= $segments; $i++) {
+        $angle = $i * $angleStep;
+        $x = $cx + $radiusX * cos($angle);
+        $y = $cy + $radiusY * sin($angle);
+
+        // Garis hitam dengan ketebalan 1.5
+        $canvas->line($prevX, $prevY, $x, $y, [0, 0, 0], 1.5);
+
+        $prevX = $x;
+        $prevY = $y;
+    }
+} else {
+    logger()->warning("Koordinat tidak ditemukan untuk key {$key}");
+}
+});
+
 
         $pdfName = 'kelayakan_' . $kelayakan->id . '.pdf';
 

@@ -211,34 +211,36 @@
         }
 
         .kategori-table {
-            width: auto;
-            max-width: 70%;
-            border-collapse: collapse;
-            margin-top: 5px;
-            font-size: 11px;
-        }
+        width: auto;
+        max-width: 70%;
+        border-collapse: collapse;
+        margin-top: 5px;
+        font-size: 11px;
+    }
 
-        .kategori-table th,
-        .kategori-table td {
-            border: 1px solid #000;
-            padding: 6px;
-            text-align: left;
-        }
+    .kategori-table th,
+    .kategori-table td {
+        border: 1px solid #000;
+        padding: 6px;
+        text-align: left;
+    }
+    .ttd {
+        margin-top: 40px;
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 11px;
+    }
 
-        .ttd {
-            margin-top: 40px;
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 11px;
-        }
+    .ttd td {
+        border: 1px solid black; /* agar terlihat jelas */
+        padding: 10px;
+        text-align: center;
+        vertical-align: top;
+    }
 
-        .ttd td {
-            border: 1px solid black;
-            /* agar terlihat jelas */
-            padding: 10px;
-            text-align: center;
-            vertical-align: top;
-        }
+    .page-break {
+    page-break-before: always;
+}
     </style>
 </head>
 
@@ -353,6 +355,7 @@
     </div>
 
     <div class="section">
+        <div class="page-break">
         <p><strong>Analisa Matriks</strong>:</p>
         <table class="table-matriks">
             {{-- <thead>
@@ -412,6 +415,7 @@
                 </tr>
             </tbody>
         </table>
+        </div>
 
         <div class="section">
             <p><strong>Keterangan:</strong></p>
