@@ -164,7 +164,7 @@
     </p>
 
     <div class="section tight-top">
-        <p class="indent"><span class="label">Nama</span><span class="separator">:</span><span class="value">Sukarno</span></p>
+        <p class="indent"><span class="label">Nama</span><span class="separator">:</span><span class="value">{{ $namaBisnisSupport }}</span></p>
         <p class="indent"><span class="label">Jabatan</span><span class="separator">:</span><span class="value">Manajer Business Support</span></p>
         
         <p>Dalam hal ini bertindak sebagai Manajer Business Support 
@@ -181,27 +181,26 @@
 
     <p>Dengan ini <strong>PIHAK PERTAMA</strong> menyerahkan bantuan kepada <strong>PIHAK KEDUA</strong> berupa:</p>
 
-    <table class="tabel-bantuan">
-        <thead>
+   <table class="tabel-bantuan" border="1" cellspacing="0" cellpadding="5" style="width:100%; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Jenis Bantuan</th>
+            <th>Jumlah</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($jenis as $i => $jns)
             <tr>
-                <th>No</th>
-                <th>Jenis Bantuan</th>
-                <th>Jumlah</th>
+                <td>{{ $i + 1 }}</td>
+                <td><i>{{ $jns }}</i></td>
+                <td>{{ $jumlah[$i] ?? '-' }}</td>
             </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td><i>Bibit Alpukat</i></td>
-                <td>500 buah</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td><i>Bibit Durian</i></td>
-                <td>500 buah</td>
-            </tr>
-        </tbody>
-    </table>
+        @endforeach
+    </tbody>
+</table>
+
+
 
     <div class="section">
         <p>
@@ -289,7 +288,7 @@
             <td></td>
         </tr>
         <tr>
-            <td><strong>Sukarno</strong></td>
+            <td><strong>{{ $namaBisnisSupport }}</strong></td>
             <td><strong>{{ $data->nama_penerima }}</strong></td>
         </tr>
     </table>

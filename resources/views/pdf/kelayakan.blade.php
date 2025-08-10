@@ -149,7 +149,8 @@
 
         .section {
             margin-top: 10px;
-            font-size: 11px;
+            font-size: 12px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
         }
         .section p {
             margin: 2px 0;
@@ -221,6 +222,10 @@
         text-align: center;
         vertical-align: top;
     }
+
+    .page-break {
+    page-break-before: always;
+}
     </style>
 </head>
 
@@ -332,6 +337,7 @@
     </div>
 
     <div class="section">
+        <div class="page-break">
         <p><strong>Analisa Matriks</strong>:</p>
         <table class="table-matriks">
             {{-- <thead>
@@ -391,6 +397,7 @@
                 </tr>
             </tbody>
         </table>
+        </div>
 
         <div class="section">
         <p><strong>Keterangan:</strong></p>

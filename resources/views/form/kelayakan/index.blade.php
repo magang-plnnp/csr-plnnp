@@ -15,6 +15,7 @@
              background-color: #66b638 !important;
              color: white !important;
          }
+         
      </style>
  @endpush
  @section('content')
@@ -63,7 +64,7 @@
                                          <td>
                                              <h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6>
                                          </td>
-                                         <td>
+                                         <td style="white-space: normal;">
                                              <h6 class="fw-semibold mb-0">{{ $data->proposal->judul }}</h6>
                                          </td>
                                          <td>
@@ -120,7 +121,7 @@
                  @method('PUT')
                  <div class="modal-content">
                      <div class="modal-header">
-                         <h5 class="modal-title" id="editModalLabel">Edit Tipologi</h5>
+                         <h5 class="modal-title" id="editModalLabel">Edit Form Kelayakaan</h5>
                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                      </div>
                      <div class="modal-body">
@@ -211,13 +212,32 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="bantuan_yang_diajukan" class="form-label">Bantuan yang Diajukan</label>
-                            <textarea class="form-control" id="bantuan_yang_diajukan" name="bantuan_yang_diajukan">{{ old('bantuan_yang_diajukan') }}</textarea>
+                            <label for="data_terdahulu" class="form-label">Data Terdahulu</label>
+                            <input type="text" class="form-control" name="data_terdahulu" id="data_terdahulu" value="{{ old('data_terdahulu') }}">
                         </div>
 
                         <div class="mb-3">
-                            <label for="data_terdahulu" class="form-label">Data Terdahulu</label>
-                            <input type="text" class="form-control" name="data_terdahulu" id="data_terdahulu" value="{{ old('data_terdahulu') }}">
+                            <label for="prioritas" class="form-label">Prioritas</label>
+                            <select name="prioritas" id="prioritas" class="form-control" required>
+                                <option value="">-- Pilih Prioritas --</option>
+                                <option value="1">Prioritas 1</option>
+                                <option value="2">Prioritas 2</option>
+                                <option value="3">Prioritas 3</option>
+                                <option value="4">Prioritas 4</option>
+                                <option value="5">Prioritas 5</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="dampak" class="form-label">Dampak</label>
+                            <select name="dampak" id="dampak" class="form-control" required>
+    <option value="">-- Pilih Dampak --</option>
+    <option value="1">Tidak ada dampak</option>
+    <option value="2">Kecil</option>
+    <option value="3">Sedang</option>
+    <option value="4">Tinggi</option>
+    <option value="5">Sangat Tinggi</option>
+</select>
                         </div>
 
                         <div class="mb-3">
