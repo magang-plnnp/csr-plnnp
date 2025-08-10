@@ -53,6 +53,9 @@
                                          <h6 class="fw-semibold mb-0">Tujuan</h6>
                                      </th>
                                      <th>
+                                         <h6 class="fw-semibold mb-0">Indikator Lingkungan</h6>
+                                     </th>
+                                     <th>
                                          <h6 class="fw-semibold mb-0">File</h6>
                                      </th>
                                      <th>
@@ -79,6 +82,9 @@
                                              <p class="mb-0 fw-normal">{{ $data->tujuan }}</p>
                                          </td>
                                          <td>
+                                             <p class="mb-0 fw-normal">{{ $data->indikator_lingkungan }}</p>
+                                         </td>
+                                         <td>
                                              <p class="mb-0 fw-normal"> <a href="{{ asset('storage/' . $data->file_pdf) }}"
                                                      target="_blank">Lihat
                                                      PDF</a></p>
@@ -94,7 +100,15 @@
                                                      data-proposal="{{ $data->proposal->judul }}"
                                                      data-dasar="{{ $data->dasar_pelaksanaan }}"
                                                      data-latar="{{ $data->latar_belakang }}"
-                                                     data-tujuan="{{ $data->tujuan }}">
+                                                     data-tujuan="{{ $data->tujuan }}"
+                                                     data-lingkungan="{{ $data->indikator_lingkungan }}"
+                                                     data-sosial="{{ $data->indikator_sosial }}"
+                                                     data-jpm="{{ $data->jumlah_penerima_manfaat }}"
+                                                     data-js="{{ $data->jenis_stakeholder }}"
+                                                     data-pejabat="{{ $data->pejabat_instansi }}"
+                                                     data-bd="{{ $data->bantuan_diajukan }}"
+                                                     data-dt="{{ $data->data_terdahulu }}"
+                                                     data-catatan="{{ $data->catatan_khusus }}">
                                                      <i class="fas fa-edit"></i>
                                                  </button>
 
@@ -147,6 +161,39 @@
                              <label for="edit-tujuan" class="form-label">Tujuan</label>
                              <input type="text" class="form-control" id="edit-tujuan" name="tujuan">
                          </div>
+                         <div class="mb-3">
+                             <label for="edit-lingkungan" class="form-label">Indikator Lingkungan</label>
+                             <input type="text" class="form-control" id="edit-lingkungan"
+                                 name="indikator_lingkungan">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-sosial" class="form-label">Indikator Sosial</label>
+                             <input type="text" class="form-control" id="edit-sosial" name="indikator_sosial">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-jpm" class="form-label">Jumlah Penerima Manfaat</label>
+                             <input type="text" class="form-control" id="edit-jpm" name="jumlah_penerima_manfaat">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-js" class="form-label">Jenis Stakeholder</label>
+                             <input type="text" class="form-control" id="edit-js" name="jenis_stakeholder">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-pejabat" class="form-label">Pejabat Instansi</label>
+                             <input type="text" class="form-control" id="edit-pejabat" name="pejabat_instansi">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-bd" class="form-label">Bantuan Diajukan</label>
+                             <input type="text" class="form-control" id="edit-bd" name="bantuan_diajukan">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-dt" class="form-label">Data Terdahulu</label>
+                             <input type="text" class="form-control" id="edit-dt" name="data_terdahulu">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-catatan" class="form-label">Catatan Khusus</label>
+                             <input type="text" class="form-control" id="edit-catatan" name="catatan_khusus">
+                         </div>
                      </div>
                      <div class="modal-footer">
                          <button type="button" class="btn bg-secondary-subtle text-dark"
@@ -188,69 +235,75 @@
                              @enderror
                          </div>
 
-                        <div class="mb-3">
-                            <label for="dasar_pelaksanaan" class="form-label">Dasar Pelaksanaan</label>
-                            <textarea class="form-control" id="dasar_pelaksanaan" name="dasar_pelaksanaan" required>{{ old('dasar_pelaksanaan') }}</textarea>
-                        </div>
+                         <div class="mb-3">
+                             <label for="dasar_pelaksanaan" class="form-label">Dasar Pelaksanaan</label>
+                             <textarea class="form-control" id="dasar_pelaksanaan" name="dasar_pelaksanaan" required>{{ old('dasar_pelaksanaan') }}</textarea>
+                         </div>
 
-                        <div class="mb-3">
-                            <label for="latar_belakang" class="form-label">Latar Belakang</label>
-                            <textarea class="form-control" id="latar_belakang" name="latar_belakang" required>{{ old('latar_belakang') }}</textarea>
-                        </div>
+                         <div class="mb-3">
+                             <label for="latar_belakang" class="form-label">Latar Belakang</label>
+                             <textarea class="form-control" id="latar_belakang" name="latar_belakang" required>{{ old('latar_belakang') }}</textarea>
+                         </div>
 
-                        <div class="mb-3">
-                            <label for="tujuan" class="form-label">Tujuan</label>
-                            <textarea class="form-control" id="tujuan" name="tujuan" required>{{ old('tujuan') }}</textarea>
-                        </div>
+                         <div class="mb-3">
+                             <label for="tujuan" class="form-label">Tujuan</label>
+                             <textarea class="form-control" id="tujuan" name="tujuan" required>{{ old('tujuan') }}</textarea>
+                         </div>
 
-                        <div class="mb-3">
-                            <label for="indikator_lingkungan" class="form-label">Indikator Lingkungan</label>
-                            <textarea class="form-control" id="indikator_lingkungan" name="indikator_lingkungan">{{ old('indikator_lingkungan') }}</textarea>
-                        </div>
+                         <div class="mb-3">
+                             <label for="indikator_lingkungan" class="form-label">Indikator Lingkungan</label>
+                             <textarea class="form-control" id="indikator_lingkungan" name="indikator_lingkungan">{{ old('indikator_lingkungan') }}</textarea>
+                         </div>
 
-                        <div class="mb-3">
-                            <label for="indikator_sosial" class="form-label">Indikator Sosial</label>
-                            <textarea class="form-control" id="indikator_sosial" name="indikator_sosial">{{ old('indikator_sosial') }}</textarea>
-                        </div>
+                         <div class="mb-3">
+                             <label for="indikator_sosial" class="form-label">Indikator Sosial</label>
+                             <textarea class="form-control" id="indikator_sosial" name="indikator_sosial">{{ old('indikator_sosial') }}</textarea>
+                         </div>
 
-                        <div class="mb-3">
-                            <label for="jumlah_penerima_manfaat" class="form-label">Jumlah Penerima Manfaat</label>
-                            <input type="text" class="form-control" name="jumlah_penerima_manfaat" id="jumlah_penerima_manfaat" value="{{ old('jumlah_penerima_manfaat') }}">
-                        </div>
+                         <div class="mb-3">
+                             <label for="jumlah_penerima_manfaat" class="form-label">Jumlah Penerima Manfaat</label>
+                             <input type="text" class="form-control" name="jumlah_penerima_manfaat"
+                                 id="jumlah_penerima_manfaat" value="{{ old('jumlah_penerima_manfaat') }}">
+                         </div>
 
-                        <div class="mb-3">
-                            <label for="jenis_stakeholder" class="form-label">Jenis Stakeholder</label>
-                            <input type="text" class="form-control" name="jenis_stakeholder" id="jenis_stakeholder" value="{{ old('jenis_stakeholder') }}">
-                        </div>
+                         <div class="mb-3">
+                             <label for="jenis_stakeholder" class="form-label">Jenis Stakeholder</label>
+                             <input type="text" class="form-control" name="jenis_stakeholder" id="jenis_stakeholder"
+                                 value="{{ old('jenis_stakeholder') }}">
+                         </div>
 
-                        <div class="mb-3">
-                            <label for="pejabat_instansi" class="form-label">Pejabat Instansi</label>
-                            <input type="text" class="form-control" name="pejabat_instansi" id="pejabat_instansi" value="{{ old('pejabat_instansi') }}">
-                        </div>
+                         <div class="mb-3">
+                             <label for="pejabat_instansi" class="form-label">Pejabat Instansi</label>
+                             <input type="text" class="form-control" name="pejabat_instansi" id="pejabat_instansi"
+                                 value="{{ old('pejabat_instansi') }}">
+                         </div>
 
-                        <div class="mb-3">
-                            <label for="bantuan_yang_diajukan" class="form-label">Bantuan yang Diajukan</label>
-                            <textarea class="form-control" id="bantuan_yang_diajukan" name="bantuan_yang_diajukan">{{ old('bantuan_yang_diajukan') }}</textarea>
-                        </div>
+                         <div class="mb-3">
+                             <label for="bantuan_yang_diajukan" class="form-label">Bantuan yang Diajukan</label>
+                             <textarea class="form-control" id="bantuan_yang_diajukan" name="bantuan_yang_diajukan">{{ old('bantuan_yang_diajukan') }}</textarea>
+                         </div>
 
-                        <div class="mb-3">
-                            <label for="data_terdahulu" class="form-label">Data Terdahulu</label>
-                            <input type="text" class="form-control" name="data_terdahulu" id="data_terdahulu" value="{{ old('data_terdahulu') }}">
-                        </div>
+                         <div class="mb-3">
+                             <label for="data_terdahulu" class="form-label">Data Terdahulu</label>
+                             <input type="text" class="form-control" name="data_terdahulu" id="data_terdahulu"
+                                 value="{{ old('data_terdahulu') }}">
+                         </div>
 
-                        <div class="mb-3">
-                            <label for="catatan_khusus" class="form-label">Catatan Khusus</label>
-                            <textarea class="form-control" id="catatan_khusus" name="catatan_khusus">{{ old('catatan_khusus') }}</textarea>
-                        </div>
+                         <div class="mb-3">
+                             <label for="catatan_khusus" class="form-label">Catatan Khusus</label>
+                             <textarea class="form-control" id="catatan_khusus" name="catatan_khusus">{{ old('catatan_khusus') }}</textarea>
+                         </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn bg-secondary-subtle text-dark" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" style="background-color: #78C841; color:whitesmoke" class="btn">Tambah</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+                     </div>
+                     <div class="modal-footer">
+                         <button type="button" class="btn bg-secondary-subtle text-dark"
+                             data-bs-dismiss="modal">Batal</button>
+                         <button type="submit" style="background-color: #78C841; color:whitesmoke"
+                             class="btn">Tambah</button>
+                     </div>
+                 </div>
+             </form>
+         </div>
      </div>
 
 
@@ -343,11 +396,27 @@
                  const dasar = $(this).data('dasar');
                  const latar = $(this).data('latar');
                  const tujuan = $(this).data('tujuan');
+                 const lingkungan = $(this).data('lingkungan');
+                 const sosial = $(this).data('sosial');
+                 const jpm = $(this).data('jpm');
+                 const js = $(this).data('js');
+                 const pejabat = $(this).data('pejabat');
+                 const bd = $(this).data('bd');
+                 const dt = $(this).data('dt');
+                 const catatan = $(this).data('catatan');
 
                  $('#edit-proposal').val(proposal);
                  $('#edit-dasar').val(dasar);
                  $('#edit-latar').val(latar);
                  $('#edit-tujuan').val(tujuan);
+                 $('#edit-lingkungan').val(lingkungan);
+                 $('#edit-sosial').val(sosial);
+                 $('#edit-jpm').val(jpm);
+                 $('#edit-js').val(js);
+                 $('#edit-pejabat').val(pejabat);
+                 $('#edit-bd').val(bd);
+                 $('#edit-dt').val(dt);
+                 $('#edit-catatan').val(catatan);
 
                  // Update action form dengan ID yang dipilih
                  $('#editForm').attr('action', '/kelayakan/' + id);

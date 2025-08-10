@@ -6,19 +6,21 @@
     <title>Formulir Kelayakan</title>
     <style>
         @page {
-        /* margin: 130px 30px 60px 30px; sesuaikan margin atas agar tidak tabrakan dengan header */
-        margin-top: 72pt;
-        margin-bottom: 50pt;
-        margin-left: 72pt;
-        margin-right: 72pt;
+            /* margin: 130px 30px 60px 30px; sesuaikan margin atas agar tidak tabrakan dengan header */
+            margin-top: 72pt;
+            margin-bottom: 50pt;
+            margin-left: 72pt;
+            margin-right: 72pt;
         }
+
         .kop-header {
             position: fixed;
-            top: 0px; 
+            top: 0px;
             left: 0;
             right: 0;
             text-align: left;
         }
+
         body {
             font-family: Arial, sans-serif;
             font-size: 12px;
@@ -31,6 +33,7 @@
             text-align: center;
             margin: 4px 0;
         }
+
         h4 {
             text-align: center;
             margin: 4px 0;
@@ -58,14 +61,17 @@
             margin-top: 10px;
             font-size: 10px;
         }
+
         /* Hilangkan border kolom pertama (Prioritas) */
         .table-matriks td:first-child {
             border: none;
         }
+
         /* Hilangkan border baris terakhir (penjelasan kategori) */
         .table-matriks tr:last-child td {
             border: none;
         }
+
         .table-matriks th,
         .table-matriks td {
             border: 1px solid #000;
@@ -81,13 +87,16 @@
             text-align: center;
             padding-top: 40px;
         }
+
         .kop-surat {
             font-size: 10px;
             margin-bottom: 10px;
         }
+
         .kop-surat table {
             border-collapse: collapse;
         }
+
         .kop-surat {
             border-collapse: collapse;
             font-size: 11px;
@@ -102,6 +111,7 @@
         .kop-surat .label {
             font-weight: bold;
         }
+
         .kop-resmi {
             border-collapse: collapse;
             margin-bottom: 10px;
@@ -111,6 +121,7 @@
             vertical-align: top;
             padding: 2px 5px;
         }
+
         .kop-table {
             border: 1px solid black;
             border-collapse: collapse;
@@ -149,15 +160,17 @@
 
         .section {
             margin-top: 10px;
-            font-size: 11px;
+            font-size: 12px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
         }
+
         .section p {
             margin: 2px 0;
         }
 
         /* .label {
             display: inline-block;
-            width: 200px; 
+            width: 200px;
             font-weight: bold;
             vertical-align: top;
         }
@@ -176,6 +189,7 @@
             display: table-cell;
             vertical-align: top;
         }
+
         .label {
             width: 200px;
             font-weight: bold;
@@ -188,39 +202,43 @@
         .value {
             width: auto;
         }
-         .data-row {
+
+        .data-row {
             display: table;
             width: 100%;
             margin-bottom: 3px;
             line-height: 20pt;
         }
+
         .kategori-table {
-        width: auto;
-        max-width: 70%;
-        border-collapse: collapse;
-        margin-top: 5px;
-        font-size: 11px;
-    }
+            width: auto;
+            max-width: 70%;
+            border-collapse: collapse;
+            margin-top: 5px;
+            font-size: 11px;
+        }
 
-    .kategori-table th,
-    .kategori-table td {
-        border: 1px solid #000;
-        padding: 6px;
-        text-align: left;
-    }
-    .ttd {
-        margin-top: 40px;
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 11px;
-    }
+        .kategori-table th,
+        .kategori-table td {
+            border: 1px solid #000;
+            padding: 6px;
+            text-align: left;
+        }
 
-    .ttd td {
-        border: 1px solid black; /* agar terlihat jelas */
-        padding: 10px;
-        text-align: center;
-        vertical-align: top;
-    }
+        .ttd {
+            margin-top: 40px;
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+
+        .ttd td {
+            border: 1px solid black;
+            /* agar terlihat jelas */
+            padding: 10px;
+            text-align: center;
+            vertical-align: top;
+        }
     </style>
 </head>
 
@@ -229,7 +247,8 @@
         <table class="kop-table" width="100%">
             <tr>
                 <td rowspan="4" class="logo-cell">
-                    <img src="{{ public_path('images/logos/logo-pln2.png') }}" style="height: 0.64cm; width: 3.12cm; margin-top: 2px;">
+                    <img src="{{ public_path('images/logos/logo-pln2.png') }}"
+                        style="height: 0.64cm; width: 3.12cm; margin-top: 2px;">
                 </td>
                 <td class="judul-cell"><strong>PT PLN NUSANTARA POWER</strong></td>
                 <td class="info-cell"><strong>Nomor Dokumen</strong> : FMPT-328-12.5.1.a.b.e-001</td>
@@ -242,7 +261,8 @@
                 <td rowspan="2" class="judul-cell">
                     FORMULIR ANALISIS PERMINTAAN BANTUAN PROGRAM CSR
                 </td>
-                <td class="info-cell"><strong>Tanggal Terbit</strong> : {{ \Carbon\Carbon::now()->format('d - m - Y') }}</td>
+                <td class="info-cell"><strong>Tanggal Terbit</strong> : {{ \Carbon\Carbon::now()->format('d - m - Y') }}
+                </td>
             </tr>
             <tr>
                 {{-- <td class="info-cell"><strong>Halaman</strong> : 1 dari 3</td> --}}
@@ -326,7 +346,8 @@
             <div class="label">Bantuan yang diajukan</div>
             <div class="separator">:</div>
             <div class="value">
-                Proposal {{ $data->proposal->judul }} senilai Rp {{ number_format($data->proposal->nominal_pengajuan, 0, ',', '.') }}
+                Proposal {{ $data->proposal->judul }} senilai Rp
+                {{ number_format($data->proposal->nominal_pengajuan, 0, ',', '.') }}
             </div>
         </div>
     </div>
@@ -393,34 +414,34 @@
         </table>
 
         <div class="section">
-        <p><strong>Keterangan:</strong></p>
-        <table class="kategori-table">
-            {{-- <thead>
+            <p><strong>Keterangan:</strong></p>
+            <table class="kategori-table">
+                {{-- <thead>
                 <tr>
                     <th style="width: 25%;">Kategori</th>
                     <th style="width: 25%">Keterangan</th>
                 </tr>
             </thead> --}}
-            <tbody>
-                <tr>
-                    <td style="background-color: #00b050; text-align: center;">Rendah</td>
-                    <td>Nilai bantuan 0% - 25%</td>
-                </tr>
-                <tr>
-                    <td style="background-color: #ffc000; text-align: center;">Sedang</td>
-                    <td>Nilai bantuan 0% - 50%</td>
-                </tr>
-                <tr>
-                    <td style="background-color: #e36c09; text-align: center;">Tinggi</td>
-                    <td>Nilai bantuan 0% - 75%</td>
-                </tr>
-                <tr>
-                    <td style="background-color: #ff0000; text-align: center;">Ekstreme</td>
-                    <td>Nilai bantuan 0% - 100%</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+                <tbody>
+                    <tr>
+                        <td style="background-color: #00b050; text-align: center;">Rendah</td>
+                        <td>Nilai bantuan 0% - 25%</td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #ffc000; text-align: center;">Sedang</td>
+                        <td>Nilai bantuan 0% - 50%</td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #e36c09; text-align: center;">Tinggi</td>
+                        <td>Nilai bantuan 0% - 75%</td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #ff0000; text-align: center;">Ekstreme</td>
+                        <td>Nilai bantuan 0% - 100%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="section">
@@ -451,49 +472,50 @@
 
     <div class="section">
         <table class="ttd" width="100%">
-        <tr>
-            <td colspan="5" style="text-align: center;"><strong>Paiton, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</strong></td>
-        </tr>
-        <tr>
-            <td colspan="5" style="text-align: center;"><strong>Mengetahui :</strong></td>
-        </tr>
+            <tr>
+                <td colspan="5" style="text-align: center;"><strong>Paiton,
+                        {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</strong></td>
+            </tr>
+            <tr>
+                <td colspan="5" style="text-align: center;"><strong>Mengetahui :</strong></td>
+            </tr>
 
-        <!-- Baris Asman SDM -->
-        <tr>
-            <td rowspan="3" style="width: 25%; text-align: center; font-weight: bold;">
-                Asman SDM,<br>Umum dan CSR
-            </td>
-            <td colspan="2" style="text-align: center; font-weight: bold; width: 20%;">Diterima</td>
-            <td colspan="2" style="text-align: center; font-weight: bold; width: 55%;">Arahan</td>
-        </tr>
-        <tr>
-            <td style="width: 10%; text-align: center;">Ya</td>
-            <td style="width: 10%; text-align: center;">Tidak</td>
-            <td colspan="2" rowspan="2" style="width: 55%;"></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-        </tr>
+            <!-- Baris Asman SDM -->
+            <tr>
+                <td rowspan="3" style="width: 25%; text-align: center; font-weight: bold;">
+                    Asman SDM,<br>Umum dan CSR
+                </td>
+                <td colspan="2" style="text-align: center; font-weight: bold; width: 20%;">Diterima</td>
+                <td colspan="2" style="text-align: center; font-weight: bold; width: 55%;">Arahan</td>
+            </tr>
+            <tr>
+                <td style="width: 10%; text-align: center;">Ya</td>
+                <td style="width: 10%; text-align: center;">Tidak</td>
+                <td colspan="2" rowspan="2" style="width: 55%;"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
 
-        <!-- Baris Manager -->
-        <tr>
-            <td rowspan="3" style="width: 25%; text-align: center; font-weight: bold;">
-                Manager Business Support
-            </td>
-            <td colspan="2" style="text-align: center; font-weight: bold;">Diterima</td>
-            <td colspan="2" style="text-align: center; font-weight: bold;">Arahan</td>
-        </tr>
-        <tr>
-            <td style="text-align: center;">Ya</td>
-            <td style="text-align: center;">Tidak</td>
-            <td colspan="2" rowspan="2"></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-        </tr>
-    </table>
+            <!-- Baris Manager -->
+            <tr>
+                <td rowspan="3" style="width: 25%; text-align: center; font-weight: bold;">
+                    Manager Business Support
+                </td>
+                <td colspan="2" style="text-align: center; font-weight: bold;">Diterima</td>
+                <td colspan="2" style="text-align: center; font-weight: bold;">Arahan</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">Ya</td>
+                <td style="text-align: center;">Tidak</td>
+                <td colspan="2" rowspan="2"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
     </div>
 
 </body>

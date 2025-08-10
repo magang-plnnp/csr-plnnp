@@ -165,26 +165,24 @@ class ProposalController extends Controller
     }
 
     public function export(Request $request)
-    {
-        $query = Proposal::with(['tipologi', 'tipeProses.subProses', 'namaPic']);
+{
+    $query = Proposal::with(['tipologi', 'tipeProses.subProses', 'namaPic']);
 
-        // dd($request->all());
-        if ($request->has('status') && $request->status !== null) {
-            $query->where('status', $request->status);
-        }
-
+    if ($request->has('pic') && $request->pic !== null) {
         $query->whereHas('namaPic', function ($q) use ($request) {
             $q->where('nama', $request->pic);
         });
-
-        if ($request->has('tipologi') && $request->tipologi !== null) {
-            $query->whereHas('tipologi', function ($q) use ($request) {
-                $q->where('kode', $request->tipologi);
-            });
-        }
-
-        $data = $query->get();
-
-        return Excel::download(new ProposalExport($data), 'data_proposal.xlsx');
     }
+
+    if ($request->has('tipologi') && $request->tipologi !== null) {
+        $query->whereHas('tipologi', function ($q) use ($request) {
+            $q->where('kode', $request->tipologi);
+        });
+    }
+
+    $data = $query->get();
+
+    return Excel::download(new ProposalExport($data), 'data_proposal.xlsx');
+}
+
 }
