@@ -54,6 +54,9 @@
                                          <h6 class="fw-semibold mb-0">Tujuan</h6>
                                      </th>
                                      <th>
+                                         <h6 class="fw-semibold mb-0">Indikator Lingkungan</h6>
+                                     </th>
+                                     <th>
                                          <h6 class="fw-semibold mb-0">File</h6>
                                      </th>
                                      <th>
@@ -80,6 +83,9 @@
                                              <p class="mb-0 fw-normal">{{ $data->tujuan }}</p>
                                          </td>
                                          <td>
+                                             <p class="mb-0 fw-normal">{{ $data->indikator_lingkungan }}</p>
+                                         </td>
+                                         <td>
                                              <p class="mb-0 fw-normal"> <a href="{{ asset('storage/' . $data->file_pdf) }}"
                                                      target="_blank">Lihat
                                                      PDF</a></p>
@@ -95,7 +101,15 @@
                                                      data-proposal="{{ $data->proposal->judul }}"
                                                      data-dasar="{{ $data->dasar_pelaksanaan }}"
                                                      data-latar="{{ $data->latar_belakang }}"
-                                                     data-tujuan="{{ $data->tujuan }}">
+                                                     data-tujuan="{{ $data->tujuan }}"
+                                                     data-lingkungan="{{ $data->indikator_lingkungan }}"
+                                                     data-sosial="{{ $data->indikator_sosial }}"
+                                                     data-jpm="{{ $data->jumlah_penerima_manfaat }}"
+                                                     data-js="{{ $data->jenis_stakeholder }}"
+                                                     data-pejabat="{{ $data->pejabat_instansi }}"
+                                                     data-bd="{{ $data->bantuan_diajukan }}"
+                                                     data-dt="{{ $data->data_terdahulu }}"
+                                                     data-catatan="{{ $data->catatan_khusus }}">
                                                      <i class="fas fa-edit"></i>
                                                  </button>
 
@@ -147,6 +161,39 @@
                          <div class="mb-3">
                              <label for="edit-tujuan" class="form-label">Tujuan</label>
                              <input type="text" class="form-control" id="edit-tujuan" name="tujuan">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-lingkungan" class="form-label">Indikator Lingkungan</label>
+                             <input type="text" class="form-control" id="edit-lingkungan"
+                                 name="indikator_lingkungan">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-sosial" class="form-label">Indikator Sosial</label>
+                             <input type="text" class="form-control" id="edit-sosial" name="indikator_sosial">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-jpm" class="form-label">Jumlah Penerima Manfaat</label>
+                             <input type="text" class="form-control" id="edit-jpm" name="jumlah_penerima_manfaat">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-js" class="form-label">Jenis Stakeholder</label>
+                             <input type="text" class="form-control" id="edit-js" name="jenis_stakeholder">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-pejabat" class="form-label">Pejabat Instansi</label>
+                             <input type="text" class="form-control" id="edit-pejabat" name="pejabat_instansi">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-bd" class="form-label">Bantuan Diajukan</label>
+                             <input type="text" class="form-control" id="edit-bd" name="bantuan_diajukan">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-dt" class="form-label">Data Terdahulu</label>
+                             <input type="text" class="form-control" id="edit-dt" name="data_terdahulu">
+                         </div>
+                         <div class="mb-3">
+                             <label for="edit-catatan" class="form-label">Catatan Khusus</label>
+                             <input type="text" class="form-control" id="edit-catatan" name="catatan_khusus">
                          </div>
                      </div>
                      <div class="modal-footer">
@@ -363,11 +410,27 @@
                  const dasar = $(this).data('dasar');
                  const latar = $(this).data('latar');
                  const tujuan = $(this).data('tujuan');
+                 const lingkungan = $(this).data('lingkungan');
+                 const sosial = $(this).data('sosial');
+                 const jpm = $(this).data('jpm');
+                 const js = $(this).data('js');
+                 const pejabat = $(this).data('pejabat');
+                 const bd = $(this).data('bd');
+                 const dt = $(this).data('dt');
+                 const catatan = $(this).data('catatan');
 
                  $('#edit-proposal').val(proposal);
                  $('#edit-dasar').val(dasar);
                  $('#edit-latar').val(latar);
                  $('#edit-tujuan').val(tujuan);
+                 $('#edit-lingkungan').val(lingkungan);
+                 $('#edit-sosial').val(sosial);
+                 $('#edit-jpm').val(jpm);
+                 $('#edit-js').val(js);
+                 $('#edit-pejabat').val(pejabat);
+                 $('#edit-bd').val(bd);
+                 $('#edit-dt').val(dt);
+                 $('#edit-catatan').val(catatan);
 
                  // Update action form dengan ID yang dipilih
                  $('#editForm').attr('action', '/kelayakan/' + id);
