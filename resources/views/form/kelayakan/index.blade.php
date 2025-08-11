@@ -108,6 +108,8 @@
                                                      data-js="{{ $data->jenis_stakeholder }}"
                                                      data-pejabat="{{ $data->pejabat_instansi }}"
                                                      data-dt="{{ $data->data_terdahulu }}"
+                                                     data-prioritas="{{ $data->prioritas }}"
+                                                     data-dampak="{{ $data->dampak }}"
                                                      data-catatan="{{ $data->catatan_khusus }}">
                                                      <i class="fas fa-edit"></i>
                                                  </button>
@@ -187,6 +189,7 @@
                              <input type="text" class="form-control" id="edit-dt" name="data_terdahulu">
                          </div>
                          <div class="mb-3">
+                            <div class="mb-3">
                             <label for="edit-prioritas" class="form-label">Prioritas</label>
                             <select name="prioritas" id="edit-prioritas" class="form-control" required>
                                 <option value="">-- Pilih Prioritas --</option>
@@ -197,7 +200,6 @@
                                 <option value="5">Prioritas 5</option>
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label for="edit-dampak" class="form-label">Dampak</label>
                             <select name="dampak" id="edit-dampak" class="form-control" required>
@@ -208,6 +210,7 @@
                                 <option value="4">Tinggi</option>
                                 <option value="5">Sangat Tinggi</option>
                             </select>
+                        </div>
                         </div>
                          <div class="mb-3">
                              <label for="edit-catatan" class="form-label">Catatan Khusus</label>
@@ -435,6 +438,8 @@
                  const pejabat = $(this).data('pejabat');
                  const bd = $(this).data('bd');
                  const dt = $(this).data('dt');
+                 const prioritas = $(this).data('prioritas');
+                 const dampak = $(this).data('dampak');
                  const catatan = $(this).data('catatan');
 
                  $('#edit-proposal').val(proposal);
@@ -448,6 +453,8 @@
                  $('#edit-pejabat').val(pejabat);
                  $('#edit-bd').val(bd);
                  $('#edit-dt').val(dt);
+                 $('#edit-prioritas').val(prioritas);
+                 $('#edit-dampak').val(dampak);
                  $('#edit-catatan').val(catatan);
 
                  // Update action form dengan ID yang dipilih
