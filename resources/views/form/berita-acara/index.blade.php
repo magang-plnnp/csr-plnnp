@@ -62,10 +62,10 @@
                                  @foreach ($beritaacara as $data)
                                      <tr>
                                          <td>
-                                             <h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6>
+                                             <h6 class="fw-normal mb-0">{{ $loop->iteration }}</h6>
                                          </td>
                                          <td style="white-space: normal;">
-                                             <h6 class="fw-semibold mb-0">{{ $data->proposal->judul }}</h6>
+                                             <h6 class="fw-normal mb-0">{{ $data->proposal->judul }}</h6>
                                          </td>
                                          <td>
                                              <p class="mb-0 fw-normal">{{ $data->nama_penerima }}</p>
@@ -138,6 +138,10 @@
                              <label for="edit-jabatan" class="form-label">Jabatan Penerima</label>
                              <input type="text" class="form-control" id="edit-jabatan" name="jabatan_penerima" required>
                          </div>
+
+                         <div id="edit-bantuan-wrapper"></div>
+                         <button type="button" id="edit-add-bantuan" class="btn btn-sm btn-secondary mb-3">+ Tambah Jenis
+                             Bantuan</button>
                      </div>
                      <div class="modal-footer">
                          <button type="button" class="btn bg-secondary-subtle text-dark"
@@ -150,65 +154,74 @@
          </div>
      </div>
 
+
      <!-- Modal Create -->
-<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form method="POST" action="{{ route('berita-acara.store') }}">
-            @csrf
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createModalLabel">Tambah Berita Acara</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Proposal</label>
-                        <select name="proposal_id" class="form-control @error('proposal_id') is-invalid @enderror" required>
-                            <option value="">-- Pilih Proposal --</option>
-                            @foreach ($proposal as $item)
-                                <option value="{{ $item->id }}" {{ old('proposal_id') == $item->id ? 'selected' : '' }}>
-                                    {{ $item->judul }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('proposal_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+     <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+             <form method="POST" action="{{ route('berita-acara.store') }}">
+                 @csrf
+                 <div class="modal-content">
+                     <div class="modal-header">
+                         <h5 class="modal-title" id="createModalLabel">Tambah Berita Acara</h5>
+                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                     </div>
+                     <div class="modal-body">
+                         <div class="mb-3">
+                             <label class="form-label">Proposal</label>
+                             <select name="proposal_id" id="select-proposal"
+                                 class="form-select @error('proposal_id') is-invalid @enderror" required>
+                                 <option value="">-- Pilih Proposal --</option>
+                                 @foreach ($proposal as $item)
+                                     <option value="{{ $item->id }}"
+                                         {{ old('proposal_id') == $item->id ? 'selected' : '' }}>
+                                         {{ $item->judul }}
+                                     </option>
+                                 @endforeach
+                             </select>
+                             @error('proposal_id')
+                                 <div class="invalid-feedback">{{ $message }}</div>
+                             @enderror
+                         </div>
 
-                    <div class="mb-3">
-                        <label for="nama_penerima" class="form-label">Nama</label>
-                        <textarea class="form-control" id="nama_penerima" name="nama_penerima" required>{{ old('nama_penerima') }}</textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="jabatan_penerima" class="form-label">Jabatan</label>
-                        <textarea class="form-control" id="jabatan_penerima" name="jabatan_penerima" required>{{ old('jabatan_penerima') }}</textarea>
-                    </div>
-<div id="bantuan-wrapper">
-    <div class="bantuan-item mb-3 d-flex align-items-start gap-2">
-        <div style="flex-grow:1;">
-            <label class="form-label">Jenis Bantuan</label>
-            <input type="text" name="jenis_bantuan[]" class="form-control mb-2" placeholder="Contoh: Bibit Alpukat" required>
+                         <div class="mb-3">
+                             <label for="nama_penerima" class="form-label">Nama</label>
+                             <textarea class="form-control" id="nama_penerima" name="nama_penerima" required>{{ old('nama_penerima') }}</textarea>
+                         </div>
+                         <div class="mb-3">
+                             <label for="jabatan_penerima" class="form-label">Jabatan</label>
+                             <textarea class="form-control" id="jabatan_penerima" name="jabatan_penerima" required>{{ old('jabatan_penerima') }}</textarea>
+                         </div>
+                         <div id="bantuan-wrapper">
+                             <div class="bantuan-item mb-3 d-flex align-items-start gap-2">
+                                 <div style="flex-grow:1;">
+                                     <label class="form-label">Jenis Bantuan</label>
+                                     <input type="text" name="jenis_bantuan[]" class="form-control mb-2"
+                                         placeholder="Contoh: Bibit Alpukat" required>
 
-            <label class="form-label">Jumlah</label>
-            <input type="text" name="jumlah_bantuan[]" class="form-control" placeholder="Contoh: 500 buah" required>
-        </div>
-        <button type="button" class="btn btn-danger btn-remove" style="height: fit-content; margin-top: 28px;">&times;</button>
-    </div>
-</div>
+                                     <label class="form-label">Jumlah</label>
+                                     <input type="text" name="jumlah_bantuan[]" class="form-control"
+                                         placeholder="Contoh: 500 buah" required>
+                                 </div>
+                                 <button type="button" class="btn btn-danger btn-remove"
+                                     style="height: fit-content; margin-top: 28px;">&times;</button>
+                             </div>
+                         </div>
 
-<button type="button" id="add-bantuan" class="btn btn-sm btn-secondary mb-3">+ Tambah Jenis Bantuan</button>
+                         <button type="button" id="add-bantuan" class="btn btn-sm btn-secondary mb-3">+ Tambah Jenis
+                             Bantuan</button>
 
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn bg-secondary-subtle text-dark" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" style="background-color: #78C841; color:whitesmoke" class="btn">Tambah</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+                     </div>
+                     <div class="modal-footer">
+                         <button type="button" class="btn bg-secondary-subtle text-dark"
+                             data-bs-dismiss="modal">Batal</button>
+                         <button type="submit" style="background-color: #78C841; color:whitesmoke"
+                             class="btn">Tambah</button>
+                     </div>
+                 </div>
+             </form>
+         </div>
+     </div>
 
 
      <!-- Modal Delete -->
@@ -289,12 +302,12 @@
                  }
              });
          </script>
-<script>
-    document.getElementById('add-bantuan').addEventListener('click', function () {
-    let wrapper = document.getElementById('bantuan-wrapper');
-    let newItem = document.createElement('div');
-    newItem.classList.add('bantuan-item', 'mb-3', 'd-flex', 'align-items-start', 'gap-2');
-    newItem.innerHTML = `
+         <script>
+             document.getElementById('add-bantuan').addEventListener('click', function() {
+                 let wrapper = document.getElementById('bantuan-wrapper');
+                 let newItem = document.createElement('div');
+                 newItem.classList.add('bantuan-item', 'mb-3', 'd-flex', 'align-items-start', 'gap-2');
+                 newItem.innerHTML = `
         <div style="flex-grow:1;">
             <label class="form-label">Jenis Bantuan</label>
             <input type="text" name="jenis_bantuan[]" class="form-control mb-2" placeholder="Contoh: Bibit Alpukat" required>
@@ -304,18 +317,17 @@
         </div>
         <button type="button" class="btn btn-danger btn-remove" style="height: fit-content; margin-top: 28px;">&times;</button>
     `;
-    wrapper.appendChild(newItem);
-});
+                 wrapper.appendChild(newItem);
+             });
 
-// Event delegation untuk tombol hapus
-document.getElementById('bantuan-wrapper').addEventListener('click', function(e) {
-    if(e.target && e.target.classList.contains('btn-remove')) {
-        e.target.closest('.bantuan-item').remove();
-    }
-});
+             // Event delegation untuk tombol hapus
+             document.getElementById('bantuan-wrapper').addEventListener('click', function(e) {
+                 if (e.target && e.target.classList.contains('btn-remove')) {
+                     e.target.closest('.bantuan-item').remove();
+                 }
+             });
+         </script>
 
-</script>
-       
 
          {{-- EDIT MODAL --}}
          <script>
@@ -325,14 +337,60 @@ document.getElementById('bantuan-wrapper').addEventListener('click', function(e)
                  const jabatan = $(this).data('jabatan');
                  const proposal = $(this).data('proposal');
 
+                 // Isi field dasar
                  $('#edit-nama').val(nama);
                  $('#edit-jabatan').val(jabatan);
                  $('#edit-proposal').val(proposal);
 
-                 // Update action form dengan ID yang dipilih
+                 // Update action form
                  $('#editForm').attr('action', '/berita-acara/' + id);
+
+                 // Kosongkan dulu bantuan lama
+                 $('#edit-bantuan-wrapper').html('');
+
+                 // Ambil data bantuan dari server (pastikan route-nya ada)
+                 $.get(`/berita-acara/${id}/bantuan`, function(data) {
+                     data.forEach(function(item) {
+                         let row = `
+                    <div class="bantuan-item mb-3 d-flex align-items-start gap-2">
+                        <div style="flex-grow:1;">
+                            <label class="form-label">Jenis Bantuan</label>
+                            <input type="text" name="jenis_bantuan[]" value="${item.jenis_bantuan}" class="form-control mb-2" required>
+
+                            <label class="form-label">Jumlah</label>
+                            <input type="text" name="jumlah_bantuan[]" value="${item.jumlah_bantuan}" class="form-control" required>
+                        </div>
+                        <button type="button" class="btn btn-danger btn-remove" style="height: fit-content; margin-top: 28px;">&times;</button>
+                    </div>
+                `;
+                         $('#edit-bantuan-wrapper').append(row);
+                     });
+                 });
+             });
+
+             // Tambah bantuan di modal edit
+             $('#edit-add-bantuan').on('click', function() {
+                 let row = `
+            <div class="bantuan-item mb-3 d-flex align-items-start gap-2">
+                <div style="flex-grow:1;">
+                    <label class="form-label">Jenis Bantuan</label>
+                    <input type="text" name="jenis_bantuan[]" class="form-control mb-2" required>
+
+                    <label class="form-label">Jumlah</label>
+                    <input type="text" name="jumlah_bantuan[]" class="form-control" required>
+                </div>
+                <button type="button" class="btn btn-danger btn-remove" style="height: fit-content; margin-top: 28px;">&times;</button>
+            </div>
+        `;
+                 $('#edit-bantuan-wrapper').append(row);
+             });
+
+             // Hapus field bantuan
+             $(document).on('click', '.btn-remove', function() {
+                 $(this).closest('.bantuan-item').remove();
              });
          </script>
+
 
          {{-- DELETE MODAL --}}
          <script>

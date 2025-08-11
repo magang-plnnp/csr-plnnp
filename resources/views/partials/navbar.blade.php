@@ -39,19 +39,19 @@
                 <span class="hide-menu">Form</span>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link " href="/berita-acara" aria-expanded="false">
+                <a class="sidebar-link " href="/kelayakan" aria-expanded="false">
                     <span>
-                        <i class="ti ti-user"></i>
+                        <i class="ti ti-file"></i>
                     </span>
-                    <span class="hide-menu">Berita Acara</span>
+                    <span class="hide-menu">Kelayakan</span>
                 </a>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link " href="/kelayakan" aria-expanded="false">
+                <a class="sidebar-link " href="/berita-acara" aria-expanded="false">
                     <span>
-                        <i class="ti ti-user"></i>
+                        <i class="ti ti-clipboard"></i>
                     </span>
-                    <span class="hide-menu">Kelayakan</span>
+                    <span class="hide-menu">Berita Acara</span>
                 </a>
             </li>
             <li class="nav-small-cap">
@@ -61,7 +61,7 @@
             <li class="sidebar-item">
                 <a class="sidebar-link" href="/pengguna" aria-expanded="false">
                     <span>
-                        <i class="ti ti-user"></i>
+                        <i class="ti ti-users"></i>
                     </span>
                     <span class="hide-menu">Pengguna</span>
                 </a>
@@ -69,7 +69,7 @@
             <li class="sidebar-item">
                 <a class="sidebar-link" href="/tipologi" aria-expanded="false">
                     <span>
-                        <i class="ti ti-clipboard"></i>
+                        <i class="ti ti-book"></i>
                     </span>
                     <span class="hide-menu">Tipologi</span>
                 </a>
@@ -77,7 +77,7 @@
             <li class="sidebar-item">
                 <a class="sidebar-link" href="/tipe-proses" aria-expanded="false">
                     <span>
-                        <i class="ti ti-book"></i>
+                        <i class="ti ti-folder"></i>
                     </span>
                     <span class="hide-menu">Proses</span>
                 </a>
@@ -85,9 +85,9 @@
             <li class="sidebar-item">
                 <a class="sidebar-link" href="/business-support" aria-expanded="false">
                     <span>
-                        <i class="ti ti-book"></i>
+                        <i class="ti ti-user"></i>
                     </span>
-                    <span class="hide-menu">Bisnis Support</span>
+                    <span class="hide-menu">Business Support</span>
                 </a>
             </li>
         @endif

@@ -51,6 +51,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('pengguna', UserController::class);
     Route::resource('tipologi', TipologiController::class);
     Route::resource('berita-acara', BeritaAcaraController::class);
+    Route::get('/berita-acara/{id}/bantuan', [BeritaAcaraController::class, 'getBantuan']);
+
     Route::resource('kelayakan', KelayakanController::class);
     Route::resource('proposal', ProposalController::class);
     Route::resource('tipe-proses', TipeProsesController::class);
