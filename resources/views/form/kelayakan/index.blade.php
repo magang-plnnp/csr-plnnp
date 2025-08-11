@@ -107,8 +107,9 @@
                                                      data-jpm="{{ $data->jumlah_penerima_manfaat }}"
                                                      data-js="{{ $data->jenis_stakeholder }}"
                                                      data-pejabat="{{ $data->pejabat_instansi }}"
-                                                     data-bd="{{ $data->bantuan_diajukan }}"
                                                      data-dt="{{ $data->data_terdahulu }}"
+                                                     data-prioritas="{{ $data->prioritas }}"
+                                                     data-dampak="{{ $data->dampak }}"
                                                      data-catatan="{{ $data->catatan_khusus }}">
                                                      <i class="fas fa-edit"></i>
                                                  </button>
@@ -184,13 +185,33 @@
                              <input type="text" class="form-control" id="edit-pejabat" name="pejabat_instansi">
                          </div>
                          <div class="mb-3">
-                             <label for="edit-bd" class="form-label">Bantuan Diajukan</label>
-                             <input type="text" class="form-control" id="edit-bd" name="bantuan_diajukan">
-                         </div>
-                         <div class="mb-3">
                              <label for="edit-dt" class="form-label">Data Terdahulu</label>
                              <input type="text" class="form-control" id="edit-dt" name="data_terdahulu">
                          </div>
+                         <div class="mb-3">
+                            <div class="mb-3">
+                            <label for="edit-prioritas" class="form-label">Prioritas</label>
+                            <select name="prioritas" id="edit-prioritas" class="form-control" required>
+                                <option value="">-- Pilih Prioritas --</option>
+                                <option value="1">Prioritas 1</option>
+                                <option value="2">Prioritas 2</option>
+                                <option value="3">Prioritas 3</option>
+                                <option value="4">Prioritas 4</option>
+                                <option value="5">Prioritas 5</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-dampak" class="form-label">Dampak</label>
+                            <select name="dampak" id="edit-dampak" class="form-control" required>
+                                <option value="">-- Pilih Dampak --</option>
+                                <option value="1">Tidak ada dampak</option>
+                                <option value="2">Kecil</option>
+                                <option value="3">Sedang</option>
+                                <option value="4">Tinggi</option>
+                                <option value="5">Sangat Tinggi</option>
+                            </select>
+                        </div>
+                        </div>
                          <div class="mb-3">
                              <label for="edit-catatan" class="form-label">Catatan Khusus</label>
                              <input type="text" class="form-control" id="edit-catatan" name="catatan_khusus">
@@ -417,6 +438,8 @@
                  const pejabat = $(this).data('pejabat');
                  const bd = $(this).data('bd');
                  const dt = $(this).data('dt');
+                 const prioritas = $(this).data('prioritas');
+                 const dampak = $(this).data('dampak');
                  const catatan = $(this).data('catatan');
 
                  $('#edit-proposal').val(proposal);
@@ -430,6 +453,8 @@
                  $('#edit-pejabat').val(pejabat);
                  $('#edit-bd').val(bd);
                  $('#edit-dt').val(dt);
+                 $('#edit-prioritas').val(prioritas);
+                 $('#edit-dampak').val(dampak);
                  $('#edit-catatan').val(catatan);
 
                  // Update action form dengan ID yang dipilih

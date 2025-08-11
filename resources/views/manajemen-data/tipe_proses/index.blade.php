@@ -24,7 +24,25 @@
 
                     @foreach ($tipeProses as $proses)
                         <div class="mb-4">
-                            <h6 class="fw-bold">{{ $proses->nama }}</h6>
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                                <h6 class="fw-bold" style="margin: 0;">{{ $proses->nama }}</h6>
+                                <div>
+                                    <button type="button"
+                                        class="btn btn-sm btn-light border-0 text-primary btn-edit-tipe"
+                                        data-id="{{ $proses->id }}" data-nama="{{ $proses->nama }}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editTipeModal"
+                                        style="margin-right: 5px;">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button type="button"
+                                        class="btn btn-sm btn-light border-0 text-danger btn-delete-tipe"
+                                        data-id="{{ $proses->id }}" data-nama="{{ $proses->nama }}"
+                                        data-bs-toggle="modal" data-bs-target="#deleteTipeModal">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered align-middle mb-0">
                                     <thead class="table-light">
@@ -183,8 +201,8 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="nama_tipe" class="form-label">Nama Tipe Proses</label>
-                            <input type="text" class="form-control" id="nama_tipe" name="nama" required autofocus>
+                            <label for="tipe_nama" class="form-label">Nama Tipe Proses</label>
+                            <input type="text" class="form-control" id="tipe_nama" name="nama" required autofocus>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -340,6 +358,8 @@
         $(document).on('click', '.btn-edit-tipe', function() {
             const id = $(this).data('id');
             const nama = $(this).data('nama');
+
+            console.log('Edit clicked:', id, nama); 
 
             $('#edit-tipe-nama').val(nama);
             $('#editTipeForm').attr('action', '/tipe-proses/' + id);
