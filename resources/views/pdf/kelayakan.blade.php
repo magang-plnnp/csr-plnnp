@@ -257,7 +257,7 @@
             </tr>
             <tr>
                 <td class="judul-cell">PLN NP INTEGRATED MANAGEMENT SYSTEM</td>
-                <td class="info-cell"><strong>Revisi</strong> : 00</td>
+                <td class="info-cell"><strong>Revisi</strong> : {{ str_pad($data->revisi, 2, '0', STR_PAD_LEFT) }}</td>
             </tr>
             <tr>
                 <td rowspan="2" class="judul-cell">

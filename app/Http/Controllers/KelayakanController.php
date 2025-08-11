@@ -213,6 +213,11 @@ $pdf->getDomPDF()->getCanvas()->page_script(function ($pageNumber, $pageCount, $
             Storage::delete('public/' . $kelayakan->file_pdf);
         }
 
+        // $currentRevisi = (int) $kelayakan->revisi;
+        // $newRevisi = str_pad($currentRevisi + 1, 2, '0', STR_PAD_LEFT);
+        $kelayakan->increment('revisi');
+        // $kelayakan->refresh();
+
         // Update data di database
         $kelayakan->update([
             'dasar_pelaksanaan' => $request->dasar_pelaksanaan,
@@ -220,7 +225,11 @@ $pdf->getDomPDF()->getCanvas()->page_script(function ($pageNumber, $pageCount, $
             'tujuan' => $request->tujuan,
             'prioritas' => $request->prioritas,
             'dampak' => $request->dampak,
+            // 'revisi' => $newRevisi,
         ]);
+
+        $kelayakan->revisi = str_pad($kelayakan->revisi, 2, '0', STR_PAD_LEFT);
+        $kelayakan->save();
 
         // Generate ulang PDF berdasarkan data terbaru
         $pdf = Pdf::loadView('pdf.kelayakan', ['data' => $kelayakan]);
