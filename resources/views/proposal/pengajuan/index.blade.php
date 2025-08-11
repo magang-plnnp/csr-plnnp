@@ -52,10 +52,10 @@
 
         /* table.dataTable td p,
 
-                                                                    table.dataTable td span,
-                                                                    table.dataTable th h6 {
-                                                                        white-space: nowrap !important;
-                                                                    } */
+                                                                                                                            table.dataTable td span,
+                                                                                                                            table.dataTable th h6 {
+                                                                                                                                white-space: nowrap !important;
+                                                                                                                            } */
 
 
         table.dataTable,
@@ -80,15 +80,13 @@
         }
 
         /* Paksa semua elemen dalam tabel untuk nowrap
-
-                                                                        #proposalTable,
-                                                                        #proposalTable th,
-                                                                        #proposalTable td,
-                                                                        #proposalTable th *,
-                                                                        #proposalTable td * {
-                                                                            white-space: nowrap !important;
-                                                                        } */
-
+                                                                                                                            #proposalTable,
+                                                                                                                            #proposalTable th,
+                                                                                                                            #proposalTable td,
+                                                                                                                            #proposalTable th *,
+                                                                                                                            #proposalTable td * {
+                                                                                                                                white-space: nowrap !important;
+                                                                                                                            } */
 
         /* Hindari teks meluber */
         #proposalTable td {
@@ -256,7 +254,7 @@
                                         <span class="fw-semibold mb-0">No</span>
                                     </th>
                                     <th style="white-space: nowrap;" class="nowrap">
-                                        <span class="fw-semibold">Judul</span>
+                                        <span class="fw-semibold mb-0">Judul</span>
                                     </th>
                                     <th style="white-space: nowrap;" class="nowrap">
                                         <span class="fw-semibold mb-0">Instansi</span>
@@ -314,49 +312,83 @@
                             <tbody>
                                 @foreach ($proposal as $data)
                                     <tr>
-                                        <td><span class="fw-normal">{{ $loop->iteration }}</span></td>
-                                        <td><span class="fw-normal">{{ $data->judul }}</span></td>
-                                        <td><span class="fw-normal">{{ $data->instansi_pengajuan }}</span></td>
-                                        <td><span
-                                                class="fw-normal">{{ $data->kabupaten_nama }}-{{ $data->kecamatan_nama }}-{{ $data->kelurahan_nama }}</span>
+                                        <td>
+                                            <h6 class="fw-normal mb-0">{{ $loop->iteration }}</h6>
                                         </td>
-                                        <td><span
-                                                class="fw-normal">{{ \Carbon\Carbon::parse($data->tanggal_disposisi)->translatedFormat('d F Y') }}</span>
+                                        <td>
+                                            <h6 class="fw-normal mb-0">{{ $data->judul }}</h6>
                                         </td>
-                                        <td><span
-                                                class="fw-normal">{{ $data->nominal_pengajuan ? 'Rp' . number_format($data->nominal_pengajuan, 0, ',', '.') : '-' }}</span>
+                                        <td>
+                                            <p class="mb-0 fw-normal">{{ $data->instansi_pengajuan }}</p>
                                         </td>
-                                        <td><span class="fw-normal">{{ $data->barang_pengajuan }}</span></td>
-                                        <td><span class="fw-normal">{{ $data->tipologi->kode }}</span></td>
-                                        <td><span class="fw-normal">{{ $data->status }}</span></td>
-                                        <td><span
-                                                class="fw-normal">{{ $data->nominal_disetujui ? 'Rp' . number_format($data->nominal_disetujui, 0, ',', '.') : '-' }}</span>
+                                        <td>
+                                            <p class="mb-0 fw-normal">
+                                                {{ $data->kabupaten_nama }}-{{ $data->kecamatan_nama }}-{{ $data->kelurahan_nama }}
+                                            </p>
                                         </td>
-                                        <td><span class="fw-normal">{{ $data->barang_disetujui ?? '-' }}</span></td>
-                                        <td><span class="fw-normal">{{ $data->namaPic->nama ?? '-' }}</span></td>
-                                        <td><span class="fw-normal">{{ $data->tipeProses->nama ?? '-' }}</span></td>
-                                        <td><span class="fw-normal">{{ $data->keterangan }}</span></td>
-                                        <td><span
-                                                class="fw-normal">{{ \Carbon\Carbon::parse($data->overdue)->translatedFormat('d F Y') }}</span>
+                                        <td>
+                                            <p class="mb-0 fw-normal">
+                                                {{ \Carbon\Carbon::parse($data->tanggal_disposisi)->translatedFormat('d F Y') }}
+                                            </p>
                                         </td>
-                                        <td><span class="fw-normal">{{ $data->progress }}</span></td>
-                                        <td><span class="fw-normal">
+                                        <td>
+                                            <p class="mb-0 fw-normal">
+                                                {{ $data->nominal_pengajuan ? 'Rp' . number_format($data->nominal_pengajuan, 0, ',', '.') : '-' }}
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 fw-normal">{{ $data->barang_pengajuan }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 fw-normal">{{ $data->tipologi->kode }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 fw-normal">{{ $data->status }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 fw-normal">
+                                                {{ $data->nominal_disetujui ? 'Rp' . number_format($data->nominal_disetujui, 0, ',', '.') : '-' }}
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 fw-normal">{{ $data->barang_disetujui ?? '-' }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 fw-normal">{{ $data->namaPic->nama ?? '-' }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 fw-normal">{{ $data->tipeProses->nama ?? '-' }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 fw-normal">{{ $data->keterangan }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 fw-normal">
+                                                {{ \Carbon\Carbon::parse($data->overdue)->translatedFormat('d F Y') }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 fw-normal">{{ $data->progress }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 fw-normal">
                                                 @if ($data->beritaAcara && $data->beritaAcara->file_pdf)
                                                     <a href="{{ asset('storage/' . $data->beritaAcara->file_pdf) }}"
                                                         target="_blank">Lihat PDF</a>
                                                 @else
                                                     <span class="text-muted">-</span>
                                                 @endif
-                                            </span>
+                                            </p>
                                         </td>
-                                        <td><span class="fw-normal">
+                                        <td>
+                                            <p class="mb-0 fw-normal">
                                                 @if ($data->kelayakan && $data->kelayakan->file_pdf)
                                                     <a href="{{ asset('storage/' . $data->kelayakan->file_pdf) }}"
                                                         target="_blank">Lihat PDF</a>
                                                 @else
                                                     <span class="text-muted">-</span>
                                                 @endif
-                                            </span></td>
+                                            </p>
+                                        </td>
                                         <td>
                                             <div class="d-flex justify-content-center align-items-center gap-2">
                                                 {{-- Tombol Edit --}}
@@ -440,70 +472,6 @@
             }
             $('#filter-pic, #filter-tipologi, #filter-progress').on('change', applyFilters);
             // Tambahkan script ini setelah inisialisasi DataTable
-            function forceFixedColumnsBackground() {
-                // Target semua elemen dengan position sticky
-                $('th[style*="position: sticky"], td[style*="position: sticky"]').each(function() {
-                    // Force background menggunakan inline style
-                    this.style.setProperty('background-color', '#ffffff', 'important');
-                    this.style.setProperty('background', '#ffffff', 'important');
-                    this.style.setProperty('box-shadow', '2px 0 5px rgba(0, 0, 0, 0.1)', 'important');
-                });
-
-                // Khusus untuk header
-                $('thead th[style*="position: sticky"]').each(function() {
-                    this.style.setProperty('background-color', '#f8f9fa', 'important');
-                    this.style.setProperty('background', '#f8f9fa', 'important');
-                });
-
-                // Target juga berdasarkan class jika ada
-                $('.dtfc-fixed-left, .dt-column-left').each(function() {
-                    this.style.setProperty('background-color', '#ffffff', 'important');
-                    this.style.setProperty('background', '#ffffff', 'important');
-                });
-
-                $('.dtfc-fixed-left.dt-head, .dt-column-left.dt-head, thead .dtfc-fixed-left, thead .dt-column-left').each(
-                    function() {
-                        this.style.setProperty('background-color', '#f8f9fa', 'important');
-                        this.style.setProperty('background', '#f8f9fa', 'important');
-                    });
-            }
-
-            // Jalankan setelah DataTable diinisialisasi
-            $('#proposalTable').on('init.dt', function() {
-                setTimeout(forceFixedColumnsBackground, 100);
-            });
-
-            // Jalankan setiap kali tabel di-redraw
-            $('#proposalTable').on('draw.dt', function() {
-                setTimeout(forceFixedColumnsBackground, 50);
-            });
-
-            // Jalankan saat scroll
-            $('.dataTables_scrollBody').on('scroll', function() {
-                forceFixedColumnsBackground();
-            });
-
-            // Jalankan saat hover untuk mempertahankan background
-            $(document).on('mouseenter', 'tbody tr', function() {
-                $(this).find('td[style*="position: sticky"], .dtfc-fixed-left, .dt-column-left').each(function() {
-                    this.style.setProperty('background-color', '#f1f3f4', 'important');
-                });
-            });
-
-            $(document).on('mouseleave', 'tbody tr', function() {
-                $(this).find('td[style*="position: sticky"], .dtfc-fixed-left, .dt-column-left').each(function() {
-                    this.style.setProperty('background-color', '#ffffff', 'important');
-                });
-            });
-
-            // Jalankan sekali saat document ready
-            $(document).ready(function() {
-                setTimeout(function() {
-                    forceFixedColumnsBackground();
-                    // Jalankan lagi setelah 1 detik untuk memastikan
-                    setTimeout(forceFixedColumnsBackground, 1000);
-                }, 500);
-            });
         </script>
         <script>
             $('#proposalTable').DataTable({

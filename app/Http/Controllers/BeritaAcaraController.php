@@ -52,10 +52,7 @@ public function store(Request $request)
     // Decode bantuan kembali agar siap dikirim ke view PDF
     $bantuanArray = json_decode($beritaAcara->bantuan, true) ?? ['jenis' => [], 'jumlah' => []];
 
-    // Jika kamu ingin menambahkan nama bisnis support yang dinamis,
-    // bisa ambil disini (jika ada model BusinessSupport)
-    // $businessSupport = \App\Models\BusinessSupport::first();
-    // $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
+   
 
     $businessSupport = \App\Models\BusinessSupport::first();
 $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno'; 
@@ -90,12 +87,15 @@ $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
 
         // return view('pdf.berita_acara', compact('data'));
         $bantuan = json_decode($beritaAcara->bantuan, true) ?? ['jenis' => [], 'jumlah' => []];
+        $businessSupport = \App\Models\BusinessSupport::first();
+    $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
 
         return view('pdf.berita_acara', [
             'data'   => $beritaAcara,
             'bantuan'   => $bantuan,
             'jenis'  => $bantuan['jenis'] ?? [],
             'jumlah' => $bantuan['jumlah'] ?? [],
+            'namaBisnisSupport' => $namaBisnisSupport
         ]);
     }
 
@@ -105,6 +105,10 @@ $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
         $request->validate([
             'nama_penerima' => 'required|string|max:255',
             'jabatan_penerima' => 'required|string|max:255',
+            'jenis_bantuan' => 'required|array|min:1',
+            'jenis_bantuan.*' => 'required|string|max:255',
+            'jumlah_bantuan' => 'required|array|min:1',
+            'jumlah_bantuan.*' => 'required|string|max:255',
         ]);
 
         $beritaAcara = BeritaAcara::findOrFail($id);
@@ -114,25 +118,41 @@ $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
             Storage::delete('public/' . $beritaAcara->file_pdf);
         }
 
+        // Gabungkan jenis & jumlah
+        $bantuan = [
+            'jenis' => $request->jenis_bantuan,
+            'jumlah' => $request->jumlah_bantuan,
+        ];
+
         // Update data di database
         $beritaAcara->update([
             'nama_penerima' => $request->nama_penerima,
             'jabatan_penerima' => $request->jabatan_penerima,
+            'bantuan' => json_encode($bantuan),
         ]);
 
-        // Generate ulang PDF berdasarkan data terbaru
-        $pdf = Pdf::loadView('pdf.berita_acara', ['data' => $beritaAcara]);
-        $pdfName = 'berita_acara_' . $beritaAcara->id . '.pdf';
+        $businessSupport = \App\Models\BusinessSupport::first();
+        $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
 
-        // Simpan PDF baru ke storage
+        $bantuanArray = json_decode($beritaAcara->bantuan, true) ?? ['jenis' => [], 'jumlah' => []];
+
+        // Generate ulang PDF
+        $pdf = Pdf::loadView('pdf.berita_acara', [
+            'data'   => $beritaAcara,
+            'jenis'  => $bantuanArray['jenis'] ?? [],
+            'jumlah' => $bantuanArray['jumlah'] ?? [],
+            'namaBisnisSupport' => $namaBisnisSupport
+        ]);
+
+        $pdfName = 'berita_acara_' . $beritaAcara->id . '.pdf';
         Storage::put('public/berita_acara/' . $pdfName, $pdf->output());
 
-        // Update path file PDF di database
         $beritaAcara->update(['file_pdf' => 'berita_acara/' . $pdfName]);
 
         return redirect()->route('berita-acara.index')
             ->with('success', 'Data berita acara berhasil diperbarui dan PDF telah digenerate ulang.');
     }
+
 
 
     public function destroy($id)
@@ -150,5 +170,21 @@ $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
         return redirect()->route('berita-acara.index')
             ->with('success', 'Data Berita acara dan file PDF berhasil dihapus.');
     }
+
+    public function getBantuan($id)
+{
+    $beritaAcara = BeritaAcara::findOrFail($id);
+    $bantuanArray = json_decode($beritaAcara->bantuan, true) ?? ['jenis' => [], 'jumlah' => []];
+
+    $data = [];
+    foreach ($bantuanArray['jenis'] as $i => $jenis) {
+        $data[] = [
+            'jenis_bantuan' => $jenis,
+            'jumlah_bantuan' => $bantuanArray['jumlah'][$i] ?? '',
+        ];
+    }
+
+    return response()->json($data);
+}
 
 }
