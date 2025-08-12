@@ -61,13 +61,22 @@ class ProposalController extends Controller
         ]);
 
         // Bersihkan nilai rupiah menjadi angka
-        $validated['nominal_pengajuan'] = $request->nominal_pengajuan
-        ? preg_replace('/[^0-9]/', '', $request->nominal_pengajuan)
-        : null;
+        // $validated['nominal_pengajuan'] = $request->nominal_pengajuan
+        // ? preg_replace('/[^0-9]/', '', $request->nominal_pengajuan)
+        // : null;
 
-        $validated['nominal_disetujui'] = $request->nominal_disetujui
-        ? preg_replace('/[^0-9]/', '', $request->nominal_disetujui)
-        : null;
+        // $validated['nominal_disetujui'] = $request->nominal_disetujui
+        // ? preg_replace('/[^0-9]/', '', $request->nominal_disetujui)
+        // : null;
+        $validated['nominal_pengajuan'] = 
+            ($request->nominal_pengajuan === '-' || $request->nominal_pengajuan === null || $request->nominal_pengajuan === '')
+                ? null
+                : preg_replace('/[^0-9]/', '', $request->nominal_pengajuan);
+
+        $validated['nominal_disetujui'] = 
+            ($request->nominal_disetujui === '-' || $request->nominal_disetujui === null || $request->nominal_disetujui === '')
+                ? null
+                : preg_replace('/[^0-9]/', '', $request->nominal_disetujui);
 
         // Simpan proposal
         $proposal = Proposal::create($validated);

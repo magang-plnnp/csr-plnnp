@@ -356,17 +356,29 @@
                 const inputPengajuan = document.getElementById('nominal_pengajuan');
                 const inputDisetujui = document.getElementById('nominal_disetujui');
 
-                [inputPengajuan, inputDisetujui].forEach(input => {
-                    if (!input) return;
+                // [inputPengajuan, inputDisetujui].forEach(input => {
+                //     if (!input) return;
 
-                    input.addEventListener('input', function(e) {
-                        let value = e.target.value.replace(/[^0-9]/g, '');
-                        e.target.value = value ? formatRupiah(value) : '';
-                    });
+                //     input.addEventListener('input', function(e) {
+                //         let value = e.target.value.replace(/[^0-9]/g, '');
+                //         e.target.value = value ? formatRupiah(value) : '';
+                //     });
 
-                    if (input.value) {
-                        input.value = formatRupiah(input.value.replace(/[^0-9]/g, ''));
+                //     if (input.value) {
+                //         input.value = formatRupiah(input.value.replace(/[^0-9]/g, ''));
+                //     }
+                // });
+                input.addEventListener('input', function(e) {
+                    let raw = e.target.value; // nilai asli dari input
+
+                    // Kalau user isi "-", langsung biarkan tanpa format
+                    if (raw === '-') {
+                        return; // biarkan apa adanya
                     }
+
+                    // Kalau bukan "-", baru kita bersihkan ke angka
+                    let value = raw.replace(/[^0-9]/g, '');
+                    e.target.value = value ? formatRupiah(value) : '';
                 });
 
                 function formatRupiah(angka, prefix = 'Rp') {
