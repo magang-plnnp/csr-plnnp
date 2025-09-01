@@ -39,60 +39,107 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">Kabupaten / Kota</label>
-                                        <select id="kabupaten"
-                                            class="form-select select2 @error('kabupaten_id') is-invalid @enderror"
-                                            style="width: 100%">
-                                            <option></option>
+                                        <label class="form-label">Metode Input Wilayah</label>
+                                        <select id="metode_input" name="metode_input" class="form-select" required>
+                                            <option value="auto"
+                                                {{ old('metode_input', $proposal->kabupaten_id ? 'auto' : 'manual') == 'auto' ? 'selected' : '' }}>
+                                                Otomatis (Dropdown)
+                                            </option>
+                                            <option value="manual"
+                                                {{ old('metode_input', $proposal->kabupaten_id ? 'auto' : 'manual') == 'manual' ? 'selected' : '' }}>
+                                                Manual (Input)
+                                            </option>
                                         </select>
-                                        <input type="hidden" name="kabupaten_id" id="kabupaten_id"
-                                            value="{{ old('kabupaten_id', $proposal->kabupaten_id) }}">
-                                        <input type="hidden" name="kabupaten_nama" id="kabupaten_nama"
-                                            value="{{ old('kabupaten_nama', $proposal->kabupaten_nama) }}">
-                                        <div class="form-text">Pilih Kabupaten atau Kota sesuai wilayah pengajuan.</div>
-                                        @error('kabupaten_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                    </div>
+                                    <div id="wilayah_auto"
+                                        class="{{ old('metode_input', $proposal->kabupaten_id ? 'auto' : 'manual') == 'auto' ? '' : 'd-none' }}">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Kabupaten / Kota</label>
+                                                <select id="kabupaten"
+                                                    class="form-select select2 @error('kabupaten_id') is-invalid @enderror"
+                                                    style="width: 100%">
+                                                    <option></option>
+                                                </select>
+                                                <input type="hidden" name="kabupaten_id" id="kabupaten_id"
+                                                    value="{{ old('kabupaten_id', $proposal->kabupaten_id) }}">
+                                                <input type="hidden" name="kabupaten_nama" id="kabupaten_nama"
+                                                    value="{{ old('kabupaten_nama', $proposal->kabupaten_nama) }}">
+                                                <div class="form-text">Pilih Kabupaten atau Kota sesuai wilayah pengajuan.
+                                                </div>
+                                                @error('kabupaten_id')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Kecamatan</label>
+                                                <select id="kecamatan"
+                                                    class="form-select select2 @error('kecamatan_id') is-invalid @enderror"
+                                                    style="width: 100%">
+                                                    <option></option>
+                                                </select>
+                                                <input type="hidden" name="kecamatan_id" id="kecamatan_id"
+                                                    value="{{ old('kecamatan_id', $proposal->kecamatan_id) }}">
+                                                <input type="hidden" name="kecamatan_nama" id="kecamatan_nama"
+                                                    value="{{ old('kecamatan_nama', $proposal->kecamatan_nama) }}">
+                                                <div class="form-text">Pilih kecamatan sesuai dengan wilayah pengajuan yang
+                                                    berada
+                                                    di Kabupaten.</div>
+                                                @error('kecamatan_id')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Kelurahan / Desa</label>
+                                                <select id="kelurahan"
+                                                    class="form-select select2 @error('kelurahan_id') is-invalid @enderror"
+                                                    style="width: 100%">
+                                                    <option></option>
+                                                </select>
+                                                <input type="hidden" name="kelurahan_id" id="kelurahan_id"
+                                                    value="{{ old('kelurahan_id', $proposal->kelurahan_id) }}">
+                                                <input type="hidden" name="kelurahan_nama" id="kelurahan_nama"
+                                                    value="{{ old('kelurahan_nama', $proposal->kelurahan_nama) }}">
+                                                <div class="form-text">Pilih kelurahan atau desa sesuai kecamatan terpilih.
+                                                </div>
+                                                @error('kelurahan_id')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div id="wilayah_manual"
+                                    class="{{ old('metode_input', $proposal->kabupaten_id ? 'auto' : 'manual') == 'manual' ? '' : 'd-none' }}">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Kabupaten / Kota</label>
+                                            <input type="text" name="kabupaten_manual" class="form-control"
+                                                value="{{ old('kabupaten_manual', !$proposal->kabupaten_id ? $proposal->kabupaten_nama : '') }}"
+                                                placeholder="Ketik nama kabupaten/kota">
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Kecamatan</label>
+                                            <input type="text" name="kecamatan_manual" class="form-control"
+                                                value="{{ old('kecamatan_manual', !$proposal->kecamatan_id ? $proposal->kecamatan_nama : '') }}"
+                                                placeholder="Ketik nama kecamatan">
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Kelurahan / Desa</label>
+                                            <input type="text" name="kelurahan_manual" class="form-control"
+                                                value="{{ old('kelurahan_manual', !$proposal->kelurahan_id ? $proposal->kelurahan_nama : '') }}"
+                                                placeholder="Ketik nama kelurahan/desa">
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Kecamatan</label>
-                                        <select id="kecamatan"
-                                            class="form-select select2 @error('kecamatan_id') is-invalid @enderror"
-                                            style="width: 100%">
-                                            <option></option>
-                                        </select>
-                                        <input type="hidden" name="kecamatan_id" id="kecamatan_id"
-                                            value="{{ old('kecamatan_id', $proposal->kecamatan_id) }}">
-                                        <input type="hidden" name="kecamatan_nama" id="kecamatan_nama"
-                                            value="{{ old('kecamatan_nama', $proposal->kecamatan_nama) }}">
-                                        <div class="form-text">Pilih kecamatan sesuai dengan wilayah pengajuan yang berada
-                                            di Kabupaten Probolinggo.</div>
-                                        @error('kecamatan_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Kelurahan / Desa</label>
-                                        <select id="kelurahan"
-                                            class="form-select select2 @error('kelurahan_id') is-invalid @enderror"
-                                            style="width: 100%">
-                                            <option></option>
-                                        </select>
-                                        <input type="hidden" name="kelurahan_id" id="kelurahan_id"
-                                            value="{{ old('kelurahan_id', $proposal->kelurahan_id) }}">
-                                        <input type="hidden" name="kelurahan_nama" id="kelurahan_nama"
-                                            value="{{ old('kelurahan_nama', $proposal->kelurahan_nama) }}">
-                                        <div class="form-text">Pilih kelurahan atau desa yang berada di dalam kecamatan yang
-                                            telah dipilih.</div>
-                                        @error('kelurahan_id')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
 
 
 
@@ -262,6 +309,24 @@
 
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const metodeInput = document.getElementById('metode_input');
+                const wilayahAuto = document.getElementById('wilayah_auto');
+                const wilayahManual = document.getElementById('wilayah_manual');
+
+                metodeInput.addEventListener('change', function() {
+                    if (this.value === 'auto') {
+                        wilayahAuto.classList.remove('d-none');
+                        wilayahManual.classList.add('d-none');
+                    } else {
+                        wilayahAuto.classList.add('d-none');
+                        wilayahManual.classList.remove('d-none');
+                    }
+                });
+            });
+        </script>
+
         <script>
             $(document).ready(function() {
                 let kabupatenIdValue = "{{ old('kabupaten_id', $proposal->kabupaten_id) }}";

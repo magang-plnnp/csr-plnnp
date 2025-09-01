@@ -114,44 +114,78 @@ class ProposalExport implements FromCollection, WithHeadings, WithMapping, WithS
                 $sheet->getStyle("F2:F{$totalRows}")
                     ->getNumberFormat()
                     ->setFormatCode('"Rp" #,##0');
-
                 $sheet->getStyle("J2:J{$totalRows}")
                     ->getNumberFormat()
                     ->setFormatCode('"Rp" #,##0');
 
+                // Loop untuk dropdown
                 for ($row = 2; $row <= $totalRows; $row++) {
-                    // Dropdown untuk kolom Status (kolom ke-9 / I)
+                    // Dropdown Status (I)
                     $statusValidation = $sheet->getCell("I{$row}")->getDataValidation();
                     $statusValidation->setType(DataValidation::TYPE_LIST);
-                    // $statusValidation->setErrorStyle(DataValidation::STYLE_INFORMATION);
                     $statusValidation->setAllowBlank(true);
                     $statusValidation->setShowDropDown(true);
                     $statusValidation->setFormula1('"Pending,Disetujui,Ditolak"');
 
-                    // Dropdown untuk kolom Tipologi (kolom ke-8 / H)
+                    // Dropdown Tipologi (H)
                     $tipologiValidation = $sheet->getCell("H{$row}")->getDataValidation();
                     $tipologiValidation->setType(DataValidation::TYPE_LIST);
-                    // $tipologiValidation->setErrorStyle(DataValidation::STYLE_INFORMATION);
                     $tipologiValidation->setAllowBlank(true);
                     $tipologiValidation->setShowDropDown(true);
                     $tipologiValidation->setFormula1('"CRTY,EMPW,CABD,INFRST,KLBS"');
 
-                    // Dropdown untuk kolom Tipologi (kolom ke-8 / H)
-                    $tipologiValidation = $sheet->getCell("L{$row}")->getDataValidation();
-                    $tipologiValidation->setType(DataValidation::TYPE_LIST);
-                    // $tipologiValidation->setErrorStyle(DataValidation::STYLE_INFORMATION);
-                    $tipologiValidation->setAllowBlank(true);
-                    $tipologiValidation->setShowDropDown(true);
-                    $tipologiValidation->setFormula1('"Ibnu,Dita,Wiji,Javas,Alief, Nanda"');
-                    // Dropdown untuk kolom Tipologi (kolom ke-8 / H)
+                    // Dropdown PIC (L)
+                    $picValidation = $sheet->getCell("L{$row}")->getDataValidation();
+                    $picValidation->setType(DataValidation::TYPE_LIST);
+                    $picValidation->setAllowBlank(true);
+                    $picValidation->setShowDropDown(true);
+                    $picValidation->setFormula1('"Ibnu,Dita,Wiji,Javas,Alief,Nanda"');
 
-                    $tipologiValidation = $sheet->getCell("M{$row}")->getDataValidation();
-                    $tipologiValidation->setType(DataValidation::TYPE_LIST);
-                    // $tipologiValidation->setErrorStyle(DataValidation::STYLE_INFORMATION);
-                    $tipologiValidation->setAllowBlank(true);
-                    $tipologiValidation->setShowDropDown(true);
-                    $tipologiValidation->setFormula1('"Pembayaran Langsung,NPO,PO"');
+                    // Dropdown Proses (M)
+                    $prosesValidation = $sheet->getCell("M{$row}")->getDataValidation();
+                    $prosesValidation->setType(DataValidation::TYPE_LIST);
+                    $prosesValidation->setAllowBlank(true);
+                    $prosesValidation->setShowDropDown(true);
+                    $prosesValidation->setFormula1('"Pembayaran Langsung,NPO,PO"');
                 }
+
+                // =======================
+                // Tambahkan TOTAL di bawah tabel
+                // =======================
+                $totalRowIndex = $totalRows + 1;
+
+                // Label TOTAL di kolom Judul (B)
+                $sheet->setCellValue("B{$totalRowIndex}", "TOTAL");
+
+                // Rumus total kolom F (Nominal Pengajuan)
+                $sheet->setCellValue("F{$totalRowIndex}", "=SUM(F2:F{$totalRows})");
+
+                // Rumus total kolom J (Nominal Disetujui)
+                $sheet->setCellValue("J{$totalRowIndex}", "=SUM(J2:J{$totalRows})");
+
+                // Style baris TOTAL (hijau + teks putih)
+                $sheet->getStyle("B{$totalRowIndex}:J{$totalRowIndex}")->applyFromArray([
+                    'font' => [
+                        'bold' => true,
+                        'color' => ['rgb' => 'FFFFFF'], // teks putih
+                    ],
+                    'fill' => [
+                        'fillType' => Fill::FILL_SOLID,
+                        'startColor' => ['rgb' => '78C841'], // hijau
+                    ],
+                    'borders' => [
+                        'allBorders' => [
+                            'borderStyle' => Border::BORDER_THIN,
+                            'color' => ['rgb' => '000000'],
+                        ],
+                    ],
+                ]);
+
+                // Format rupiah untuk total
+                $sheet->getStyle("F{$totalRowIndex}")
+                    ->getNumberFormat()->setFormatCode('"Rp" #,##0');
+                $sheet->getStyle("J{$totalRowIndex}")
+                    ->getNumberFormat()->setFormatCode('"Rp" #,##0');
             }
         ];
     }
