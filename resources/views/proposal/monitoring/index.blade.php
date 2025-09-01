@@ -53,12 +53,10 @@
         }
 
         /* table.dataTable td p,
-
                                                                                                         table.dataTable td span,
                                                                                                         table.dataTable th h6 {
                                                                                                             white-space: nowrap !important;
                                                                                                         } */
-
 
         table.dataTable,
         table.dataTable th,
@@ -628,11 +626,12 @@
 
                 table.columns(11).search(pic);
                 table.columns(7).search(tipologi);
+                table.column(16).search('', true, false);
 
-                if (progressFilter) {
-                    table.column(16).search('^' + progressFilter + '%$', true, false);
-                } else {
-                    table.column(16).search('', true, false);
+                if (progressFilter === 'selesai') {
+                    table.column(16).search('^100%$', true, false);
+                } else if (progressFilter === 'belum') {
+                    table.column(16).search('^(?!100%).*$', true, false);
                 }
 
                 table.draw();
