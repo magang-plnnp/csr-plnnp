@@ -2,13 +2,15 @@
 @section('title', 'CSR PLN Nusantara Power UP Paiton')
 @push('styles')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.4.0/css/fixedHeader.bootstrap5.min.css">
+
     <style>
-        /* Freeze Header */
-        table.dataTable thead th {
+        /* Freeze header */
+        #proposalTable thead th {
             position: sticky;
             top: 0;
-            background-color: white !important;
-            z-index: 10;
+            background: #fff;
+            z-index: 20;
         }
 
         /* Freeze Kolom "No" (kolom pertama) dan "Judul" (kolom kedua) */
@@ -50,14 +52,6 @@
             margin: 0 auto;
         }
 
-        /* table.dataTable td p,
-
-                                                                                                                            table.dataTable td span,
-                                                                                                                            table.dataTable th h6 {
-                                                                                                                                white-space: nowrap !important;
-                                                                                                                            } */
-
-
         table.dataTable,
         table.dataTable th,
         table.dataTable td,
@@ -78,15 +72,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
-        /* Paksa semua elemen dalam tabel untuk nowrap
-                                                                                                                            #proposalTable,
-                                                                                                                            #proposalTable th,
-                                                                                                                            #proposalTable td,
-                                                                                                                            #proposalTable th *,
-                                                                                                                            #proposalTable td * {
-                                                                                                                                white-space: nowrap !important;
-                                                                                                                            } */
 
         /* Hindari teks meluber */
         #proposalTable td {
@@ -231,6 +216,7 @@
 
                             <select id="filter-progress" class="form-select" style="min-width: 200px;">
                                 <option value="">-- Semua Progress --</option>
+                                <option value="0">0%</option>
                                 <option value="20">20%</option>
                                 <option value="40">40%</option>
                                 <option value="60">60%</option>
@@ -296,7 +282,7 @@
                                         <span class="fw-semibold mb-0">Overdue</span>
                                     </th>
                                     <th style="white-space: nowrap;" class="nowrap">
-                                        <span class="fw-semibold mb-0">Progress</span>
+                                        <span class="fw-semibold mb-0">Progress (%)</span>
                                     </th>
                                     <th style="white-space: nowrap;" class="nowrap">
                                         <span class="fw-semibold mb-0">Berita Acara</span>
@@ -366,8 +352,9 @@
                                             <p class="mb-0 fw-normal">
                                                 {{ \Carbon\Carbon::parse($data->overdue)->translatedFormat('d F Y') }}</p>
                                         </td>
-                                        <td>
-                                            <p class="mb-0 fw-normal">{{ $data->progress }}</p>
+                                        <td data-search="{{ (int) $data->progress }}"
+                                            data-order="{{ (int) $data->progress }}">
+                                            <p class="mb-0 fw-normal">{{ rtrim($data->progress, '%') }}%</p>
                                         </td>
                                         <td>
                                             <p class="mb-0 fw-normal">
@@ -450,7 +437,48 @@
         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
         <script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('#proposalTable').DataTable({
+                    scrollX: true,
+                    scrollY: "500px", // max-height 500px
+                    scrollCollapse: true,
+                    paging: true,
+                    fixedHeader: true, // freeze header
+                    fixedColumns: {
+                        leftColumns: 2 // freeze 2 kolom kiri
+                    },
+                    language: {
+                        search: "Cari",
+                        lengthMenu: "Tampil _MENU_",
+                        zeroRecords: "Data tidak ditemukan",
+                        info: "Menampilkan _START_–_END_ dari _TOTAL_ data",
+                        infoEmpty: "Menampilkan 0–0 dari 0 data",
+                        infoFiltered: "(difilter dari _MAX_ total data)",
+                        paginate: {
+                            first: "«",
+                            last: "»",
+                            previous: "‹",
+                            next: "›"
+                        }
+                    },
+                    pageLength: 10,
+                    lengthChange: true,
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        [10, 25, 50, "Semua"]
+                    ],
+                    pagingType: "full_numbers",
+                    drawCallback: function(settings) {
+                        $('.dataTables_paginate > .pagination').addClass('pagination-sm');
+                    }
+                });
+            });
+        </script>
+
         <script>
             function applyFilters() {
                 const pic = $('#filter-pic').val().toLowerCase();
@@ -473,41 +501,6 @@
             $('#filter-pic, #filter-tipologi, #filter-progress').on('change', applyFilters);
             // Tambahkan script ini setelah inisialisasi DataTable
         </script>
-        <script>
-            $('#proposalTable').DataTable({
-                scrollX: true,
-                scrollCollapse: true,
-                fixedColumns: {
-                    leftColumns: 2 // Kolom ke-1 (No) dan ke-2 (Judul) dibekukan
-                },
-                language: {
-                    search: "Cari",
-                    lengthMenu: "Tampil _MENU_",
-                    zeroRecords: "Data tidak ditemukan",
-                    info: "Menampilkan _START_–_END_ dari _TOTAL_ data",
-                    infoEmpty: "Menampilkan 0–0 dari 0 data",
-                    infoFiltered: "(difilter dari _MAX_ total data)",
-                    paginate: {
-                        first: "«",
-                        last: "»",
-                        previous: "‹",
-                        next: "›"
-                    }
-                },
-                pageLength: 10,
-                lengthChange: true,
-                lengthMenu: [
-                    [10, 25, 50, -1],
-                    [10, 25, 50, "Semua"]
-                ],
-                pagingType: "full_numbers",
-                drawCallback: function(settings) {
-                    $('.dataTables_paginate > .pagination').addClass('pagination-sm');
-                }
-            });
-        </script>
-
-
 
         {{-- DELETE MODAL --}}
         <script>

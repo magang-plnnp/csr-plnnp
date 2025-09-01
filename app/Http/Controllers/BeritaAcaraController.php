@@ -135,13 +135,15 @@ $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
         $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
 
         $bantuanArray = json_decode($beritaAcara->bantuan, true) ?? ['jenis' => [], 'jumlah' => []];
+        $proposal = Proposal::find($beritaAcara->proposal_id);
 
         // Generate ulang PDF
         $pdf = Pdf::loadView('pdf.berita_acara', [
             'data'   => $beritaAcara,
             'jenis'  => $bantuanArray['jenis'] ?? [],
             'jumlah' => $bantuanArray['jumlah'] ?? [],
-            'namaBisnisSupport' => $namaBisnisSupport
+            'namaBisnisSupport' => $namaBisnisSupport,
+            'proposal' => $proposal,
         ]);
 
         $pdfName = 'berita_acara_' . $beritaAcara->id . '.pdf';

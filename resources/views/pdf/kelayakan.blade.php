@@ -211,36 +211,38 @@
         }
 
         .kategori-table {
-        width: auto;
-        max-width: 70%;
-        border-collapse: collapse;
-        margin-top: 5px;
-        font-size: 11px;
-    }
+            width: auto;
+            max-width: 70%;
+            border-collapse: collapse;
+            margin-top: 5px;
+            font-size: 11px;
+        }
 
-    .kategori-table th,
-    .kategori-table td {
-        border: 1px solid #000;
-        padding: 6px;
-        text-align: left;
-    }
-    .ttd {
-        margin-top: 40px;
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 11px;
-    }
+        .kategori-table th,
+        .kategori-table td {
+            border: 1px solid #000;
+            padding: 6px;
+            text-align: left;
+        }
 
-    .ttd td {
-        border: 1px solid black; /* agar terlihat jelas */
-        padding: 10px;
-        text-align: center;
-        vertical-align: top;
-    }
+        .ttd {
+            margin-top: 40px;
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
 
-    .page-break {
-    page-break-before: always;
-}
+        .ttd td {
+            border: 1px solid black;
+            /* agar terlihat jelas */
+            padding: 10px;
+            text-align: center;
+            vertical-align: top;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
     </style>
 </head>
 
@@ -253,7 +255,8 @@
                         style="height: 0.64cm; width: 3.12cm; margin-top: 2px;">
                 </td>
                 <td class="judul-cell"><strong>PT PLN NUSANTARA POWER</strong></td>
-                <td class="info-cell"><strong>Nomor Dokumen</strong> : FMPT-328-12.5.1.a.b.e-001</td>
+                <td class="info-cell"><span style="font-size: 7px"><strong>Nomor Dokumen</strong> :
+                        FMPT-328-12.5.1.a.b.e-001</span></td>
             </tr>
             <tr>
                 <td class="judul-cell">PLN NP INTEGRATED MANAGEMENT SYSTEM</td>
@@ -356,65 +359,65 @@
 
     <div class="section">
         <div class="page-break">
-        <p><strong>Analisa Matriks</strong>:</p>
-        <table class="table-matriks">
-            {{-- <thead>
+            <p><strong>Analisa Matriks</strong>:</p>
+            <table class="table-matriks">
+                {{-- <thead>
                 <tr>
                     <th>Prioritas</th>
                     <th colspan="5">Nilai Dampak</th>
                 </tr>
             </thead> --}}
-            <tbody>
-                <tr>
-                    <td>Prioritas 1</td>
-                    <td style="background-color: #ffc000;">Sedang</td>
-                    <td style="background-color: #e36c09;">Tinggi</td>
-                    <td style="background-color: #e36c09;">Tinggi</td>
-                    <td style="background-color: #ff0000;">Ekstreme</td>
-                    <td style="background-color: #ff0000;">Ekstreme</td>
-                </tr>
-                <tr>
-                    <td>Prioritas 2</td>
-                    <td style="background-color: #ffc000;">Sedang</td>
-                    <td style="background-color: #ffc000;">Sedang</td>
-                    <td style="background-color: #e36c09;">Tinggi</td>
-                    <td style="background-color: #e36c09;">Tinggi</td>
-                    <td style="background-color: #ff0000;">Ekstreme</td>
-                </tr>
-                <tr>
-                    <td>Prioritas 3</td>
-                    <td style="background-color: #ffc000;">Sedang</td>
-                    <td style="background-color: #ffc000;">Sedang</td>
-                    <td style="background-color: #ffc000;">Sedang</td>
-                    <td style="background-color: #e36c09;">Tinggi</td>
-                    <td style="background-color: #e36c09;">Tinggi</td>
-                </tr>
-                <tr>
-                    <td>Prioritas 4</td>
-                    <td style="background-color: #00b050;">Rendah</td>
-                    <td style="background-color: #00b050;">Rendah</td>
-                    <td style="background-color: #ffc000;">Sedang</td>
-                    <td style="background-color: #ffc000;">Sedang</td>
-                    <td style="background-color: #e36c09;">Tinggi</td>
-                </tr>
-                <tr>
-                    <td>Prioritas 5</td>
-                    <td style="background-color: #00b050;">Rendah</td>
-                    <td style="background-color: #00b050;">Rendah</td>
-                    <td style="background-color: #00b050;">Rendah</td>
-                    <td style="background-color: #ffc000;">Sedang</td>
-                    <td style="background-color: #ffc000;">Sedang</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td style="width:80px; word-wrap: break-word; white-space: normal;">Tidak ada dampak</td>
-                    <td>Kecil</td>
-                    <td>Sedang</td>
-                    <td>Tinggi</td>
-                    <td style="width:80px; word-wrap: break-word; white-space: normal;">Sangat Tinggi</td>
-                </tr>
-            </tbody>
-        </table>
+                <tbody>
+                    <tr>
+                        <td>Prioritas 1</td>
+                        <td style="background-color: #ffc000;">Sedang</td>
+                        <td style="background-color: #e36c09;">Tinggi</td>
+                        <td style="background-color: #e36c09;">Tinggi</td>
+                        <td style="background-color: #ff0000;">Ekstreme</td>
+                        <td style="background-color: #ff0000;">Ekstreme</td>
+                    </tr>
+                    <tr>
+                        <td>Prioritas 2</td>
+                        <td style="background-color: #ffc000;">Sedang</td>
+                        <td style="background-color: #ffc000;">Sedang</td>
+                        <td style="background-color: #e36c09;">Tinggi</td>
+                        <td style="background-color: #e36c09;">Tinggi</td>
+                        <td style="background-color: #ff0000;">Ekstreme</td>
+                    </tr>
+                    <tr>
+                        <td>Prioritas 3</td>
+                        <td style="background-color: #ffc000;">Sedang</td>
+                        <td style="background-color: #ffc000;">Sedang</td>
+                        <td style="background-color: #ffc000;">Sedang</td>
+                        <td style="background-color: #e36c09;">Tinggi</td>
+                        <td style="background-color: #e36c09;">Tinggi</td>
+                    </tr>
+                    <tr>
+                        <td>Prioritas 4</td>
+                        <td style="background-color: #00b050;">Rendah</td>
+                        <td style="background-color: #00b050;">Rendah</td>
+                        <td style="background-color: #ffc000;">Sedang</td>
+                        <td style="background-color: #ffc000;">Sedang</td>
+                        <td style="background-color: #e36c09;">Tinggi</td>
+                    </tr>
+                    <tr>
+                        <td>Prioritas 5</td>
+                        <td style="background-color: #00b050;">Rendah</td>
+                        <td style="background-color: #00b050;">Rendah</td>
+                        <td style="background-color: #00b050;">Rendah</td>
+                        <td style="background-color: #ffc000;">Sedang</td>
+                        <td style="background-color: #ffc000;">Sedang</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="width:80px; word-wrap: break-word; white-space: normal;">Tidak ada dampak</td>
+                        <td>Kecil</td>
+                        <td>Sedang</td>
+                        <td>Tinggi</td>
+                        <td style="width:80px; word-wrap: break-word; white-space: normal;">Sangat Tinggi</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <div class="section">
@@ -475,51 +478,53 @@
     </div>
 
     <div class="section">
-        <table class="ttd" width="100%">
-            <tr>
-                <td colspan="5" style="text-align: center;"><strong>Paiton,
-                        {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</strong></td>
-            </tr>
-            <tr>
-                <td colspan="5" style="text-align: center;"><strong>Mengetahui :</strong></td>
-            </tr>
+        <div class="page-break">
+            <table class="ttd" width="100%">
+                <tr>
+                    <td colspan="5" style="text-align: center;"><strong>Paiton,
+                            {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</strong></td>
+                </tr>
+                <tr>
+                    <td colspan="5" style="text-align: center;"><strong>Mengetahui :</strong></td>
+                </tr>
 
-            <!-- Baris Asman SDM -->
-            <tr>
-                <td rowspan="3" style="width: 25%; text-align: center; font-weight: bold;">
-                    Asman SDM,<br>Umum dan CSR
-                </td>
-                <td colspan="2" style="text-align: center; font-weight: bold; width: 20%;">Diterima</td>
-                <td colspan="2" style="text-align: center; font-weight: bold; width: 55%;">Arahan</td>
-            </tr>
-            <tr>
-                <td style="width: 10%; text-align: center;">Ya</td>
-                <td style="width: 10%; text-align: center;">Tidak</td>
-                <td colspan="2" rowspan="2" style="width: 55%;"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-            </tr>
+                <!-- Baris Asman SDM -->
+                <tr>
+                    <td rowspan="3" style="width: 25%; text-align: center; font-weight: bold;">
+                        Asman SDM,<br>Umum dan CSR
+                    </td>
+                    <td colspan="2" style="text-align: center; font-weight: bold; width: 20%;">Diterima</td>
+                    <td colspan="2" style="text-align: center; font-weight: bold; width: 55%;">Arahan</td>
+                </tr>
+                <tr>
+                    <td style="width: 10%; text-align: center;">Ya</td>
+                    <td style="width: 10%; text-align: center;">Tidak</td>
+                    <td colspan="2" rowspan="2" style="width: 55%;"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
 
-            <!-- Baris Manager -->
-            <tr>
-                <td rowspan="3" style="width: 25%; text-align: center; font-weight: bold;">
-                    Manager Business Support
-                </td>
-                <td colspan="2" style="text-align: center; font-weight: bold;">Diterima</td>
-                <td colspan="2" style="text-align: center; font-weight: bold;">Arahan</td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">Ya</td>
-                <td style="text-align: center;">Tidak</td>
-                <td colspan="2" rowspan="2"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
+                <!-- Baris Manager -->
+                <tr>
+                    <td rowspan="3" style="width: 25%; text-align: center; font-weight: bold;">
+                        Manager Business Support
+                    </td>
+                    <td colspan="2" style="text-align: center; font-weight: bold;">Diterima</td>
+                    <td colspan="2" style="text-align: center; font-weight: bold;">Arahan</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">Ya</td>
+                    <td style="text-align: center;">Tidak</td>
+                    <td colspan="2" rowspan="2"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
     </div>
 
 </body>

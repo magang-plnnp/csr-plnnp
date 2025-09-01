@@ -72,7 +72,7 @@ $pdf->getDomPDF()->getCanvas()->page_script(function ($pageNumber, $pageCount, $
 
     $x1 = 396; // posisi awal "Halaman:"
     $x2 = 426; // posisi "2 dari 3"
-    $y = 135;
+    $y = 127;
 
     $canvas->text($x1, $y, "Halaman:", $fontBold, $size);
     $canvas->text($x1 + 0.2, $y, "Halaman:", $fontBold, $size);
