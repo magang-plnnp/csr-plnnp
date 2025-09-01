@@ -132,12 +132,14 @@
                          </div>
                          <div class="mb-3">
                              <label for="edit-nama" class="form-label">Nama Penerima</label>
-                             <input type="text" class="form-control" id="edit-nama" name="nama_penerima" required>
+                             <textarea class="form-control" id="edit-nama" name="nama_penerima" required></textarea>
                          </div>
+
                          <div class="mb-3">
                              <label for="edit-jabatan" class="form-label">Jabatan Penerima</label>
-                             <input type="text" class="form-control" id="edit-jabatan" name="jabatan_penerima" required>
+                             <textarea class="form-control" id="edit-jabatan" name="jabatan_penerima" required></textarea>
                          </div>
+
 
                          <div id="edit-bantuan-wrapper"></div>
                          <button type="button" id="edit-add-bantuan" class="btn btn-sm btn-secondary mb-3">+ Tambah Jenis

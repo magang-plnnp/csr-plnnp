@@ -152,70 +152,77 @@
                          </div>
                          <div class="mb-3">
                              <label for="edit-dasar" class="form-label">Dasar Pelaksanaan</label>
-                             <input type="text" class="form-control" id="edit-dasar" name="dasar_pelaksanaan">
+                             <textarea class="form-control" id="edit-dasar" name="dasar_pelaksanaan"></textarea>
                          </div>
+
                          <div class="mb-3">
                              <label for="edit-latar" class="form-label">Latar Belakang</label>
-                             <input type="text" class="form-control" id="edit-latar" name="latar_belakang">
+                             <textarea class="form-control" id="edit-latar" name="latar_belakang"></textarea>
                          </div>
+
                          <div class="mb-3">
                              <label for="edit-tujuan" class="form-label">Tujuan</label>
-                             <input type="text" class="form-control" id="edit-tujuan" name="tujuan">
+                             <textarea class="form-control" id="edit-tujuan" name="tujuan"></textarea>
                          </div>
+
                          <div class="mb-3">
                              <label for="edit-lingkungan" class="form-label">Indikator Lingkungan</label>
-                             <input type="text" class="form-control" id="edit-lingkungan"
-                                 name="indikator_lingkungan">
+                             <textarea class="form-control" id="edit-lingkungan" name="indikator_lingkungan"></textarea>
                          </div>
+
                          <div class="mb-3">
                              <label for="edit-sosial" class="form-label">Indikator Sosial</label>
-                             <input type="text" class="form-control" id="edit-sosial" name="indikator_sosial">
+                             <textarea class="form-control" id="edit-sosial" name="indikator_sosial"></textarea>
                          </div>
+
                          <div class="mb-3">
                              <label for="edit-jpm" class="form-label">Jumlah Penerima Manfaat</label>
                              <input type="text" class="form-control" id="edit-jpm" name="jumlah_penerima_manfaat">
                          </div>
                          <div class="mb-3">
                              <label for="edit-js" class="form-label">Jenis Stakeholder</label>
-                             <input type="text" class="form-control" id="edit-js" name="jenis_stakeholder">
+                             <textarea class="form-control" id="edit-js" name="jenis_stakeholder"></textarea>
                          </div>
+
                          <div class="mb-3">
                              <label for="edit-pejabat" class="form-label">Pejabat Instansi</label>
-                             <input type="text" class="form-control" id="edit-pejabat" name="pejabat_instansi">
+                             <textarea class="form-control" id="edit-pejabat" name="pejabat_instansi"></textarea>
                          </div>
-                         
+
                          <div class="mb-3">
                              <label for="edit-dt" class="form-label">Data Terdahulu</label>
-                             <input type="text" class="form-control" id="edit-dt" name="data_terdahulu">
+                             <textarea class="form-control" id="edit-dt" name="data_terdahulu"></textarea>
                          </div>
+
                          <div class="mb-3">
-                            <div class="mb-3">
-                            <label for="edit-prioritas" class="form-label">Prioritas</label>
-                            <select name="prioritas" id="edit-prioritas" class="form-control" required>
-                                <option value="">-- Pilih Prioritas --</option>
-                                <option value="1">Prioritas 1</option>
-                                <option value="2">Prioritas 2</option>
-                                <option value="3">Prioritas 3</option>
-                                <option value="4">Prioritas 4</option>
-                                <option value="5">Prioritas 5</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit-dampak" class="form-label">Dampak</label>
-                            <select name="dampak" id="edit-dampak" class="form-control" required>
-                                <option value="">-- Pilih Dampak --</option>
-                                <option value="1">Tidak ada dampak</option>
-                                <option value="2">Kecil</option>
-                                <option value="3">Sedang</option>
-                                <option value="4">Tinggi</option>
-                                <option value="5">Sangat Tinggi</option>
-                            </select>
-                        </div>
-                        </div>
+                             <div class="mb-3">
+                                 <label for="edit-prioritas" class="form-label">Prioritas</label>
+                                 <select name="prioritas" id="edit-prioritas" class="form-control" required>
+                                     <option value="">-- Pilih Prioritas --</option>
+                                     <option value="1">Prioritas 1</option>
+                                     <option value="2">Prioritas 2</option>
+                                     <option value="3">Prioritas 3</option>
+                                     <option value="4">Prioritas 4</option>
+                                     <option value="5">Prioritas 5</option>
+                                 </select>
+                             </div>
+                             <div class="mb-3">
+                                 <label for="edit-dampak" class="form-label">Dampak</label>
+                                 <select name="dampak" id="edit-dampak" class="form-control" required>
+                                     <option value="">-- Pilih Dampak --</option>
+                                     <option value="1">Tidak ada dampak</option>
+                                     <option value="2">Kecil</option>
+                                     <option value="3">Sedang</option>
+                                     <option value="4">Tinggi</option>
+                                     <option value="5">Sangat Tinggi</option>
+                                 </select>
+                             </div>
+                         </div>
                          <div class="mb-3">
                              <label for="edit-catatan" class="form-label">Catatan Khusus</label>
-                             <input type="text" class="form-control" id="edit-catatan" name="catatan_khusus">
+                             <textarea class="form-control" id="edit-catatan" name="catatan_khusus"></textarea>
                          </div>
+
                      </div>
                      <div class="modal-footer">
                          <button type="button" class="btn bg-secondary-subtle text-dark"
@@ -290,21 +297,19 @@
 
                          <div class="mb-3">
                              <label for="jenis_stakeholder" class="form-label">Jenis Stakeholder</label>
-                             <input type="text" class="form-control" name="jenis_stakeholder" id="jenis_stakeholder"
-                                 value="{{ old('jenis_stakeholder') }}">
+                             <textarea class="form-control" id="jenis_stakeholder" name="jenis_stakeholder">{{ old('jenis_stakeholder') }}</textarea>
                          </div>
 
                          <div class="mb-3">
                              <label for="pejabat_instansi" class="form-label">Pejabat Instansi</label>
-                             <input type="text" class="form-control" name="pejabat_instansi" id="pejabat_instansi"
-                                 value="{{ old('pejabat_instansi') }}">
+                             <textarea class="form-control" id="pejabat_instansi" name="pejabat_instansi">{{ old('pejabat_instansi') }}</textarea>
                          </div>
 
                          <div class="mb-3">
                              <label for="data_terdahulu" class="form-label">Data Terdahulu</label>
-                             <input type="text" class="form-control" name="data_terdahulu" id="data_terdahulu"
-                                 value="{{ old('data_terdahulu') }}">
+                             <textarea class="form-control" id="data_terdahulu" name="data_terdahulu">{{ old('data_terdahulu') }}</textarea>
                          </div>
+
 
                          <div class="mb-3">
                              <label for="prioritas" class="form-label">Prioritas</label>
