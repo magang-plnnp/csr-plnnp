@@ -2,6 +2,8 @@
 @section('title', 'CSR PLN Nusantara Power UP Paiton')
 @push('styles')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.4.0/css/fixedHeader.bootstrap5.min.css">
+
     <style>
         /* Freeze Header */
         table.dataTable thead th {
@@ -52,10 +54,10 @@
 
         /* table.dataTable td p,
 
-                                                                                table.dataTable td span,
-                                                                                table.dataTable th h6 {
-                                                                                    white-space: nowrap !important;
-                                                                                } */
+                                                                                                        table.dataTable td span,
+                                                                                                        table.dataTable th h6 {
+                                                                                                            white-space: nowrap !important;
+                                                                                                        } */
 
 
         table.dataTable,
@@ -80,13 +82,13 @@
         }
 
         /* Paksa semua elemen dalam tabel untuk nowrap
-                                                                                #proposalTable,
-                                                                                #proposalTable th,
-                                                                                #proposalTable td,
-                                                                                #proposalTable th *,
-                                                                                #proposalTable td * {
-                                                                                    white-space: nowrap !important;
-                                                                                } */
+                                                                                                        #proposalTable,
+                                                                                                        #proposalTable th,
+                                                                                                        #proposalTable td,
+                                                                                                        #proposalTable th *,
+                                                                                                        #proposalTable td * {
+                                                                                                            white-space: nowrap !important;
+                                                                                                        } */
 
         /* Hindari teks meluber */
         #proposalTable td {
@@ -232,6 +234,7 @@
 
                             <select id="filter-progress" class="form-select" style="min-width: 200px;">
                                 <option value="">-- Semua Progress --</option>
+                                <option value="0">0%</option>
                                 <option value="20">20%</option>
                                 <option value="40">40%</option>
                                 <option value="60">60%</option>
@@ -458,6 +461,7 @@
         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
         <script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
 
         <script>
@@ -481,9 +485,12 @@
                 // Inisialisasi DataTable
                 table = $('#proposalTable').DataTable({
                     scrollX: true,
+                    scrollY: "500px", // max-height 500px
                     scrollCollapse: true,
+                    paging: true,
+                    fixedHeader: true, // freeze header
                     fixedColumns: {
-                        leftColumns: 2 // Kolom ke-1 (No) dan ke-2 (Judul) dibekukan
+                        leftColumns: 2 // freeze 2 kolom kiri
                     },
                     language: {
                         search: "Cari",
