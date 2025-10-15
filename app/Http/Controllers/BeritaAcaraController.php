@@ -52,6 +52,8 @@ public function store(Request $request)
     // Decode bantuan kembali agar siap dikirim ke view PDF
     $bantuanArray = json_decode($beritaAcara->bantuan, true) ?? ['jenis' => [], 'jumlah' => []];
 
+    $proposal = Proposal::find($beritaAcara->proposal_id);
+
    
 
     $businessSupport = \App\Models\BusinessSupport::first();
@@ -62,6 +64,7 @@ $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
         'jenis'  => $bantuanArray['jenis'] ?? [],
         'jumlah' => $bantuanArray['jumlah'] ?? [],
         'namaBisnisSupport' => $namaBisnisSupport, // aktifkan jika ada
+        'proposal' => $proposal
     ]);
 
     // Nama file PDF

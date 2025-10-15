@@ -22,6 +22,7 @@ class Kelayakan extends Model
         'jenis_stakeholder',
         'pejabat_instansi',
         'data_terdahulu',
+        'contact_person',
         'catatan_khusus',
         'prioritas',
         'dampak',

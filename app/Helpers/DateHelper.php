@@ -15,7 +15,7 @@ class DateHelper
         $bulan = $tanggal->translatedFormat('F');
         $tahun = self::terbilang($tanggal->year);
 
-        return "$hari tanggal $tgl bulan $bulan tahun $tahun";
+        return "$hari Tanggal $tgl Bulan $bulan Tahun $tahun";
     }
 
     public static function ubahHari($hari)
@@ -35,6 +35,7 @@ class DateHelper
     public static function terbilang($angka)
     {
         $f = new \NumberFormatter("id", \NumberFormatter::SPELLOUT);
-        return ucfirst($f->format($angka));
+        $hasil = $f->format($angka);
+        return ucwords($hasil);
     }
 }

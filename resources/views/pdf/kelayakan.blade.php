@@ -294,32 +294,32 @@
         <div class="data-row">
             <div class="label">Dasar Pelaksanaan Program</div>
             <div class="separator">:</div>
-            <div class="value">{{ $data->dasar_pelaksanaan }}</div>
+            <div class="value">{!! nl2br(e($data->dasar_pelaksanaan)) !!}</div>
         </div>
 
         <div class="data-row">
             <div class="label">Latar Belakang Program</div>
             <div class="separator">:</div>
-            <div class="value">{{ $data->latar_belakang }}</div>
+            <div class="value">{!! nl2br(e($data->latar_belakang)) !!}</div>
         </div>
 
         <div class="data-row">
             <div class="label">Tujuan</div>
             <div class="separator">:</div>
-            <div class="value">{{ $data->tujuan }}</div>
+            <div class="value">{!! nl2br(e($data->tujuan)) !!}</div>
         </div>
 
         <div class="data-row">
             <div class="label">Indikator Lingkungan</div>
             <div class="separator">:</div>
-            <div class="value">{{ $data->indikator_lingkungan }}</div>
+            <div class="value">{!! nl2br(e($data->indikator_lingkungan)) !!}</div>
         </div>
 
         <div class="data-row">
             <div class="label">Indikator Sosial</div>
             <div class="separator">:</div>
             <div class="value">
-                {{ $data->indikator_sosial }}
+                {!! nl2br(e($data->indikator_sosial)) !!}
             </div>
         </div>
 
@@ -467,13 +467,13 @@
         <div class="data-row">
             <div class="label">Contact Person</div>
             <div class="separator">:</div>
-            <div class="value">Dedy Mistariyanto</div>
+            <div class="value">{{ $data->contact_person }}</div>
         </div>
 
         <div class="data-row">
             <div class="label">Catatan Khusus</div>
             <div class="separator">:</div>
-            <div class="value">{{ $data->catatan_khusus }}</div>
+            <div class="value">{!! nl2br(e($data->catatan_khusus)) !!}</div>
         </div>
     </div>
 

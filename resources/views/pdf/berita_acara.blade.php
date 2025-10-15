@@ -153,11 +153,11 @@
         .tabel-bantuan td {
             border: 1px solid #000;
             padding: 6px;
-            text-align: left;
+            text-align: center;
         }
 
         .ttd {
-            margin-top: 50px;
+            margin-top: 5px;
             width: 100%;
         }
 
@@ -206,7 +206,7 @@
         style="width:100%; border-collapse: collapse;">
         <thead>
             <tr>
-                <th>No</th>
+                <th style="width: 40px;">No</th>
                 <th>Jenis Bantuan</th>
                 <th>Jumlah</th>
             </tr>
