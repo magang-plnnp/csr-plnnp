@@ -390,19 +390,49 @@
 
          <!-- Select2 JS -->
          <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
          <script>
              $(document).ready(function() {
-                 $('#createModal').on('shown.bs.modal', function() {
-                     $('#select-proposal').select2({
-                         dropdownParent: $('#createModal'),
-                         width: '100%',
-                         theme: 'bootstrap4',
-                         placeholder: '-- Pilih Proposal --'
-                     });
+                 $('#select-proposal').select2({
+                     theme: 'bootstrap4',
+                     allowClear: true,
+                     width: '100%',
+                     dropdownParent: $('#createModal'),
+                     language: {
+                         searching: function() {
+                             return "Mencari...";
+                         },
+                         inputTooShort: function() {
+                             return "Ketik untuk mencari proposal...";
+                         },
+                         noResults: function() {
+                             return "Tidak ada hasil ditemukan";
+                         }
+                     }
+                 });
+
+                 // Tambahkan placeholder ke input pencarian Select2 saat dropdown terbuka
+                 $('#select-proposal').on('select2:open', function() {
+                     let searchField = $('.select2-search__field');
+                     searchField.attr('placeholder', 'Ketik untuk mencari proposal...');
+                 });
+
+                 // Reset nilai saat modal ditutup
+                 $('#createModal').on('hidden.bs.modal', function() {
+                     $('#select-proposal').val(null).trigger('change');
                  });
              });
+         </script>
+
+         $(document).ready(function() {
+         $('#createModal').on('shown.bs.modal', function() {
+         $('#select-proposal').select2({
+         dropdownParent: $('#createModal'),
+         width: '100%',
+         theme: 'bootstrap4',
+         placeholder: '-- Pilih Proposal --'
+         });
+         });
+         });
          </script>
 
          <script>
