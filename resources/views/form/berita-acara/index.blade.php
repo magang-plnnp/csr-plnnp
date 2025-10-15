@@ -51,29 +51,82 @@
                                  <i class="fas fa-plus me-1"></i> Tambah Berita Acara
                              </button>
                          </div>
-
-                         <div class="table-responsive">
-                             <table id="tipologiTable" class="table table-bordered text-wrap mb-0 align-middle">
-                                 <thead class="text-dark fs-4">
+                     <div class="table-responsive">
+                         <table id="tipologiTable" class="table table-bordered mb-0 align-middle">
+                             <thead class="text-dark fs-4">
+                                 <tr>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">No</h6>
+                                     </th>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">Proposal</h6>
+                                     </th>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">Nama</h6>
+                                     </th>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">Jabatan</h6>
+                                     </th>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">File</h6>
+                                     </th>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">Upload</h6>
+                                     </th>
+                                     <th>
+                                         <h6 class="fw-semibold mb-0">Aksi</h6>
+                                     </th>
+                                 </tr>
+                             </thead>
+                             <tbody>
+                                 @foreach ($beritaacara as $data)
                                      <tr>
-                                         <th>
-                                             <h6 class="fw-semibold mb-0">No</h6>
-                                         </th>
-                                         <th>
-                                             <h6 class="fw-semibold mb-0">Proposal</h6>
-                                         </th>
-                                         <th>
-                                             <h6 class="fw-semibold mb-0">Nama</h6>
-                                         </th>
-                                         <th>
-                                             <h6 class="fw-semibold mb-0">Jabatan</h6>
-                                         </th>
-                                         <th>
-                                             <h6 class="fw-semibold mb-0">File</h6>
-                                         </th>
-                                         <th>
-                                             <h6 class="fw-semibold mb-0">Aksi</h6>
-                                         </th>
+                                         <td>
+                                             <h6 class="fw-normal mb-0">{{ $loop->iteration }}</h6>
+                                         </td>
+                                         <td style="white-space: normal;">
+                                             <h6 class="fw-normal mb-0">{{ $data->proposal->judul }}</h6>
+                                         </td>
+                                         <td>
+                                             <p class="mb-0 fw-normal">{{ $data->nama_penerima }}</p>
+                                         </td>
+                                         <td>
+                                             <p class="mb-0 fw-normal">{{ $data->jabatan_penerima }}</p>
+                                         </td>
+                                         <td>
+                                             <p class="mb-0 fw-normal"> <a href="{{ asset('storage/' . $data->file_pdf) }}"
+                                                     target="_blank">Lihat
+                                                     PDF</a></p>
+
+                                         </td>
+                                         <td>
+                                             <p class="mb-0 fw-normal"></p>
+                                         </td>
+
+                                         <td>
+                                             <div class="d-flex justify-content-center align-items-center gap-2">
+                                                 {{-- Tombol Edit --}}
+                                                 <button type="button"
+                                                     class="btn btn-sm btn-light border-0 text-primary btn-edit"
+                                                     data-bs-toggle="modal" data-bs-target="#editModal"
+                                                     data-id="{{ $data->id }}"
+                                                     data-proposal="{{ $data->proposal->judul }}"
+                                                     data-nama="{{ $data->nama_penerima }}"
+                                                     data-jabatan="{{ $data->jabatan_penerima }}">
+                                                     <i class="fas fa-edit"></i>
+                                                 </button>
+
+                                                 {{-- Tombol Hapus --}}
+                                                 <button type="button"
+                                                     class="btn btn-sm btn-light border-0 text-danger btn-delete"
+                                                     data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                     data-id="{{ $data->id }}"
+                                                     data-nama="{{ $data->proposal->judul }}">
+                                                     <i class="fas fa-trash-alt"></i>
+                                                 </button>
+                                             </div>
+
+                                         </td>
                                      </tr>
                                  </thead>
                                  <tbody>
@@ -173,8 +226,6 @@
                  </form>
              </div>
          </div>
-
-
          <!-- Modal Create -->
          <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
              <div class="modal-dialog">
@@ -184,6 +235,29 @@
                          <div class="modal-header">
                              <h5 class="modal-title" id="createModalLabel">Tambah Berita Acara</h5>
                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+             <form method="POST" action="{{ route('berita-
+                     </div>
+                     <div class="modal-body">
+                         <div class="mb-3">
+                             <label class="form-label">Proposal</label>
+                             <select name="proposal_id" id="select-proposal"
+                                 class="form-select @error('proposal_id') is-invalid @enderror" required>
+                                 <option value="">-- Pilih Proposal --</option>
+                                 @foreach ($proposal as $item)
+                                     <option value="{{ $item->id }}">{{ $item->judul }}</option>
+                                 @endforeach
+                             </select>
+                             @error('proposal_id')
+                                 <div class="invalid-feedback">{{ $message }}</div>
+                             @enderror
+                         </div>
+                         <div class="mb-3">
+                             <label for="nama_penerima" class="form-label">Nama Pihak Kedua</label>
+                             <textarea class="form-control" id="nama_penerima" name="nama_penerima" required>{{ old('nama_penerima') }}</textarea>
+                         </div>
+                         <div class="mb-3">
+                             <label for="jabatan_penerima" class="form-label">Jabatan</label>
+                             <textarea class="form-control" id="jabatan_penerima" name="jabatan_penerima" required>{{ old('jabatan_penerima') }}</textarea>
                          </div>
                          <div class="modal-body">
                              <div class="mb-3">
@@ -271,7 +345,6 @@
              </div>
          </div>
 
-
          @push('scripts')
              <!-- jQuery paling awal -->
              <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -282,17 +355,36 @@
              <script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
              <!-- Select2 -->
              <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+             
+         <script>
+             $(document).ready(function() {
+                 $('#select-proposal').select2({
+                     theme: 'bootstrap4',
+                     allowClear: true,
+                     width: '100%',
+                     dropdownParent: $('#createModal'),
+                     language: {
+                         searching: function() {
+                             return "Mencari...";
+                         },
+                         inputTooShort: function() {
+                             return "Ketik untuk mencari proposal...";
+                         },
+                         noResults: function() {
+                             return "Tidak ada hasil ditemukan";
+                         }
+                     }
+                 });
 
-             <script>
-                 $(document).ready(function() {
-                     $('#createModal').on('shown.bs.modal', function() {
-                         $('#select-proposal').select2({
-                             dropdownParent: $('#createModal'),
-                             width: '100%',
-                             theme: 'bootstrap4',
-                             placeholder: '-- Pilih Proposal --'
-                         });
-                     });
+                 // Tambahkan placeholder ke input pencarian Select2 saat dropdown terbuka
+                 $('#select-proposal').on('select2:open', function() {
+                     let searchField = $('.select2-search__field');
+                     searchField.attr('placeholder', 'Ketik untuk mencari proposal...');
+                 });
+
+                 // Reset nilai saat modal ditutup
+                 $('#createModal').on('hidden.bs.modal', function() {
+                     $('#select-proposal').val(null).trigger('change');
                  });
              </script>
 
