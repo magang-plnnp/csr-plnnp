@@ -54,6 +54,7 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
+                                        <label class="form-label">Metode Input Wilayah</label>
                                         <select id="metode_input" name="metode_input" class="form-select" required>
                                             <option value="">-- Pilih Metode --</option>
                                             <option value="auto">Otomatis (Dropdown)</option>
@@ -73,38 +74,40 @@
                                             @enderror
                                         </div>
 
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Kecamatan</label>
+                                                <select id="kecamatan" name="kecamatan_id"
+                                                    class="form-select @error('kecamatan_id') is-invalid @enderror"
+                                                    required>
+                                                    <option value="">-- Pilih Kecamatan --</option>
+                                                </select>
+                                                <div class="form-text">Pilih kecamatan sesuai dengan wilayah pengajuan yang
+                                                    berada
+                                                    di Kabupaten Probolinggo.</div>
+                                                @error('kecamatan_id')
+                                                    <div class="invalid-feedback">Kecamatan wajib diisi</div>
+                                                @enderror
+                                            </div>
 
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Kecamatan</label>
-                                            <select id="kecamatan" name="kecamatan_id"
-                                                class="form-select @error('kecamatan_id') is-invalid @enderror" required>
-                                                <option value="">-- Pilih Kecamatan --</option>
-                                            </select>
-                                            <div class="form-text">Pilih kecamatan sesuai dengan wilayah pengajuan yang
-                                                berada
-                                                di Kabupaten Probolinggo.</div>
-                                            @error('kecamatan_id')
-                                                <div class="invalid-feedback">Kecamatan wajib diisi</div>
-                                            @enderror
-                                        </div>
 
-
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Kelurahan / Desa</label>
-                                            <select id="kelurahan" name="kelurahan_id"
-                                                class="form-select @error('kelurahan_id') is-invalid @enderror" required>
-                                                <option value="">-- Pilih Kelurahan / Desa --</option>
-                                            </select>
-                                            <div class="form-text">Pilih kelurahan atau desa yang berada di dalam
-                                                kecamatan
-                                                yang
-                                                telah dipilih.</div>
-                                            @error('kelurahan_id')
-                                                <div class="invalid-feedback">Kelurahan wajib diisi</div>
-                                            @enderror
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Kelurahan / Desa</label>
+                                                <select id="kelurahan" name="kelurahan_id"
+                                                    class="form-select @error('kelurahan_id') is-invalid @enderror"
+                                                    required>
+                                                    <option value="">-- Pilih Kelurahan / Desa --</option>
+                                                </select>
+                                                <div class="form-text">Pilih kelurahan atau desa yang berada di dalam
+                                                    kecamatan
+                                                    yang
+                                                    telah dipilih.</div>
+                                                @error('kelurahan_id')
+                                                    <div class="invalid-feedback">Kelurahan wajib diisi</div>
+                                                @enderror
+                                            </div>
                                         </div>
                                     </div>
-
 
                                     <div id="wilayah_manual" class="d-none">
                                         <div class="col-md-6 mb-3">
@@ -115,25 +118,25 @@
                                                 Ketik nama Kabupaten atau Kota sesuai wilayah pengajuan (contoh: Malang,
                                                 Surabaya).
                                             </div>
-
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Kecamatan</label>
+                                                <input type="text" id="kecamatan_manual" name="kecamatan_manual"
+                                                    class="form-control" placeholder="Ketik nama kecamatan">
+                                                <div class="form-text">
+                                                    Masukkan nama Kecamatan sesuai Kabupaten/Kota (contoh: Lowokwaru).
+                                                </div>
 
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Kecamatan</label>
-                                            <input type="text" id="kecamatan_manual" name="kecamatan_manual"
-                                                class="form-control" placeholder="Ketik nama kecamatan">
-                                            <div class="form-text">
-                                                Masukkan nama Kecamatan sesuai Kabupaten/Kota (contoh: Lowokwaru).
                                             </div>
 
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Kelurahan / Desa</label>
-                                            <input type="text" id="kelurahan_manual" name="kelurahan_manual"
-                                                class="form-control" placeholder="Ketik nama kelurahan/desa">
-                                            <div class="form-text">
-                                                Masukkan nama Kelurahan atau Desa sesuai Kecamatan (contoh: Tulusrejo).
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Kelurahan / Desa</label>
+                                                <input type="text" id="kelurahan_manual" name="kelurahan_manual"
+                                                    class="form-control" placeholder="Ketik nama kelurahan/desa">
+                                                <div class="form-text">
+                                                    Masukkan nama Kelurahan atau Desa sesuai Kecamatan (contoh: Tulusrejo).
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -240,9 +243,6 @@
                                     </div>
                                 </div>
 
-
-
-
                                 <div class="mb-3">
                                     <label class="form-label">PIC</label>
                                     <input type="text" class="form-control @error('nama_pic_id') is-invalid @enderror"
@@ -276,8 +276,6 @@
                                         <div class="invalid-feedback">Proses wajib diisi</div>
                                     @enderror
                                 </div>
-
-
 
                                 <div class="mb-3">
                                     <label class="form-label">Keterangan</label>

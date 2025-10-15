@@ -5,18 +5,69 @@
      <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
      <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css"
          rel="stylesheet" />
+     <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.dataTables.min.css">
+
      <style>
-         /* Warna tombol pagination aktif dari DataTables (Bootstrap 5) */
+         table.dataTable thead th {
+             position: sticky;
+             top: 0;
+             background-color: white !important;
+             z-index: 10;
+         }
+
+         table.dataTable tbody td:first-child,
+         table.dataTable thead th:first-child {
+             position: sticky;
+             left: 0;
+             background-color: white !important;
+             z-index: 11;
+         }
+
+         table.dataTable tbody td:nth-child(2),
+         table.dataTable thead th:nth-child(2) {
+             position: sticky;
+             left: 60px;
+             background-color: white !important;
+             z-index: 11;
+         }
+
          .dataTables_wrapper .dataTables_paginate .pagination .page-item.active .page-link {
              background-color: #78C841 !important;
              border-color: #78C841 !important;
              color: white !important;
          }
 
-         /* Opsional: hover untuk tombol aktif */
          .dataTables_wrapper .dataTables_paginate .pagination .page-item.active .page-link:hover {
              background-color: #66b638 !important;
              color: white !important;
+         }
+
+         .table-responsive {
+             overflow-x: auto;
+         }
+
+         .DTFC_LeftWrapper table.dataTable thead th,
+         .DTFC_LeftWrapper table.dataTable tbody td {
+             background-color: #ffffff !important;
+             z-index: 10 !important;
+             border-right: 1px solid #dee2e6 !important;
+         }
+
+         .DTFC_LeftWrapper {
+             background-color: #ffffff !important;
+             z-index: 5 !important;
+             box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15) !important;
+             border-right: 2px solid #dee2e6 !important;
+         }
+
+         .DTFC_LeftWrapper table.dataTable thead th {
+             background-color: #f8f9fa !important;
+             font-weight: 600 !important;
+             border-bottom: 2px solid #dee2e6 !important;
+         }
+
+         .DTFC_LeftWrapper .table tbody tr:hover td {
+             background-color: #f1f3f4 !important;
          }
      </style>
  @endpush
@@ -34,7 +85,7 @@
                      </div>
 
                      <div class="table-responsive">
-                         <table id="tipologiTable" class="table table-bordered text-nowrap mb-0 align-middle">
+                         <table id="kelayakanTable" class="table table-bordered nowrap" style="width:100%">
                              <thead class="text-dark fs-4">
                                  <tr>
                                      <th>
@@ -109,6 +160,7 @@
                                                      data-dt="{{ $data->data_terdahulu }}"
                                                      data-prioritas="{{ $data->prioritas }}"
                                                      data-dampak="{{ $data->dampak }}"
+                                                     data-contact="{{ $data->contact_person }}"
                                                      data-catatan="{{ $data->catatan_khusus }}">
                                                      <i class="fas fa-edit"></i>
                                                  </button>
@@ -336,6 +388,11 @@
                          </div>
 
                          <div class="mb-3">
+                             <label for="contact_person" class="form-label">Contact Person</label>
+                             <textarea class="form-control" id="contact_person" name="contact_person">{{ old('contact_person') }}</textarea>
+                         </div>
+
+                         <div class="mb-3">
                              <label for="catatan_khusus" class="form-label">Catatan Khusus</label>
                              <textarea class="form-control" id="catatan_khusus" name="catatan_khusus">{{ old('catatan_khusus') }}</textarea>
                          </div>
@@ -382,15 +439,11 @@
 
 
      @push('scripts')
-         {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
          <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
          <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
-         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-         <!-- Select2 JS -->
-         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
+         <script src="https://cdn.datatables.net/fixedheader/3.4.0/js/dataTables.fixedHeader.min.js"></script>
+         <script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
 
          <script>
              $(document).ready(function() {
@@ -406,31 +459,41 @@
          </script>
 
          <script>
-             $('#tipologiTable').DataTable({
-                 language: {
-                     search: "Cari",
-                     lengthMenu: "Tampil _MENU_",
-                     zeroRecords: "Data tidak ditemukan",
-                     info: "Menampilkan _START_–_END_ dari _TOTAL_ data",
-                     infoEmpty: "Menampilkan 0–0 dari 0 data",
-                     infoFiltered: "(difilter dari _MAX_ total data)",
-                     paginate: {
-                         first: "«",
-                         last: "»",
-                         previous: "‹",
-                         next: "›"
+             $(document).ready(function() {
+                 $('#kelayakanTable').DataTable({
+                     scrollX: true,
+                     scrollY: "500px",
+                     scrollCollapse: true,
+                     paging: true,
+                     fixedHeader: true,
+                     fixedColumns: {
+                         leftColumns: 2
+                     },
+                     language: {
+                         search: "Cari",
+                         lengthMenu: "Tampil _MENU_",
+                         zeroRecords: "Data tidak ditemukan",
+                         info: "Menampilkan _START_–_END_ dari _TOTAL_ data",
+                         infoEmpty: "Menampilkan 0–0 dari 0 data",
+                         infoFiltered: "(difilter dari _MAX_ total data)",
+                         paginate: {
+                             first: "«",
+                             last: "»",
+                             previous: "‹",
+                             next: "›"
+                         }
+                     },
+                     pageLength: 10,
+                     lengthChange: true,
+                     lengthMenu: [
+                         [10, 25, 50, -1],
+                         [10, 25, 50, "Semua"]
+                     ],
+                     pagingType: "full_numbers",
+                     drawCallback: function() {
+                         $('.dataTables_paginate > .pagination').addClass('pagination-sm');
                      }
-                 },
-                 pageLength: 10,
-                 lengthChange: true,
-                 lengthMenu: [
-                     [10, 25, 50, -1],
-                     [10, 25, 50, "Semua"]
-                 ],
-                 pagingType: "full_numbers",
-                 drawCallback: function(settings) {
-                     $('.dataTables_paginate > .pagination').addClass('pagination-sm');
-                 }
+                 });
              });
          </script>
 
@@ -451,6 +514,7 @@
                  const dt = $(this).data('dt');
                  const prioritas = $(this).data('prioritas');
                  const dampak = $(this).data('dampak');
+                 const contact = $(this).data('contact');
                  const catatan = $(this).data('catatan');
 
                  $('#edit-proposal').val(proposal);
@@ -466,6 +530,7 @@
                  $('#edit-dt').val(dt);
                  $('#edit-prioritas').val(prioritas);
                  $('#edit-dampak').val(dampak);
+                 $('#edit-contact').val(contact);
                  $('#edit-catatan').val(catatan);
 
                  // Update action form dengan ID yang dipilih

@@ -33,6 +33,7 @@ class KelayakanController extends Controller
         'jenis_stakeholder' => 'nullable|string|max:255',
         'pejabat_instansi' => 'nullable|string|max:255',
         'data_terdahulu' => 'nullable|string|max:255',
+        'contact_person' => 'nullable|string|max:255',
         'catatan_khusus' => 'nullable|string|max:255',
         'prioritas' => 'required|in:1,2,3,4,5',
         'dampak' => 'required|in:1,2,3,4,5',
@@ -50,6 +51,7 @@ class KelayakanController extends Controller
         'jenis_stakeholder' => $request->jenis_stakeholder,
         'pejabat_instansi' => $request->pejabat_instansi, 
         'data_terdahulu' => $request->data_terdahulu,
+        'contact_person' => $request->contact_person,
         'catatan_khusus' => $request->catatan_khusus,
         'prioritas' => $request->prioritas,
         'dampak' => $request->dampak,
@@ -248,7 +250,7 @@ $pdf->getDomPDF()->getCanvas()->page_script(function ($pageNumber, $pageCount, $
 
             $x1 = 396; // posisi awal "Halaman:"
             $x2 = 426; // posisi "2 dari 3"
-            $y = 135;
+            $y = 129;
 
             $canvas->text($x1, $y, "Halaman:", $fontBold, $size);
             $canvas->text($x1 + 0.2, $y, "Halaman:", $fontBold, $size);

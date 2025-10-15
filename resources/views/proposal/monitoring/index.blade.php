@@ -53,10 +53,10 @@
         }
 
         /* table.dataTable td p,
-                                                                                                        table.dataTable td span,
-                                                                                                        table.dataTable th h6 {
-                                                                                                            white-space: nowrap !important;
-                                                                                                        } */
+                                                                                                                table.dataTable td span,
+                                                                                                                table.dataTable th h6 {
+                                                                                                                    white-space: nowrap !important;
+                                                                                                                } */
 
         table.dataTable,
         table.dataTable th,
@@ -80,13 +80,13 @@
         }
 
         /* Paksa semua elemen dalam tabel untuk nowrap
-                                                                                                        #proposalTable,
-                                                                                                        #proposalTable th,
-                                                                                                        #proposalTable td,
-                                                                                                        #proposalTable th *,
-                                                                                                        #proposalTable td * {
-                                                                                                            white-space: nowrap !important;
-                                                                                                        } */
+                                                                                                                #proposalTable,
+                                                                                                                #proposalTable th,
+                                                                                                                #proposalTable td,
+                                                                                                                #proposalTable th *,
+                                                                                                                #proposalTable td * {
+                                                                                                                    white-space: nowrap !important;
+                                                                                                                } */
 
         /* Hindari teks meluber */
         #proposalTable td {
@@ -516,9 +516,6 @@
                     }
                 });
 
-                // Filter dropdown
-                $('#filter-pic, #filter-tipologi, #filter-progress').on('change', applyFilters);
-
                 // Toggle checklist
                 // Benar: menggunakan event delegation agar bekerja untuk elemen dinamis
                 $(document).on('change', '.checklist-toggle', function() {
@@ -628,14 +625,16 @@
                 table.columns(7).search(tipologi);
                 table.column(16).search('', true, false);
 
-                if (progressFilter === 'selesai') {
-                    table.column(16).search('^100%$', true, false);
-                } else if (progressFilter === 'belum') {
-                    table.column(16).search('^(?!100%).*$', true, false);
+                if (progressFilter) {
+                    table.column(16).search('^' + progressFilter + '%$', true, false);
+                } else {
+                    table.column(16).search('', true, false);
                 }
 
                 table.draw();
             }
+            // Filter dropdown
+            $('#filter-pic, #filter-tipologi, #filter-progress').on('change', applyFilters);
         </script>
         <script>
             function showToast(message) {
