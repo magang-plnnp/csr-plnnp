@@ -158,7 +158,26 @@ $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
             ->with('success', 'Data berita acara berhasil diperbarui dan PDF telah digenerate ulang.');
     }
 
+    public function uploadFile(Request $request, $id)
+    {
+        $request->validate([
+            'file_upload' => 'required|mimes:pdf,jpg,jpeg,png|max:2048',
+        ]);
 
+        $beritaAcara = BeritaAcara::findOrFail($id);
+
+        // Hapus file lama jika ada
+        if ($beritaAcara->file_upload && Storage::exists('public/' . $beritaAcara->file_upload)) {
+            Storage::delete('public/' . $beritaAcara->file_upload);
+        }
+
+        // Simpan file baru
+        $file = $request->file('file_upload');
+        $path = $file->store('public/berita_acara_upload');
+        $beritaAcara->update(['file_upload' => str_replace('public/', '', $path)]);
+
+        return redirect()->route('berita-acara.index')->with('success', 'File berhasil diupload.');
+    }
 
     public function destroy($id)
     {
