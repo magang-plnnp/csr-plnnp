@@ -156,14 +156,26 @@
             text-align: center;
         }
 
+        .tanggal {
+            text-align: center;
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+            line-height: 1.2 !important;
+        }
+
         .ttd {
-            margin-top: 5px;
             width: 100%;
+            border-collapse: collapse;
+            margin-top: -5px !important;
         }
 
         .ttd td {
             text-align: center;
-            padding-top: 50px;
+            padding-top: 25px;
+        }
+
+        .spasi-ttd td {
+            padding-top: 80px;
         }
     </style>
 </head>
@@ -315,15 +327,15 @@
         <br><br>
     </p>
 
-    <p style="text-align: center;">Paiton, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+    <p class="tanggal">Paiton, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
 
     <table class="ttd">
         <tr>
             <td><strong>PIHAK PERTAMA</strong></td>
             <td><strong>PIHAK KEDUA</strong></td>
         </tr>
-        <tr>
-            <td height="40px"></td>
+        <tr class="spasi-ttd">
+            <td></td>
             <td></td>
         </tr>
         <tr>

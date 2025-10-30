@@ -13,6 +13,7 @@ class BeritaAcara extends Model
         'nama_penerima',
         'jabatan_penerima',
         'file_pdf',
+        'file_upload',
         'bantuan'
     ];
 
