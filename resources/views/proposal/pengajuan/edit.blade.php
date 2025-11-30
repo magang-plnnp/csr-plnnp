@@ -204,14 +204,17 @@
                                         <select class="form-control @error('status') is-invalid @enderror" name="status"
                                             required>
                                             <option value="">-- Pilih Status Persetujuan --</option>
-                                            <option value="disetujui"
-                                                {{ old('status', $proposal->status) == 'disetujui' ? 'selected' : '' }}>
-                                                Setuju</option>
+                                            <option value="setuju"
+                                                {{ old('status', $proposal->status) == 'setuju' ? 'selected' : '' }}>
+                                                Setuju
+                                            </option>
                                             <option value="pending"
                                                 {{ old('status', $proposal->status) == 'pending' ? 'selected' : '' }}>
-                                                Pending</option>
-                                            <option value="ditolak"
-                                                {{ old('status', $proposal->status) == 'ditolak' ? 'selected' : '' }}>Tolak
+                                                Pending
+                                            </option>
+                                            <option value="tolak"
+                                                {{ old('status', $proposal->status) == 'tolak' ? 'selected' : '' }}>
+                                                Tolak
                                             </option>
                                         </select>
                                         @error('status')

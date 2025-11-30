@@ -184,7 +184,9 @@
 
     <h2>BERITA ACARA SERAH TERIMA</h2>
     <h3>{{ strtoupper($data->proposal->judul) }}</h3>
-    <p style="text-align: center; font-weight: bold;">089.BA.KESP/076/UPPTN/2025</p>
+    <p style="text-align: center; font-weight: bold;">
+        {{ $nomorBeritaAcara }}
+    </p>
 
     <p class="tight-bottom">Pada hari ini {{ \App\Helpers\DateHelper::tanggalTerbilang() }}, yang bertanda tangan dibawah
         ini:
@@ -242,38 +244,6 @@
             azas Kepatuhan Terhadap Hukum dan
             Anti Penyuapan antara lain:
         </p>
-
-        {{-- <p>(1). <strong>PARA PIHAK</strong> menyepakati bahwa pada saat melaksanakan program Corporate Social Responsibility ini
-            berdasarkan pada prinsip itikad baik, tidak saling mempengaruhi baik langsung maupun tidak langsung guna
-            memenuhi keinginannya, menerima serta bertanggungjawab atas segala keputusan yang ditetapkan sesuai dengan
-            kesepakatan <strong>PARA PIHAK</strong>, menghindari serta mencegah terjadinya pertentangan kepentingan (conflict of
-            interest), menghindari serta mencegah penyalahgunaan wewenang dan/atau kolusi dan/atau korupsi dengan tujuan
-            untuk keuntungan pribadi-golongan-atau pihak lain, dan tidak menerima, tidak menawarkan atau tidak
-            menjanjikan untuk memberi atau menerima hadiah, imbalan berupa apa saja kepada siapapun yang diketahui atau
-            patut diduga berkaitan dengan pelaksanaan program Corporate Social Responsibility ini (penyuapan).</p>
-
-        <p>(2). <strong>PARA PIHAK</strong> menyepakati bahwa dalam pelaksanaan program Corporate Social Responsibility ini selalu
-            mengambil tindakan yang cukup untuk memastikan <strong>PARA PIHAK</strong> patuh terhadap setiap hukum Indonesia yang
-            berlaku, tidak terbatas pada Undang-Undang Nomor 31 Tahun 1999 Juncto Undang-Undang Nomor 20 Tahun 2001
-            tentang Pemberantasan Tindak Pidana Korupsi serta bersedia dikenakan sanksi berdasarkan ketentuan peraturan
-            perundang-undangan apabila terbukti terlibat Korupsi, Kolusi, Nepotisme (KKN), penyuapan dan lain
-            sebagainya.</p>
-
-        <p>(3). <strong>PIHAK KESATU</strong> dengan ini menjamin dalam pelaksanaan program Corporate Social Responsibility ini tidak
-            menyalahgunakan uang dan/atau dana bantuan selain untuk tujuan sebagaimana diatur dalam Kesepakatan
-            Kerjasama ini, tidak di bawah pengaruh kepentingan <strong>PIHAK KEDUA</strong> atau <strong>pihak lainnya</strong> dalam mengambil tindakan
-            atau keputusan dalam pelaksanaan program Corporate Social Responsibility ini, serta tidak menerima suatu
-            kontribusi, pemberian uang, komisi politik, atau hal lainnya yang bernilai dari <strong>PIHAK KEDUA</strong> atau <strong>pihak
-            lainnya</strong></p>
-
-        <p>(4). <strong>PIHAK KEDUA</strong> selaku penerima bantuan program Corporate Social Responsibility dengan ini menjamin tidak
-            akan menawarkan, menjanjikan, memberikan kontribusi, melakukan penyuapan, dan/atau memberikan manfaat lain
-            kepada pegawai <strong>PIHAK KESATU</strong> terkait dengan pelaksanaan program Corporate Social Responsibility ini, serta
-            tidak menyalahgunakan dana bantuan program Corporate Social Responsibility tersebut selain untuk tujuan yang
-            diatur dalam Kesepakatan Kerja Sama ini.</p>
-
-        <p>(5). Apabila salah satu <strong>PIHAK</strong> terbukti melanggar ketentuan sebagaimana dimaksud dalam Pasal ini, maka
-            Kesepatakan Kerja Sama akan berakhir.</p> --}}
         <ol class="csr-list-custom">
             <li><strong>PARA PIHAK</strong> menyepakati bahwa pada saat melaksanakan program Corporate Social
                 Responsibility ini
@@ -320,7 +290,6 @@
                 Kesepakatan Kerja Sama akan berakhir.
             </li>
         </ol>
-
     </div>
 
     <p>Demikian Berita Acara Serah Terima ini dibuat untuk dipergunakan sebagaimana mestinya.

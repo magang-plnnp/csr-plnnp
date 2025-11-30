@@ -168,21 +168,6 @@
             margin: 2px 0;
         }
 
-        /* .label {
-            display: inline-block;
-            width: 200px;
-            font-weight: bold;
-            vertical-align: top;
-        }
-
-        .separator {
-            display: inline-block;
-            width: 10px;
-        }
-
-        .value {
-            display: inline-block;
-        } */
         .label,
         .separator,
         .value {
@@ -252,7 +237,7 @@
             <tr>
                 <td rowspan="4" class="logo-cell">
                     <img src="{{ public_path('images/logos/logo-pln2.png') }}"
-                        style="height: 0.64cm; width: 3.12cm; margin-top: 2px;">
+                        style="height: 0.64cm; width: 3.12cm; margin-top: 25px;">
                 </td>
                 <td class="judul-cell"><strong>PT PLN NUSANTARA POWER</strong></td>
                 <td class="info-cell"><span style="font-size: 7px"><strong>Nomor Dokumen</strong> :

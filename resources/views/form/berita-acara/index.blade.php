@@ -21,9 +21,9 @@
              color: white !important;
          }
 
-         /* Freeze table layout */
-         .table-responsive {
-             overflow: hidden;
+         .table-responsive table {
+             margin-left: 0 !important;
+             width: 100% !important;
          }
 
          .dataTables_scrollBody {
@@ -265,21 +265,54 @@
                      @csrf
                      <div class="modal-header">
                          <h5 class="modal-title" id="uploadModalLabel">Upload File Berita Acara</h5>
-                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                      </div>
+
                      <div class="modal-body">
-                         <input type="file" name="file_upload" class="form-control" required>
+                         <input type="file" name="file_upload" id="fileInput" class="form-control" required>
+                         <small class="text-muted">File yang diizinkan: PDF atau Gambar</small>
+
+                         <div id="fileError" class="text-danger mt-2 d-none">
+                             Format file tidak sesuai.
+                         </div>
                      </div>
+
                      <div class="modal-footer">
                          <button type="button" class="btn bg-secondary-subtle text-dark"
                              data-bs-dismiss="modal">Batal</button>
-                         <button type="submit" style="background-color: #78C841; color:whitesmoke"
-                             class="btn">Upload</button>
+
+                         <button type="submit" id="btnUpload" style="background-color: #78C841; color:white"
+                             class="btn">
+                             Upload
+                         </button>
                      </div>
                  </form>
              </div>
          </div>
      </div>
+
+     <script>
+         const allowed = ['jpg', 'jpeg', 'png', 'heic', 'pdf'];
+         const fileInput = document.getElementById('fileInput');
+         const btnUpload = document.getElementById('btnUpload');
+         const errorMsg = document.getElementById('fileError');
+
+         fileInput.addEventListener('change', function() {
+             const file = this.files[0];
+
+             if (!file) return;
+
+             const ext = file.name.split('.').pop().toLowerCase();
+
+             if (!allowed.includes(ext)) {
+                 errorMsg.classList.remove('d-none');
+                 btnUpload.disabled = true;
+             } else {
+                 errorMsg.classList.add('d-none');
+                 btnUpload.disabled = false;
+             }
+         });
+     </script>
 
      <script>
          const uploadModal = document.getElementById('uploadModal');

@@ -223,6 +223,13 @@
                                 <option value="80">80%</option>
                                 <option value="100">100%</option>
                             </select>
+
+                            <select id="filter-tahun" class="form-select" style="min-width: 200px;">
+                                <option value="">-- Semua Tahun --</option>
+                                @foreach ($proposal->pluck('tanggal_disposisi')->map(fn($t) => \Carbon\Carbon::parse($t)->format('Y'))->unique()->sort() as $tahun)
+                                    <option value="{{ $tahun }}">{{ $tahun }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
 
@@ -484,23 +491,33 @@
                 const pic = $('#filter-pic').val().toLowerCase();
                 const tipologi = $('#filter-tipologi').val().toLowerCase();
                 const progressFilter = $('#filter-progress').val();
+                const tahun = $('#filter-tahun').val();
 
                 const table = $('#proposalTable').DataTable();
 
-                table.columns(11).search(pic);
-                table.columns(7).search(tipologi);
+                table.column(11).search(pic);
+                table.column(7).search(tipologi);
 
+                // Filter progress
                 if (progressFilter) {
                     table.column(15).search('^' + progressFilter + '$', true, false);
                 } else {
                     table.column(15).search('', true, false);
                 }
 
+                // Filter tahun pada kolom tanggal (index 4)
+                if (tahun) {
+                    table.column(4).search(tahun);
+                } else {
+                    table.column(4).search('');
+                }
+
                 table.draw();
             }
-            $('#filter-pic, #filter-tipologi, #filter-progress').on('change', applyFilters);
-            // Tambahkan script ini setelah inisialisasi DataTable
+
+            $('#filter-pic, #filter-tipologi, #filter-progress, #filter-tahun').on('change', applyFilters);
         </script>
+
 
         {{-- DELETE MODAL --}}
         <script>
