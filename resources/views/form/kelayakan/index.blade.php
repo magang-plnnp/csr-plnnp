@@ -479,18 +479,6 @@
              });
          </script>
 
-         $(document).ready(function() {
-         $('#createModal').on('shown.bs.modal', function() {
-         $('#select-proposal').select2({
-         dropdownParent: $('#createModal'),
-         width: '100%',
-         theme: 'bootstrap4',
-         placeholder: '-- Pilih Proposal --'
-         });
-         });
-         });
-         </script>
-
          <script>
              $(document).ready(function() {
                  $('#kelayakanTable').DataTable({

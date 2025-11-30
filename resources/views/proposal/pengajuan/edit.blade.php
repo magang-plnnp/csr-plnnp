@@ -161,7 +161,7 @@
                                         <input type="text" id="nominal_pengajuan" name="nominal_pengajuan"
                                             class="form-control @error('nominal_pengajuan') is-invalid @enderror"
                                             value="{{ old('nominal_pengajuan', $proposal->nominal_pengajuan ?? '') }}"
-                                            placeholder="Contoh: Rp 1.000.000">
+                                            placeholder="Masukkan Angka">
                                         @error('nominal_pengajuan')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -200,7 +200,7 @@
                                     </div>
 
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">Setuju / Tidak Setuju</label>
+                                        <label class="form-label">Setuju / Pending / Tolak</label>
                                         <select class="form-control @error('status') is-invalid @enderror" name="status"
                                             required>
                                             <option value="">-- Pilih Status Persetujuan --</option>
@@ -227,7 +227,7 @@
                                         <input type="text" id="nominal_disetujui" name="nominal_disetujui"
                                             class="form-control @error('nominal_disetujui') is-invalid @enderror"
                                             value="{{ old('nominal_disetujui', $proposal->nominal_disetujui ?? '') }}"
-                                            placeholder="Contoh: Rp 1.000.000">
+                                            placeholder="Masukkan Angka">
                                         <div class="form-text">Isi hanya jika pengajuan disetujui atau masih dalam status
                                             pending. Kosongkan jika tidak ada nominal yang disetujui.</div>
                                         @error('nominal_disetujui')
@@ -326,6 +326,36 @@
                 });
             });
         </script>
+
+        <script>
+            function formatRupiah(input) {
+                // Hapus karakter selain angka
+                let angka = input.value.replace(/[^0-9]/g, "");
+
+                // Format dengan titik ribuan
+                input.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const fields = ["nominal_pengajuan", "nominal_disetujui"];
+
+                fields.forEach(id => {
+                    const input = document.getElementById(id);
+
+                    if (input) {
+                        // Format ulang saat halaman dimuat
+                        input.value = input.value.replace(/\D/g, "")
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+                        // Format saat mengetik
+                        input.addEventListener("input", function() {
+                            formatRupiah(this);
+                        });
+                    }
+                });
+            });
+        </script>
+
 
         <script>
             $(document).ready(function() {
