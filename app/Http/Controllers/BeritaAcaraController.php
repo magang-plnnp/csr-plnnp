@@ -23,66 +23,73 @@ class BeritaAcaraController extends Controller
 
 
 public function store(Request $request)
-{
-    // Validasi input
-    $request->validate([
-        'proposal_id' => 'required|exists:proposal,id',
-        'nama_penerima' => 'required|string|max:255',
-        'jabatan_penerima' => 'required|string|max:255',
-        'jenis_bantuan' => 'required|array|min:1',
-        'jenis_bantuan.*' => 'required|string|max:255',
-        'jumlah_bantuan' => 'required|array|min:1',
-        'jumlah_bantuan.*' => 'required|string|max:255',
-    ]);
+    {
+        $request->validate([
+            'proposal_id' => 'required|exists:proposal,id',
+            'nama_penerima' => 'required|string|max:255',
+            'jabatan_penerima' => 'required|string|max:255',
+            'jenis_bantuan' => 'required|array|min:1',
+            'jenis_bantuan.*' => 'required|string|max:255',
+            'jumlah_bantuan' => 'required|array|min:1',
+            'jumlah_bantuan.*' => 'required|string|max:255',
+        ]);
 
-    // Gabungkan jenis dan jumlah jadi array bantuan
-    $bantuan = [
-        'jenis' => $request->jenis_bantuan,
-        'jumlah' => $request->jumlah_bantuan,
-    ];
+        // Gabungkan jenis + jumlah
+        $bantuan = [
+            'jenis' => $request->jenis_bantuan,
+            'jumlah' => $request->jumlah_bantuan,
+        ];
 
-    // Simpan data ke database, simpan bantuan dalam format JSON
-    $beritaAcara = BeritaAcara::create([
-        'proposal_id' => $request->proposal_id,
-        'nama_penerima' => $request->nama_penerima,
-        'jabatan_penerima' => $request->jabatan_penerima,
-        'bantuan' => json_encode($bantuan),
-    ]);
+        // ======== GENERATE NOMOR SURAT PERMANEN =========
 
-    // Decode bantuan kembali agar siap dikirim ke view PDF
-    $bantuanArray = json_decode($beritaAcara->bantuan, true) ?? ['jenis' => [], 'jumlah' => []];
+        // Ambil nomor terakhir
+        $last = BeritaAcara::orderBy('id', 'desc')->first();
+        $nextNumber = $last ? $last->id + 1 : 1;
 
-    $proposal = Proposal::find($beritaAcara->proposal_id);
+        // 3 digit nomor
+        $no3Digit = str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
 
-   
+        // Tahun sekarang (tahun file dibuat)
+        $tahun = now()->format('Y');
 
-    $businessSupport = \App\Models\BusinessSupport::first();
-$namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno'; 
-    // Generate PDF berdasarkan view 'pdf.berita_acara'
-    $pdf = PDF::loadView('pdf.berita_acara', [
-        'data'   => $beritaAcara,
-        'jenis'  => $bantuanArray['jenis'] ?? [],
-        'jumlah' => $bantuanArray['jumlah'] ?? [],
-        'namaBisnisSupport' => $namaBisnisSupport, // aktifkan jika ada
-        'proposal' => $proposal
-    ]);
+        // Format nomor surat
+        $nomorSurat = "{$no3Digit}.BA.KESP/076/UPPTN/{$tahun}";
 
-    // Nama file PDF
-    $pdfName = 'berita_acara_' . $beritaAcara->id . '.pdf';
+        // ------------------------------------------------
 
-    // Simpan file PDF ke folder storage/app/public/berita_acara/
-    Storage::put('public/berita_acara/' . $pdfName, $pdf->output());
+        // Simpan DB
+        $beritaAcara = BeritaAcara::create([
+            'proposal_id' => $request->proposal_id,
+            'nama_penerima' => $request->nama_penerima,
+            'jabatan_penerima' => $request->jabatan_penerima,
+            'bantuan' => json_encode($bantuan),
+            'nomor_surat' => $nomorSurat,  
+        ]);
 
-    // Update kolom file_pdf dengan path file
-    $beritaAcara->update(['file_pdf' => 'berita_acara/' . $pdfName]);
+        $bantuanArray = json_decode($beritaAcara->bantuan, true);
+        $proposal = Proposal::find($beritaAcara->proposal_id);
 
-    // Redirect ke halaman index dengan pesan sukses
-    return redirect()->route('berita-acara.index')
-        ->with('success', 'Berita acara berhasil dibuat dan PDF telah disimpan.');
-}
+        $businessSupport = \App\Models\BusinessSupport::first();
+        $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
 
+        // Generate PDF pertama
+        $pdf = PDF::loadView('pdf.berita_acara', [
+            'data' => $beritaAcara,
+            'jenis' => $bantuanArray['jenis'],
+            'jumlah' => $bantuanArray['jumlah'],
+            'namaBisnisSupport' => $namaBisnisSupport,
+            'proposal' => $proposal,
+            'nomorBeritaAcara' => $nomorSurat    
+        ]);
 
+        $pdfName = 'berita_acara_' . $beritaAcara->id . '.pdf';
+        Storage::put('public/berita_acara/' . $pdfName, $pdf->output());
 
+        $beritaAcara->update(['file_pdf' => 'berita_acara/' . $pdfName]);
+
+        return redirect()->route('berita-acara.index')
+            ->with('success', 'Berita acara berhasil dibuat.');
+    }
 
     public function show($id)
     {
@@ -91,7 +98,7 @@ $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
         // return view('pdf.berita_acara', compact('data'));
         $bantuan = json_decode($beritaAcara->bantuan, true) ?? ['jenis' => [], 'jumlah' => []];
         $businessSupport = \App\Models\BusinessSupport::first();
-    $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
+        $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
 
         return view('pdf.berita_acara', [
             'data'   => $beritaAcara,
@@ -116,18 +123,20 @@ $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
 
         $beritaAcara = BeritaAcara::findOrFail($id);
 
-        // Hapus PDF lama jika ada
+        // nomor_surat TIDAK DIUBAH
+        $nomorSurat = $beritaAcara->nomor_surat;
+
+        // Hapus PDF sebelumnya
         if ($beritaAcara->file_pdf && Storage::exists('public/' . $beritaAcara->file_pdf)) {
             Storage::delete('public/' . $beritaAcara->file_pdf);
         }
 
-        // Gabungkan jenis & jumlah
         $bantuan = [
             'jenis' => $request->jenis_bantuan,
             'jumlah' => $request->jumlah_bantuan,
         ];
 
-        // Update data di database
+        // Update data biasa
         $beritaAcara->update([
             'nama_penerima' => $request->nama_penerima,
             'jabatan_penerima' => $request->jabatan_penerima,
@@ -137,16 +146,17 @@ $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
         $businessSupport = \App\Models\BusinessSupport::first();
         $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
 
-        $bantuanArray = json_decode($beritaAcara->bantuan, true) ?? ['jenis' => [], 'jumlah' => []];
         $proposal = Proposal::find($beritaAcara->proposal_id);
+        $bantuanArray = json_decode($beritaAcara->bantuan, true);
 
-        // Generate ulang PDF
+        // Generate ulang PDF (nomor tidak berubah)
         $pdf = Pdf::loadView('pdf.berita_acara', [
-            'data'   => $beritaAcara,
-            'jenis'  => $bantuanArray['jenis'] ?? [],
-            'jumlah' => $bantuanArray['jumlah'] ?? [],
+            'data' => $beritaAcara,
+            'jenis' => $bantuanArray['jenis'],
+            'jumlah' => $bantuanArray['jumlah'],
             'namaBisnisSupport' => $namaBisnisSupport,
             'proposal' => $proposal,
+            'nomorBeritaAcara' => $nomorSurat
         ]);
 
         $pdfName = 'berita_acara_' . $beritaAcara->id . '.pdf';
@@ -155,13 +165,13 @@ $namaBisnisSupport = $businessSupport ? $businessSupport->nama : 'Sukarno';
         $beritaAcara->update(['file_pdf' => 'berita_acara/' . $pdfName]);
 
         return redirect()->route('berita-acara.index')
-            ->with('success', 'Data berita acara berhasil diperbarui dan PDF telah digenerate ulang.');
+            ->with('success', 'Berita acara berhasil diperbarui.');
     }
 
     public function uploadFile(Request $request, $id)
     {
         $request->validate([
-            'file_upload' => 'required|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file_upload' => 'required|mimes:jpg,jpeg,png,heic,pdf',
         ]);
 
         $beritaAcara = BeritaAcara::findOrFail($id);

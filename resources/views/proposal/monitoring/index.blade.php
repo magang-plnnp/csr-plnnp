@@ -53,10 +53,10 @@
         }
 
         /* table.dataTable td p,
-                                                                                                                table.dataTable td span,
-                                                                                                                table.dataTable th h6 {
-                                                                                                                    white-space: nowrap !important;
-                                                                                                                } */
+                                                                                                                                table.dataTable td span,
+                                                                                                                                table.dataTable th h6 {
+                                                                                                                                    white-space: nowrap !important;
+                                                                                                                                } */
 
         table.dataTable,
         table.dataTable th,
@@ -80,13 +80,13 @@
         }
 
         /* Paksa semua elemen dalam tabel untuk nowrap
-                                                                                                                #proposalTable,
-                                                                                                                #proposalTable th,
-                                                                                                                #proposalTable td,
-                                                                                                                #proposalTable th *,
-                                                                                                                #proposalTable td * {
-                                                                                                                    white-space: nowrap !important;
-                                                                                                                } */
+                                                                                                                                #proposalTable,
+                                                                                                                                #proposalTable th,
+                                                                                                                                #proposalTable td,
+                                                                                                                                #proposalTable th *,
+                                                                                                                                #proposalTable td * {
+                                                                                                                                    white-space: nowrap !important;
+                                                                                                                                } */
 
         /* Hindari teks meluber */
         #proposalTable td {
@@ -239,6 +239,13 @@
                                 <option value="80">80%</option>
                                 <option value="100">100%</option>
                             </select>
+
+                            <select id="filter-year" class="form-select" style="min-width: 160px;">
+                                <option value="">-- Semua Tahun --</option>
+                                @foreach ($proposals->pluck('tanggal_disposisi')->map(fn($d) => \Carbon\Carbon::parse($d)->year)->unique()->sort() as $year)
+                                    <option value="{{ $year }}">{{ $year }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <a href="#" id="exportExcel" style="background-color: #78C841; color: white;" class="btn">
                             <i class="fas fa-plus me-1"></i> Export Excel
@@ -331,7 +338,7 @@
                                         <td>
                                             <p class="mb-0 fw-normal">{{ $data->lokasi }}</p>
                                         </td>
-                                        <td>
+                                        <td data-year="{{ \Carbon\Carbon::parse($data->tanggal_disposisi)->year }}">
                                             <p class="mb-0 fw-normal">
                                                 {{ \Carbon\Carbon::parse($data->tanggal_disposisi)->translatedFormat('d F Y') }}
                                             </p>
@@ -620,21 +627,37 @@
                 const pic = $('#filter-pic').val().toLowerCase();
                 const tipologi = $('#filter-tipologi').val().toLowerCase();
                 const progressFilter = $('#filter-progress').val();
+                const year = $('#filter-year').val();
 
+                // Filter PIC (kolom 11)
                 table.columns(11).search(pic);
-                table.columns(7).search(tipologi);
-                table.column(16).search('', true, false);
 
+                // Filter Tipologi (kolom 7)
+                table.columns(7).search(tipologi);
+
+                // Filter Progress (kolom 16)
                 if (progressFilter) {
                     table.column(16).search('^' + progressFilter + '%$', true, false);
                 } else {
                     table.column(16).search('', true, false);
                 }
 
+                // Filter Tahun menggunakan custom filter DataTables
+                $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                    const rowYear = $(table.row(dataIndex).node()).find('td[data-year]').data('year');
+
+                    if (!year || rowYear == year) return true;
+                    return false;
+                });
+
                 table.draw();
+
+                // Hapus filter callback agar tidak menumpuk
+                $.fn.dataTable.ext.search.pop();
             }
-            // Filter dropdown
-            $('#filter-pic, #filter-tipologi, #filter-progress').on('change', applyFilters);
+
+            // Trigger semua filter
+            $('#filter-pic, #filter-tipologi, #filter-progress, #filter-year').on('change', applyFilters);
         </script>
         <script>
             function showToast(message) {

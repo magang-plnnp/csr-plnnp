@@ -10,6 +10,7 @@ class BeritaAcara extends Model
 
     protected $fillable = [
         'proposal_id',
+        'nomor_surat',
         'nama_penerima',
         'jabatan_penerima',
         'file_pdf',

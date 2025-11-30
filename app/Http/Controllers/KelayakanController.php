@@ -158,46 +158,6 @@ $pdf->getDomPDF()->getCanvas()->page_script(function ($pageNumber, $pageCount, $
             ->with('success', 'Form Analisis Kelayakan berhasil dibuat dan PDF telah disimpan.');
     }
 
-    // public function update(Request $request, $id)
-    // {
-    //     $request->validate([
-    //         'dasar_pelaksanaan' => 'required|string|max:255',
-    //         'latar_belakang' => 'required|string|max:255',
-    //         'tujuan' => 'required|string|max:255',
-    //         'prioritas' => 'required|in:1,2,3,4,5',
-    //         'dampak' => 'required|in:1,2,3,4,5',
-    //     ]);
-
-    //     $kelayakan = Kelayakan::findOrFail($id);
-
-    //     // Hapus PDF lama jika ada
-    //     if ($kelayakan->file_pdf && Storage::exists('public/' . $kelayakan->file_pdf)) {
-    //         Storage::delete('public/' . $kelayakan->file_pdf);
-    //     }
-
-    //     // Update data di database
-    //     $kelayakan->update([
-    //         'dasar_pelaksanaan' => $request->dasar_pelaksanaan,
-    //         'latar_belakang' => $request->latar_belakang,
-    //         'tujuan' => $request->tujuan,
-    //         'prioritas' => $request->prioritas,
-    //         'dampak' => $request->dampak,
-    //     ]);
-
-    //     // Generate ulang PDF berdasarkan data terbaru
-    //     $pdf = Pdf::loadView('pdf.kelayakan', ['data' => $kelayakan]);
-    //     $pdfName = 'kelayakan_' . $kelayakan->id . '.pdf';
-
-    //     // Simpan PDF baru ke storage
-    //     Storage::put('public/kelayakan/' . $pdfName, $pdf->output());
-
-    //     // Update path file PDF di database
-    //     $kelayakan->update(['file_pdf' => 'kelayakan/' . $pdfName]);
-
-    //     return redirect()->route('kelayakan.index')
-    //         ->with('success', 'Data kelayakan berhasil diperbarui dan PDF telah digenerate ulang.');
-    // }
-
     public function update(Request $request, $id)
     {
         $request->validate([

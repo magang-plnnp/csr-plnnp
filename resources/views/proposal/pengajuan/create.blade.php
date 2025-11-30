@@ -202,13 +202,15 @@
                                         <select class="form-control @error('status') is-invalid @enderror" name="status"
                                             required>
                                             <option value="">-- Pilih Status Persetujuan --</option>
-                                            <option value="disetujui"
-                                                {{ old('status') == 'disetujui' ? 'selected' : '' }}>
-                                                Setuju</option>
+                                            <option value="setuju" {{ old('status') == 'setuju' ? 'selected' : '' }}>
+                                                Setuju
+                                            </option>
                                             <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>
-                                                Pending</option>
-                                            <option value="ditolak" {{ old('status') == 'ditolak' ? 'selected' : '' }}>
-                                                Tolak</option>
+                                                Pending
+                                            </option>
+                                            <option value="tolak" {{ old('status') == 'tolak' ? 'selected' : '' }}>
+                                                Tolak
+                                            </option>
                                         </select>
                                         @error('status')
                                             <div class="invalid-feedback">Setuju / Tidak setuju wajib diisi</div>

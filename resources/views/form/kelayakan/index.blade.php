@@ -69,6 +69,57 @@
          .DTFC_LeftWrapper .table tbody tr:hover td {
              background-color: #f1f3f4 !important;
          }
+
+         table.dataTable {
+             table-layout: fixed !important;
+         }
+
+         table.dataTable td,
+         table.dataTable th {
+             white-space: normal !important;
+             word-wrap: break-word !important;
+             overflow-wrap: break-word !important;
+         }
+
+         table.dataTable th:nth-child(1),
+         table.dataTable td:nth-child(1) {
+             width: 20px !important;
+         }
+
+         table.dataTable th:nth-child(2),
+         table.dataTable td:nth-child(2) {
+             width: 300px !important;
+         }
+
+         table.dataTable th:nth-child(3),
+         table.dataTable td:nth-child(3) {
+             width: 300px !important;
+         }
+
+         table.dataTable th:nth-child(4),
+         table.dataTable td:nth-child(4) {
+             width: 300px !important;
+         }
+
+         table.dataTable th:nth-child(5),
+         table.dataTable td:nth-child(5) {
+             width: 300px !important;
+         }
+
+         table.dataTable th:nth-child(6),
+         table.dataTable td:nth-child(6) {
+             width: 300px !important;
+         }
+
+         table.dataTable th:nth-child(7),
+         table.dataTable td:nth-child(7) {
+             width: 50px !important;
+         }
+
+         table.dataTable th:nth-child(8),
+         table.dataTable td:nth-child(8) {
+             width: 50px !important;
+         }
      </style>
  @endpush
  @section('content')
