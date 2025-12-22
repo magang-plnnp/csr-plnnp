@@ -17,22 +17,23 @@
 
     <form method="GET" action="{{ route('dashboard.index') }}" class="mb-4">
         <div class="row g-2 align-items-center">
+
             <div class="col-auto">
                 <label for="nama_pic" class="form-label mb-0">Tampilkan data milik:</label>
             </div>
+
             <div class="col-auto">
                 <select name="nama_pic" id="filter-pic" class="form-select" style="min-width: 200px;"
                     onchange="this.form.submit()">
                     <option value="" {{ $selectedNamaPic === null || $selectedNamaPic === '' ? 'selected' : '' }}>
                         -- Semua PIC --
                     </option>
-                    {{-- Opsi: nama user login --}}
+
                     <option value="{{ auth()->user()->nama }}"
                         {{ request('nama_pic') == auth()->user()->nama ? 'selected' : '' }}>
                         {{ auth()->user()->nama }} (Saya)
                     </option>
 
-                    {{-- Opsi: semua user lain --}}
                     @foreach ($allNamaPics as $namaPic)
                         @if ($namaPic !== auth()->user()->nama)
                             <option value="{{ $namaPic }}" {{ request('nama_pic') == $namaPic ? 'selected' : '' }}>
@@ -42,6 +43,19 @@
                     @endforeach
                 </select>
             </div>
+
+            {{-- FILTER TAHUN --}}
+            <div class="col-auto">
+                <select name="tahun" class="form-select" onchange="this.form.submit()">
+                    <option value="">-- Semua Tahun --</option>
+                    @foreach ($tahunList as $tahun)
+                        <option value="{{ $tahun }}" {{ request('tahun') == $tahun ? 'selected' : '' }}>
+                            {{ $tahun }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
         </div>
     </form>
 

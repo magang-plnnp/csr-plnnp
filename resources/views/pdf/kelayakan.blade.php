@@ -1,6 +1,45 @@
 <!DOCTYPE html>
 <html lang="id">
 
+@php
+    function formatTextWithNumbering($text)
+    {
+        if (empty($text)) {
+            return '';
+        }
+
+        // Split berdasarkan line breaks
+        $lines = preg_split('/\r\n|\r|\n/', $text);
+        $output = '';
+
+        foreach ($lines as $line) {
+            // Cek apakah baris dimulai dengan penomoran (1. 2. 3. dst)
+            if (preg_match('/^(\s*)(\d+)\.\s*(.*)$/', $line, $matches)) {
+                $indent = $matches[1];
+                $number = $matches[2];
+                $content = $matches[3];
+
+                // Buat table layout untuk memastikan nomor dan teks di samping
+                $output .= '<div style="display: table; width: 100%; margin: 0; padding: 0;">';
+                $output .= '<div style="display: table-row;">';
+                $output .= '<div style="display: table-cell; width: 1em; vertical-align: top; padding-right: 0.1em;">' . e($number . '.') . '</div>';
+                $output .= '<div style="display: table-cell; vertical-align: top; word-wrap: break-word; word-break: break-word;">' . e($content) . '</div>';
+                $output .= '</div>';
+                $output .= '</div>';
+            } else {
+                // Baris biasa tanpa penomoran
+                if (trim($line) === '') {
+                    $output .= '<br>';
+                } else {
+                    $output .= e($line) . '<br>';
+                }
+            }
+        }
+
+        return $output;
+    }
+@endphp
+
 <head>
     <meta charset="UTF-8">
     <title>Formulir Kelayakan</title>
@@ -168,31 +207,31 @@
             margin: 2px 0;
         }
 
-        .label,
-        .separator,
-        .value {
-            display: table-cell;
-            vertical-align: top;
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
         }
 
-        .label {
+        .data-table td {
+            vertical-align: top;
+            padding: 2px 5px;
+        }
+
+        .data-table .label {
             width: 200px;
             font-weight: bold;
+            white-space: nowrap;
         }
 
-        .separator {
+        .data-table .separator {
             width: 10px;
+            text-align: left;
         }
 
-        .value {
-            width: auto;
-        }
-
-        .data-row {
-            display: table;
-            width: 100%;
-            margin-bottom: 3px;
-            line-height: 20pt;
+        .data-table .value {
+            word-break: break-word;
+            white-space: normal;
         }
 
         .kategori-table {
@@ -264,82 +303,71 @@
     <h4>PT PLN NP UNIT PEMBANGKITAN PAITON</h4>
 
     <div class="section">
-        <div class="data-row">
-            <div class="label">Nama Program</div>
-            <div class="separator">:</div>
-            <div class="value">{{ $data->proposal->judul }}</div>
-        </div>
-
-        <div class="data-row">
-            <div class="label">Tipologi</div>
-            <div class="separator">:</div>
-            <div class="value">{{ optional($data->proposal->tipologi)->deskripsi ?? '-' }}</div>
-        </div>
-
-        <div class="data-row">
-            <div class="label">Dasar Pelaksanaan Program</div>
-            <div class="separator">:</div>
-            <div class="value">{!! nl2br(e($data->dasar_pelaksanaan)) !!}</div>
-        </div>
-
-        <div class="data-row">
-            <div class="label">Latar Belakang Program</div>
-            <div class="separator">:</div>
-            <div class="value">{!! nl2br(e($data->latar_belakang)) !!}</div>
-        </div>
-
-        <div class="data-row">
-            <div class="label">Tujuan</div>
-            <div class="separator">:</div>
-            <div class="value">{!! nl2br(e($data->tujuan)) !!}</div>
-        </div>
-
-        <div class="data-row">
-            <div class="label">Indikator Lingkungan</div>
-            <div class="separator">:</div>
-            <div class="value">{!! nl2br(e($data->indikator_lingkungan)) !!}</div>
-        </div>
-
-        <div class="data-row">
-            <div class="label">Indikator Sosial</div>
-            <div class="separator">:</div>
-            <div class="value">
-                {!! nl2br(e($data->indikator_sosial)) !!}
-            </div>
-        </div>
-
-        <div class="data-row">
-            <div class="label">Jumlah Penerima Manfaat</div>
-            <div class="separator">:</div>
-            <div class="value">{{ $data->jumlah_penerima_manfaat }} penerima manfaat</div>
-        </div>
-
-        <div class="data-row">
-            <div class="label">Asal Instansi</div>
-            <div class="separator">:</div>
-            <div class="value">{{ $data->proposal->instansi_pengajuan }}</div>
-        </div>
-
-        <div class="data-row">
-            <div class="label">Jenis Stakeholder</div>
-            <div class="separator">:</div>
-            <div class="value">{{ $data->jenis_stakeholder }}</div>
-        </div>
-
-        <div class="data-row">
-            <div class="label">Mengetahui (Pejabat Instansi)</div>
-            <div class="separator">:</div>
-            <div class="value">{{ $data->pejabat_instansi }}</div>
-        </div>
-
-        <div class="data-row">
-            <div class="label">Bantuan yang diajukan</div>
-            <div class="separator">:</div>
-            <div class="value">
-                Proposal {{ $data->proposal->judul }} senilai Rp
-                {{ number_format($data->proposal->nominal_pengajuan, 0, ',', '.') }}
-            </div>
-        </div>
+        <table class="data-table">
+            <tr>
+                <td class="label">Nama Program</td>
+                <td class="separator">:</td>
+                <td class="value">{{ $data->proposal->judul }}</td>
+            </tr>
+            <tr>
+                <td class="label">Tipologi</td>
+                <td class="separator">:</td>
+                <td class="value">{{ optional($data->proposal->tipologi)->deskripsi ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td class="label">Dasar Pelaksanaan Program</td>
+                <td class="separator">:</td>
+                <td class="value">{!! formatTextWithNumbering($data->dasar_pelaksanaan) !!}</td>
+            </tr>
+            <tr>
+                <td class="label">Latar Belakang Program</td>
+                <td class="separator">:</td>
+                <td class="value">{!! formatTextWithNumbering($data->latar_belakang) !!}</td>
+            </tr>
+            <tr>
+                <td class="label">Tujuan</td>
+                <td class="separator">:</td>
+                <td class="value">{!! formatTextWithNumbering($data->tujuan) !!}</td>
+            </tr>
+            <tr>
+                <td class="label">Indikator Lingkungan</td>
+                <td class="separator">:</td>
+                <td class="value">{!! formatTextWithNumbering($data->indikator_lingkungan) !!}</td>
+            </tr>
+            <tr>
+                <td class="label">Indikator Sosial</td>
+                <td class="separator">:</td>
+                <td class="value">{!! formatTextWithNumbering($data->indikator_sosial) !!}</td>
+            </tr>
+            <tr>
+                <td class="label">Jumlah Penerima Manfaat</td>
+                <td class="separator">:</td>
+                <td class="value">{{ $data->jumlah_penerima_manfaat }} penerima manfaat</td>
+            </tr>
+            <tr>
+                <td class="label">Asal Instansi</td>
+                <td class="separator">:</td>
+                <td class="value">{{ $data->proposal->instansi_pengajuan }}</td>
+            </tr>
+            <tr>
+                <td class="label">Jenis Stakeholder</td>
+                <td class="separator">:</td>
+                <td class="value">{{ $data->jenis_stakeholder }}</td>
+            </tr>
+            <tr>
+                <td class="label">Mengetahui (Pejabat Instansi)</td>
+                <td class="separator">:</td>
+                <td class="value">{{ $data->pejabat_instansi }}</td>
+            </tr>
+            <tr>
+                <td class="label">Bantuan yang diajukan</td>
+                <td class="separator">:</td>
+                <td class="value">
+                    Proposal {{ $data->proposal->judul }} senilai Rp
+                    {{ number_format($data->proposal->nominal_pengajuan, 0, ',', '.') }}
+                </td>
+            </tr>
+        </table>
     </div>
 
     <div class="section">
@@ -347,11 +375,11 @@
             <p><strong>Analisa Matriks</strong>:</p>
             <table class="table-matriks">
                 {{-- <thead>
-                <tr>
-                    <th>Prioritas</th>
-                    <th colspan="5">Nilai Dampak</th>
-                </tr>
-            </thead> --}}
+                    <tr>
+                        <th>Prioritas</th>
+                        <th colspan="5">Nilai Dampak</th>
+                    </tr>
+                </thead> --}}
                 <tbody>
                     <tr>
                         <td>Prioritas 1</td>
@@ -408,12 +436,6 @@
         <div class="section">
             <p><strong>Keterangan:</strong></p>
             <table class="kategori-table">
-                {{-- <thead>
-                <tr>
-                    <th style="width: 25%;">Kategori</th>
-                    <th style="width: 25%">Keterangan</th>
-                </tr>
-            </thead> --}}
                 <tbody>
                     <tr>
                         <td style="background-color: #00b050; text-align: center;">Rendah</td>
@@ -437,29 +459,28 @@
     </div>
 
     <div class="section">
-        <div class="data-row">
-            <div class="label">Data Terdahulu</div>
-            <div class="separator">:</div>
-            <div class="value">{{ $data->data_terdahulu }}</div>
-        </div>
-
-        <div class="data-row">
-            <div class="label">Nilai Bantuan yang disetujui</div>
-            <div class="separator">:</div>
-            <div class="value">Rp {{ number_format($data->proposal->nominal_pengajuan, 0, ',', '.') }}</div>
-        </div>
-
-        <div class="data-row">
-            <div class="label">Contact Person</div>
-            <div class="separator">:</div>
-            <div class="value">{{ $data->contact_person }}</div>
-        </div>
-
-        <div class="data-row">
-            <div class="label">Catatan Khusus</div>
-            <div class="separator">:</div>
-            <div class="value">{!! nl2br(e($data->catatan_khusus)) !!}</div>
-        </div>
+        <table class="data-table">
+            <tr>
+                <td class="label">Data Terdahulu</td>
+                <td class="separator">:</td>
+                <td class="value">{{ $data->data_terdahulu }}</td>
+            </tr>
+            <tr>
+                <td class="label">Nilai Bantuan yang disetujui</td>
+                <td class="separator">:</td>
+                <td class="value">Rp {{ number_format($data->proposal->nominal_pengajuan, 0, ',', '.') }}</td>
+            </tr>
+            <tr>
+                <td class="label">Contact Person</td>
+                <td class="separator">:</td>
+                <td class="value">{{ $data->contact_person }}</td>
+            </tr>
+            <tr>
+                <td class="label">Catatan Khusus</td>
+                <td class="separator">:</td>
+                <td class="value">{!! formatTextWithNumbering($data->catatan_khusus) !!}</td>
+            </tr>
+        </table>
     </div>
 
     <div class="section">
